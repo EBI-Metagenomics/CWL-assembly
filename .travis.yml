@@ -1,19 +1,28 @@
 language: python
 python:
-  - "2.7"
+  - "3.4"
   - "3.5"
   - "3.6"
+  - "3.7"
+
+services:
+  - docker
+
 env:
   - COVERAGE_FILE="$TRAVIS_BUILD_DIR/coverage/coverage.xml"
 
 before_install:
   - bash travis/setup_creds.sh
   - mkdir "$TRAVIS_BUILD_DIR/coverage"
+
 install:
   - pip install -r requirements.txt
   - pip install -r requirements-test.txt
+
 script:
   - pytest --cov=src --cov-report xml:$COVERAGE_FILE tests/
+# Docker images
+  - docker build -t metaspades pipeline_step_containers/metaspades/
 
 after_script:
   - python-codacy-coverage -r $COVERAGE_FILE
