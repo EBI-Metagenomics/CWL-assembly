@@ -3,9 +3,16 @@ python:
   - "2.7"
   - "3.5"
   - "3.6"
+env:
+  - COVERAGE_FILE="coverage/coverage.xml"
+
 before_install:
   - bash travis/setup_creds.sh
 install:
   - pip install -r requirements.txt
+  - pip install -r requirements-test.txt
 script:
-  - pytest
+  - pytest --cov=src --cov-report xml:$COVERAGE_FILE tests/
+
+after_script:
+  - python-codacy-coverage -r $COVERAGE_FILE
