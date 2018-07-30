@@ -4,10 +4,11 @@ python:
   - "3.5"
   - "3.6"
 env:
-  - COVERAGE_FILE="coverage/coverage.xml"
+  - COVERAGE_FILE="$TRAVIS_BUILD_DIR/coverage/coverage.xml"
 
 before_install:
   - bash travis/setup_creds.sh
+  - mkdir "$TRAVIS_BUILD_DIR/coverage"
 install:
   - pip install -r requirements.txt
   - pip install -r requirements-test.txt
