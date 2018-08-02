@@ -1,10 +1,23 @@
-from src import ena_api
-from unittest import TestCase
+import requests
 import pytest
+from unittest import TestCase, mock
+from src import ena_api
 
 
 def get_acc(l):
     return [r['run_accession'] for r in l]
+
+
+def mocked_requests_post(*args, **kwargs):
+    class MockResponse:
+        def __init__(self, json_data, status_code):
+            self.json_data = json_data
+            self.status_code = status_code
+
+        def json(self):
+            return self.json_data
+
+    return MockResponse(None, 404)
 
 
 class TestEnaHandler(TestCase):
@@ -28,6 +41,11 @@ class TestEnaHandler(TestCase):
         with pytest.raises(ValueError):
             self.api.get_study_runs('IllegalAccession')
 
+    @mock.patch('src.ena_api.requests.post', side_effect=mocked_requests_post)
+    def test_get_study_runs_raises_exception_on_http_error(self, ignored):
+        with pytest.raises(ValueError):
+            self.api.get_study_runs('ERP106645')
+
     def test_get_run_metadata_should_ignore_filter(self):
         assert self.api.get_run_metadata('ERR2281981', filter_runs=False)['run_accession'] == 'ERR2281981'
 
@@ -41,3 +59,7 @@ class TestEnaHandler(TestCase):
         with pytest.raises(ValueError):
             self.api.get_run_metadata('IllegalAccession')
 
+    @mock.patch('src.ena_api.requests.post', side_effect=mocked_requests_post)
+    def test_get_run_metadata_raises_exception_on_http_error(self, ignored):
+        with pytest.raises(ValueError):
+            self.api.get_run_metadata('ERR2359761')
