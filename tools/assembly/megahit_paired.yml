@@ -1,0 +1,23 @@
+#!/usr/bin/env cwltool
+cwl:tool: metaspades.cwl
+run_id: ERR866589
+
+forward_reads:
+  path: /Users/mdb/work/CWL_assembly_pipeline/metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz
+  class: File
+
+reverse_reads:
+  path: /Users/mdb/work/CWL_assembly_pipeline/metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
+  class: File
+
+cwltool:overrides:
+  megahit.cwl:
+    requirements:
+      ResourceRequirement:
+        ramMin: 5
+        coresMin: 3
+        outdir: /Users/mdb/work/CWL_assembly_pipeline/cwl-final
+        tmpdir: /Users/mdb/work/CWL_assembly_pipeline/cwl-tmp
+
+
+# cwltool --move-outputs --outdir cwl-megahit-final tools/megahit.cwl tools/megahit_paired.yml

@@ -3,7 +3,7 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
-  - "3.7"
+  - "3.7-dev"
 
 env:
   - COVERAGE_FILE="$TRAVIS_BUILD_DIR/coverage/coverage.xml"
