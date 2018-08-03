@@ -4,50 +4,31 @@ cwlVersion: v1.0
 class: CommandLineTool
 
 requirements:
-  - class: DockerRequirement
+  DockerRequirement:
     dockerPull: quay.io/biocontainers/samtools:1.9--h46bd0b3_0
-  - class: InlineJavascriptRequirement
-    expressionLib:
-    - var new_ext = function() { var ext=inputs.bai?'.bai':inputs.csi?'.csi':'';
-      return inputs.input.path.split('/').slice(-1)[0]+ext; };
+  InitialWorkDirRequirement:
+    listing: [ $(inputs.alignments) ]
+
 inputs:
-  input:
+  alignments:
     type: File
     inputBinding:
       position: 2
+      valueFrom: $(self.basename)
+    label: Input bam file.
 
-    doc: |
-      Input bam file.
-  interval:
-    type: int?
-    inputBinding:
-      position: 1
-      prefix: -m
-    doc: |
-      Set minimum interval size for CSI indices to 2^INT [14]
-  csi:
-    type: boolean
-    default: false
-    doc: |
-      Generate CSI-format index for BAM files
-  bai:
-    type: boolean
-    default: false
-    doc: |
-      Generate BAI-format index for BAM files [default]
+baseCommand: [samtools, index, -b]
+
 outputs:
-  index:
+  alignments_with_index:
     type: File
+    secondaryFiles: .bai
     outputBinding:
-      glob: $(new_ext())
+      glob: $(inputs.alignments.basename)
+
 
     doc: The index file
-baseCommand: [samtools, index]
-arguments:
-- valueFrom: $(inputs.bai?'-b':inputs.csi?'-c':[])
-  position: 1
-- valueFrom: $(new_ext())
-  position: 3
+
 
 $namespaces:
   s: http://schema.org/
@@ -55,14 +36,10 @@ $namespaces:
 $schemas:
 - http://schema.org/docs/schema_org_rdfa.html
 
+
 s:downloadUrl: https://github.com/common-workflow-language/workflows/blob/master/tools/samtools-index.cwl
 s:codeRepository: https://github.com/common-workflow-language/workflows
 s:license: http://www.apache.org/licenses/LICENSE-2.0
-
-s:isPartOf:
-  class: s:CreativeWork
-  s:name: Common Workflow Language
-  s:url: http://commonwl.org/
 
 s:author:
   class: s:Person
@@ -79,3 +56,4 @@ s:author:
       s:name: Barski Lab
 doc: |
   samtools-index.cwl is developed for CWL consortium
+

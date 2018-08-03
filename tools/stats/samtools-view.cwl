@@ -179,6 +179,7 @@ outputs:
 baseCommand:
   - samtools
   - view
+  - "-uS"
 
 doc: |
   samtools-view.cwl is developed for CWL consortium

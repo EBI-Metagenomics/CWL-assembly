@@ -1,7 +1,7 @@
 #!/usr/bin/env cwltool
 cwl:tool: metabat-jgi-summarise.cwl
 input:
-  path: /Users/mdb/work/CWL_assembly_pipeline/tools/stats/tmp/sorted.bam
+  path: /Users/mdb/work/CWL_assembly_pipeline/tools/stats/out/sorted.bam
   class: File
 
 outputDepth: coverage.tab

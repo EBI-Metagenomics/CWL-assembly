@@ -23,7 +23,10 @@ outputs:
     outputSource: samtools_sort/sorted
   - id: samtools_index
     type: File
-    outputSource: samtools_index/index
+    outputSource: samtools_index/alignments_with_index
+  - id: metabat_coverage
+    type: File
+    outputSource: metabat_jgi/output
 
 steps:
   - id: bwa_index
@@ -72,30 +75,23 @@ steps:
   - id: samtools_index
     run: ./samtools-index.cwl
     in:
-      - id: input
+      - id: alignments
         source: samtools_sort/sorted
     out:
-      - id: index
-#
-#  - id: metabat_jgi
-#    run: ./metabat-jgi-summarise.cwl
-#    in:
-#      - id: input
-#        source: samtools_index/index
-#      - id: outputDepth
-#        default: "coverage.tab"
-#    out:
-#      - id: output
+      - id: alignments_with_index
+
+  - id: metabat_jgi
+    run: ./metabat-jgi-summarise.cwl
+    in:
+      - id: input
+        source: samtools_index/alignments_with_index
+      - id: outputDepth
+        default: "coverage.tab"
+    out:
+      - id: output
 
 
 
-
-
-
-
-# TODO finish samtools index
-# TODO finish metabat coverage depth
-# TODO write a nice UI for output?
 $namespaces:
  edam: http://edamontology.org/
  s: http://schema.org/
