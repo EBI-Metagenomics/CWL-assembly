@@ -1,0 +1,11 @@
+#!/usr/bin/env cwltool
+cwl:tool: coverage.cwl
+sequences:
+  path: /Users/mdb/work/CWL_assembly_pipeline/cwl-megahit-final/final.contigs.fa
+  class: File
+
+reads:
+  - class: File
+    path: /Users/mdb/work/CWL_assembly_pipeline/metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz
+  - class: File
+    path: /Users/mdb/work/CWL_assembly_pipeline/metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz

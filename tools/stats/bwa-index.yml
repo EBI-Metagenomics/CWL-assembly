@@ -1,0 +1,5 @@
+#!/usr/bin/env cwltool
+cwl:tool: coverage.cwl
+sequences:
+  path: /Users/mdb/work/CWL_assembly_pipeline/cwl-megahit-final/final.contigs.fa
+  class: File
