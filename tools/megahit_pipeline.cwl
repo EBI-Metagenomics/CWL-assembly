@@ -1,14 +1,21 @@
+#!/usr/bin/env cwl-runner
 class: Workflow
 cwlVersion: v1.0
 
 requirements:
   SubworkflowFeatureRequirement: {}
   MultipleInputFeatureRequirement: {}
+  InlineJavascriptRequirement: {}
+  StepInputExpressionRequirement: {}
 
 inputs:
   forward_reads:
-    type: File
+    type: File?
   reverse_reads:
+    type: File?
+  interleaved_reads:
+    type: File?
+  contigs:
     type: File
   base_count:
     type: int
@@ -22,16 +29,10 @@ inputs:
 
 outputs:
   assembly:
-    outputSource: metaspades/contigs
+    outputSource: megahit/contigs
     type: File
   assembly_log:
-    outputSource: metaspades/log
-    type: File
-  assembly_params:
-    outputSource: metaspades/params
-    type: File
-  assembly_scaffolds:
-    outputSource: metaspades/scaffolds
+    outputSource: megahit/log
     type: File
   samtools_index:
     outputSource: stats_report/samtools_index_output
@@ -44,31 +45,26 @@ outputs:
     type: File
 
 steps:
-  metaspades:
+  megahit:
     in:
       forward_reads:
         source: forward_reads
       reverse_reads:
         source: reverse_reads
+      interleaved_reads:
+        source: interleaved_reads
     out:
-      - assembly_graph
       - contigs
-      - contigs_assembly_graph
-      - contigs_before_rr
-      - internal_config
-      - internal_dataset
       - log
-      - params
-      - scaffolds
-      - scaffolds_assembly_graph
-    run: assembly/metaspades.cwl
-    label: 'metaSPAdes: de novo metagenomics assembler'
+    run: assembly/megahit.cwl
+    label: 'megaHit: metagenomics assembler'
   stats_report:
     in:
       sequences:
-        source: metaspades/contigs
+        source: megahit/contigs
       reads:
-        source: [forward_reads, reverse_reads]
+        source: [forward_reads, reverse_reads, interleaved_reads]
+        valueFrom: $(self.filter(Boolean))
       base_count:
         source: base_count
       output_dest:
@@ -96,3 +92,5 @@ $namespaces:
 
 's:copyrightHolder': EMBL - European Bioinformatics Institute
 's:license': 'https://www.apache.org/licenses/LICENSE-2.0'
+
+# export TMP=$PWD/tmp cwltoil --user-space-docker-cmd=udocker --debug --outdir $PWD/out --logFile $PWD/log  --workDir $PWD/tmp_toil --retryCount 0 pipeline.cwl pipeline.yml

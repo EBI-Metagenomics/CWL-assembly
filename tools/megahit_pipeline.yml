@@ -1,11 +1,12 @@
 #!/usr/bin/env cwltool
-cwl:tool: pipeline.cwl
-run_id: ERR866589
-forward_reads:
-  path: ../metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz
+cwl:tool: metaspades_pipeline.cwl
+run_id: SRR6257420
+contigs:
+  path: out/final.contigs.fa
   class: File
-reverse_reads:
-  path: ../metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
+
+interleaved_reads:
+  path: ../metaspades_test_data/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
   class: File
 
 #cwltool:overrides:
