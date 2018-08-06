@@ -1,0 +1,8 @@
+src:
+  class: File
+  path: coverage_calculation/coverage_report.py
+base_count: 400
+coverage_file:
+  class: File
+  path: "/Users/mdb/work/CWL_assembly_pipeline/tools/stats/out/coverage.tab"
+output: "out.json"

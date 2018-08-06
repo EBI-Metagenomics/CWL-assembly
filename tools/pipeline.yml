@@ -1,0 +1,25 @@
+#!/usr/bin/env cwltool
+cwl:tool: pipeline.cwl
+run_id: ERR866589
+forward_reads:
+  path: /Users/mdb/work/CWL_assembly_pipeline/metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz
+  class: File
+reverse_reads:
+  path: /Users/mdb/work/CWL_assembly_pipeline/metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
+  class: File
+
+cwltool:overrides:
+  pipeline.cwl:
+    requirements:
+      ResourceRequirement:
+        ramMin: 5
+        coresMin: 3
+        outdir: /Users/mdb/work/CWL_assembly_pipeline/cwl-tmp
+        tmpdir: /Users/mdb/work/CWL_assembly_pipeline/cwl-tmp
+
+base_count: 400
+output_dest: "out.json"
+
+coverage_report_src:
+  class: File
+  path: stats/coverage_calculation/coverage_report.py

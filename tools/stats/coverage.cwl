@@ -7,6 +7,14 @@ inputs:
     type: File
   - id: reads
     type: File[]
+  - id: base_count
+    type: int
+  - id: output_dest
+    type: string
+  - id: coverage_report_src
+    type: File?
+    default: coverage_calculation/coverage_report.py
+
 
 outputs:
   - id: bwa_index
@@ -27,6 +35,9 @@ outputs:
   - id: metabat_coverage
     type: File
     outputSource: metabat_jgi/output
+  - id: logfile
+    type: File
+    outputSource: coverage_report/logfile
 
 steps:
   - id: bwa_index
@@ -89,6 +100,19 @@ steps:
         default: "coverage.tab"
     out:
       - id: output
+  - id: coverage_report
+    run: ./coverage-report.cwl
+    in:
+      - id: base_count
+        source: base_count
+      - id: src
+        source: coverage_report_src
+      - id: output
+        source: output_dest
+      - id: coverage_file
+        source: metabat_jgi/output
+    out:
+      - id: logfile
 
 
 
