@@ -2,9 +2,6 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-$namespaces:
-  sbg: 'https://www.sevenbridges.com'
-
 requirements:
   DockerRequirement:
     dockerPull: quay.io/biocontainers/bwa:0.7.17--ha92aebf_3
@@ -13,6 +10,10 @@ requirements:
 #TODO: Enable after this issue is fixed: https://github.com/common-workflow-language/cwltool/issues/80
 #hints:
 #  - $import: bwa-docker.yml
+
+baseCommand:
+- bwa
+- index
 
 inputs:
   algorithm:
@@ -46,9 +47,8 @@ outputs:
     outputBinding:
       glob: $(inputs.sequences.basename)
 
-baseCommand:
-- bwa
-- index
+$namespaces:
+  sbg: 'https://www.sevenbridges.com'
 
 doc: |
   Usage:   bwa index [options] <in.fasta>

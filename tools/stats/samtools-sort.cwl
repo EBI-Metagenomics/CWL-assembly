@@ -2,13 +2,12 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-$namespaces:
-  s: http://schema.org/
-
 requirements:
   DockerRequirement:
     dockerPull: quay.io/biocontainers/samtools:1.9--h46bd0b3_0
   InlineJavascriptRequirement: {}
+
+baseCommand: [samtools, sort]
 
 inputs:
   compression_level:
@@ -53,10 +52,11 @@ outputs:
     outputBinding:
       glob: $(inputs.output_name)
 
-baseCommand: [samtools, sort]
-
 $schemas:
 - http://schema.org/docs/schema_org_rdfa.html
+
+$namespaces:
+  s: http://schema.org/
 
 s:downloadUrl: https://github.com/common-workflow-language/workflows/blob/master/tools/samtools-sort.cwl
 s:codeRepository: https://github.com/common-workflow-language/workflows

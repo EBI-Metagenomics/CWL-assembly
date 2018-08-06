@@ -8,6 +8,9 @@ requirements:
     dockerPull: metabat/metabat:latest
   InlineJavascriptRequirement: {}
 
+baseCommand:
+- jgi_summarize_bam_contig_depths
+
 inputs:
   input:
     type: File
@@ -132,9 +135,6 @@ outputs:
     type: File
     outputBinding:
       glob: $(inputs.outputDepth)
-
-baseCommand:
-- jgi_summarize_bam_contig_depths
 
 doc: |
   Usage: jgi_summarize_bam_contig_depths <options> sortedBam1 [ sortedBam2 ...]

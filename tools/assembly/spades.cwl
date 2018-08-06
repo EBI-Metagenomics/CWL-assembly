@@ -1,20 +1,9 @@
+#!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
 
-$namespaces:
- edam: http://edamontology.org/
- iana: https://www.iana.org/assignments/media-types/
- s: http://schema.org/
-$schemas:
- - http://edamontology.org/EDAM_1.16.owl
- - https://schema.org/docs/schema_org_rdfa.html
-
 
 label: "spades: de novo genomic assembler"
-
-doc: |
-  https://arxiv.org/abs/1604.03071
-  http://cab.spbu.ru/files/release3.12.0/manual.html#meta
 
 requirements:
   DockerRequirement:
@@ -31,7 +20,17 @@ hints:
         specs: [ "https://identifiers.org/rrid/RRID:SCR_000131" ]
         version: [ "3.12.0" ]
 
+baseCommand: [ spades.py ]
 
+arguments:
+  - valueFrom: $(runtime.outdir)
+    prefix: -o
+#  - valueFrom: $(runtime.tmpdir)
+#    prefix: --tmp-dir
+  - valueFrom: $(runtime.ram)
+    prefix: --memory
+  - valueFrom: $(runtime.cores)
+    prefix: --threads
 
 inputs:
   forward_reads:
@@ -49,19 +48,6 @@ inputs:
 #     format: edam:format_1930  # FASTQ
     inputBinding:
       prefix: "-s"
-
-
-baseCommand: [ spades.py ]
-
-arguments:
-  - valueFrom: $(runtime.outdir)
-    prefix: -o
-#  - valueFrom: $(runtime.tmpdir)
-#    prefix: --tmp-dir
-  - valueFrom: $(runtime.ram)
-    prefix: --memory
-  - valueFrom: $(runtime.cores)
-    prefix: --threads
 
 outputs:
   contigs:
@@ -131,5 +117,17 @@ outputs:
     outputBinding:
       glob: input_dataset.yaml
 
+$namespaces:
+ edam: http://edamontology.org/
+ iana: https://www.iana.org/assignments/media-types/
+ s: http://schema.org/
+$schemas:
+ - http://edamontology.org/EDAM_1.16.owl
+ - https://schema.org/docs/schema_org_rdfa.html
+
 s:license: "https://www.apache.org/licenses/LICENSE-2.0"
 s:copyrightHolder: "EMBL - European Bioinformatics Institute"
+
+doc: |
+  https://arxiv.org/abs/1604.03071
+  http://cab.spbu.ru/files/release3.12.0/manual.html#meta

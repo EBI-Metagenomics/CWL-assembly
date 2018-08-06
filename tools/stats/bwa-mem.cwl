@@ -3,13 +3,14 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-$namespaces:
-  sbg: 'https://www.sevenbridges.com'
-
 requirements:
   DockerRequirement:
     dockerPull: 'quay.io/biocontainers/bwa:0.7.17--ha92aebf_3'
   InlineJavascriptRequirement: {}
+
+baseCommand:
+  - bwa
+  - mem
 
 inputs:
   min_std_max_min:
@@ -53,9 +54,8 @@ outputs:
     outputBinding:
       glob: $(inputs.output_filename)
 
-baseCommand:
-  - bwa
-  - mem
+$namespaces:
+  sbg: 'https://www.sevenbridges.com'
 
 doc: >
   Usage: bwa mem [options] <idxbase> <in1.fq> [in2.fq]

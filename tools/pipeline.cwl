@@ -1,9 +1,9 @@
 class: Workflow
 cwlVersion: v1.0
-$namespaces:
-  edam: 'http://edamontology.org/'
-  iana: 'https://www.iana.org/assignments/media-types/'
-  s: 'http://schema.org/'
+
+requirements:
+  SubworkflowFeatureRequirement: {}
+  MultipleInputFeatureRequirement: {}
 
 inputs:
   forward_reads:
@@ -85,11 +85,14 @@ steps:
       - logfile
     run: stats/coverage.cwl
 
-requirements:
-  - class: SubworkflowFeatureRequirement
-  - class: MultipleInputFeatureRequirement
 $schemas:
   - 'http://edamontology.org/EDAM_1.16.owl'
   - 'https://schema.org/docs/schema_org_rdfa.html'
+
+$namespaces:
+  edam: 'http://edamontology.org/'
+  iana: 'https://www.iana.org/assignments/media-types/'
+  s: 'http://schema.org/'
+
 's:copyrightHolder': EMBL - European Bioinformatics Institute
 's:license': 'https://www.apache.org/licenses/LICENSE-2.0'

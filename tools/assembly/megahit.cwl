@@ -1,19 +1,19 @@
+#!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
-
-$namespaces:
- edam: http://edamontology.org/
- iana: https://www.iana.org/assignments/media-types/
- s: http://schema.org/
-$schemas:
- - http://edamontology.org/EDAM_1.16.owl
- - https://schema.org/docs/schema_org_rdfa.html
 
 # For Megahit version 1.1.3
 label: "megahit: metagenomics assembler"
 
 doc : |
   https://github.com/voutcn/megahit/wiki
+
+hints:
+  SoftwareRequirement:
+    packages:
+      spades:
+        specs: [ "https://identifiers.org/rrid/RRID:SCR_000131" ]
+        version: [ "3.12.0" ]
 
 requirements:
   DockerRequirement:
@@ -23,14 +23,15 @@ requirements:
     ramMin: 250
     coresMax: 1
 
-hints:
-  SoftwareRequirement:
-    packages:
-      spades:
-        specs: [ "https://identifiers.org/rrid/RRID:SCR_000131" ]
-        version: [ "3.12.0" ]
-
 baseCommand: megahit
+
+arguments:
+#  - valueFrom: $(runtime.tmpdir)
+#    prefix: --tmp-dir
+  - valueFrom: $(runtime.ram * 10**9) # GB to B conversion
+    prefix: --memory
+  - valueFrom: $(runtime.cores)
+    prefix: --num-cpu-threads
 
 inputs:
   #  INPUT OPTIONS
@@ -211,14 +212,6 @@ inputs:
       position: 32
       prefix: "--verbose"
 
-arguments:
-#  - valueFrom: $(runtime.tmpdir)
-#    prefix: --tmp-dir
-  - valueFrom: $(runtime.ram * 10**9) # GB to B conversion
-    prefix: --memory
-  - valueFrom: $(runtime.cores)
-    prefix: --num-cpu-threads
-
 outputs:
   contigs:
     type: File
@@ -229,3 +222,10 @@ outputs:
     outputBinding:
       glob: $(inputs.o || "megahit_out")/log
 
+$namespaces:
+ edam: http://edamontology.org/
+ iana: https://www.iana.org/assignments/media-types/
+ s: http://schema.org/
+$schemas:
+ - http://edamontology.org/EDAM_1.16.owl
+ - https://schema.org/docs/schema_org_rdfa.html

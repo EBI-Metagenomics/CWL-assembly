@@ -6,6 +6,9 @@ requirements:
   DockerRequirement:
     dockerPull: python:3.6-slim
 
+baseCommand:
+  - python
+
 inputs:
   src:
     type: File
@@ -30,9 +33,6 @@ outputs:
     type: File
     outputBinding:
       glob: $(inputs.output)
-
-baseCommand:
-  - python
 
 doc: |
   usage: coverage_report.py [-h] output coverage_file base_count

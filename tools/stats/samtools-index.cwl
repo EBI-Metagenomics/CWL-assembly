@@ -9,6 +9,9 @@ requirements:
   InitialWorkDirRequirement:
     listing: [ $(inputs.alignments) ]
 
+baseCommand: [samtools, index, -b]
+
+
 inputs:
   alignments:
     type: File
@@ -16,8 +19,6 @@ inputs:
       position: 2
       valueFrom: $(self.basename)
     label: Input bam file.
-
-baseCommand: [samtools, index, -b]
 
 outputs:
   alignments_with_index:
