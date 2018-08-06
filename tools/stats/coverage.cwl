@@ -17,22 +17,22 @@ inputs:
 
 
 outputs:
-  - id: bwa_index
+  - id: bwa_index_output
     type: File
     outputSource: bwa_index/output
-  - id: bwa_mem
+  - id: bwa_mem_output
     type: File
     outputSource: bwa_mem/output
-  - id: samtools_view
+  - id: samtools_view_output
     type: File
     outputSource: samtools_view/output
-  - id: samtools_sort
+  - id: samtools_sort_output
     type: File
     outputSource: samtools_sort/sorted
-  - id: samtools_index
+  - id: samtools_index_output
     type: File
     outputSource: samtools_index/alignments_with_index
-  - id: metabat_coverage
+  - id: metabat_coverage_output
     type: File
     outputSource: metabat_jgi/output
   - id: logfile

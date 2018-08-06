@@ -35,11 +35,11 @@ outputs:
     type: File
   - id: samtools_index
     outputSource:
-      - stats_report/samtools_index
+      - stats_report/samtools_index_output
     type: File
   - id: coverage_tab
     outputSource:
-      - stats_report/metabat_coverage
+      - stats_report/metabat_coverage_output
     type: File
   - id: logfile
     outputSource:
@@ -80,12 +80,12 @@ steps:
       - id: coverage_report_src
         source: coverage_report_src
     out:
-      - id: bwa_index
-      - id: bwa_mem
-      - id: samtools_view
-      - id: samtools_sort
-      - id: samtools_index
-      - id: metabat_coverage
+      - id: bwa_index_output
+      - id: bwa_mem_output
+      - id: samtools_view_output
+      - id: samtools_sort_output
+      - id: samtools_index_output
+      - id: metabat_coverage_output
       - id: logfile
     run: stats/coverage.cwl
 requirements:
