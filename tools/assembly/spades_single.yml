@@ -2,7 +2,7 @@
 cwl:tool: spades.cwl
 run_id: ERR866589
 unpaired_reads:
-  path: /Users/mdb/work/CWL_assembly_pipeline/metaspades_test_data/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
+  path: ../../metaspades_test_data/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
   class: File
 
 cwltool:overrides:
@@ -11,8 +11,8 @@ cwltool:overrides:
       ResourceRequirement:
         ramMin: 5
         coresMin: 3
-        outdir: /Users/mdb/work/CWL_assembly_pipeline/cwl-tmp
-        tmpdir: /Users/mdb/work/CWL_assembly_pipeline/cwl-tmp
+        outdir: ../../cwl-tmp
+        tmpdir: ../../cwl-tmp
 
 
 # cwltool --move-outputs --tmpdir cwl-spades-tmp --outdir cwl-spades-final tools/spades.cwl tools/spades_single.yml

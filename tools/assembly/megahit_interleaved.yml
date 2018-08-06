@@ -3,7 +3,7 @@ cwl:tool: metaspades.cwl
 run_id: ERR866589
 
 interleaved_reads:
-  path: /Users/mdb/work/CWL_assembly_pipeline/metaspades_test_data/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
+  path: ../../metaspades_test_data/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
   class: File
 
 cwltool:overrides:
@@ -12,8 +12,8 @@ cwltool:overrides:
       ResourceRequirement:
         ramMin: 5
         coresMin: 3
-        outdir: /Users/mdb/work/CWL_assembly_pipeline/cwl-final
-        tmpdir: /Users/mdb/work/CWL_assembly_pipeline/cwl-tmp
+        outdir: ../../cwl-final
+        tmpdir: ../../cwl-tmp
 
 
 # cwltool --move-outputs --outdir cwl-megahit-final tools/megahit.cwl tools/megahit_interleaved.yml

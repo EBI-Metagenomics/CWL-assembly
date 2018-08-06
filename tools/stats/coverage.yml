@@ -1,14 +1,14 @@
 #!/usr/bin/env cwltool
 cwl:tool: coverage.cwl
 sequences:
-  path: /Users/mdb/work/CWL_assembly_pipeline/cwl-megahit-final/final.contigs.fa
+  path: ../../cwl-megahit-final/final.contigs.fa
   class: File
 
 reads:
   - class: File
-    path: /Users/mdb/work/CWL_assembly_pipeline/metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz
+    path: ../../metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz
   - class: File
-    path: /Users/mdb/work/CWL_assembly_pipeline/metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
+    path: ../../metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
 
 base_count: 400
 output_dest: "out.json"
@@ -16,3 +16,4 @@ output_dest: "out.json"
 coverage_report_src:
   class: File
   path: coverage_calculation/coverage_report.py
+  
