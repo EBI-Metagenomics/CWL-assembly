@@ -6,9 +6,9 @@ $namespaces:
   sbg: 'https://www.sevenbridges.com'
 
 requirements:
-  - class: DockerRequirement
+  DockerRequirement:
     dockerPull: quay.io/biocontainers/samtools:1.9--h46bd0b3_0
-  - class: InlineJavascriptRequirement
+  InlineJavascriptRequirement: {}
 
 inputs:
   - id: bedoverlap

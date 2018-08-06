@@ -3,118 +3,115 @@ cwlVersion: v1.0
 class: Workflow
 
 inputs:
-  - id: sequences
+  sequences:
     type: File
-  - id: reads
+  reads:
     type: File[]
-  - id: base_count
+  base_count:
     type: int
-  - id: output_dest
+  output_dest:
     type: string
-  - id: coverage_report_src
-    type: File?
-    default: coverage_calculation/coverage_report.py
+  coverage_report_src:
+    type: File
 
 
 outputs:
-  - id: bwa_index_output
+  bwa_index_output:
     type: File
     outputSource: bwa_index/output
-  - id: bwa_mem_output
+  bwa_mem_output:
     type: File
     outputSource: bwa_mem/output
-  - id: samtools_view_output
+  samtools_view_output:
     type: File
     outputSource: samtools_view/output
-  - id: samtools_sort_output
+  samtools_sort_output:
     type: File
     outputSource: samtools_sort/sorted
-  - id: samtools_index_output
+  samtools_index_output:
     type: File
     outputSource: samtools_index/alignments_with_index
-  - id: metabat_coverage_output
+  metabat_coverage_output:
     type: File
     outputSource: metabat_jgi/output
-  - id: logfile
+  logfile:
     type: File
     outputSource: coverage_report/logfile
 
 steps:
-  - id: bwa_index
+  bwa_index:
     run: ./bwa-index.cwl
     in:
-      - id: sequences
+      sequences:
         source: sequences
     out:
-      - id: output
+      - output
 
-  - id: bwa_mem
+  bwa_mem:
     run: ./bwa-mem.cwl
     in:
-      - id: reads
+      reads:
         source:
           - reads
-      - id: reference
+      reference:
         source: bwa_index/output
     out:
-      - id: output
+      - output
 
-  - id: samtools_view
+  samtools_view:
     run: ./samtools-view.cwl
     in:
-      - id: input
+      input:
         source: bwa_mem/output
-      - id: uncompressed
+      uncompressed:
         default: true
-      - id: unselected_output_reads
+      unselected_output_reads:
         default: true
-      - id: output_name
+      output_name:
         default: "unsorted.bam"
     out:
-      - id: output
+      - output
 
-  - id: samtools_sort
+  samtools_sort:
     run: ./samtools-sort.cwl
     in:
-      - id: input
+      input:
         source: samtools_view/output
-      - id: output_name
+      output_name:
         default: "sorted.bam"
     out:
-      - id: sorted
+      - sorted
 
-  - id: samtools_index
+  samtools_index:
     run: ./samtools-index.cwl
     in:
-      - id: alignments
+      alignments:
         source: samtools_sort/sorted
     out:
-      - id: alignments_with_index
+      - alignments_with_index
 
-  - id: metabat_jgi
+  metabat_jgi:
     run: ./metabat-jgi-summarise.cwl
     in:
-      - id: input
+      input:
         source: samtools_index/alignments_with_index
-      - id: outputDepth
+      outputDepth:
         default: "coverage.tab"
     out:
-      - id: output
-  - id: coverage_report
+      - output
+  coverage_report:
     run: ./coverage-report.cwl
     in:
-      - id: base_count
+      base_count:
         source: base_count
-      - id: src
+      src:
         source: coverage_report_src
-      - id: output
-        source: output_dest
-      - id: coverage_file
+      output:
+        default: "output.json"
+      coverage_file:
         source: metabat_jgi/output
     out:
-      - id: logfile
-
-
+      - logfile
 
 $namespaces:
  edam: http://edamontology.org/

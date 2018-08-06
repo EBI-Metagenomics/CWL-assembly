@@ -8,14 +8,12 @@ reverse_reads:
   path: /Users/mdb/work/CWL_assembly_pipeline/metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
   class: File
 
-cwltool:overrides:
-  pipeline.cwl:
-    requirements:
-      ResourceRequirement:
-        ramMin: 5
-        coresMin: 3
-        outdir: /Users/mdb/work/CWL_assembly_pipeline/cwl-tmp
-        tmpdir: /Users/mdb/work/CWL_assembly_pipeline/cwl-tmp
+#cwltool:overrides:
+#  pipeline.cwl:
+#    requirements:
+#      ResourceRequirement:
+#        ramMin: 5
+#        coresMin: 3
 
 base_count: 400
 output_dest: "out.json"

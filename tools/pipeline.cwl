@@ -4,90 +4,87 @@ $namespaces:
   edam: 'http://edamontology.org/'
   iana: 'https://www.iana.org/assignments/media-types/'
   s: 'http://schema.org/'
+
 inputs:
-  - id: forward_reads
+  forward_reads:
     type: File
-  - id: reverse_reads
+  reverse_reads:
     type: File
-  - id: base_count
+  base_count:
     type: int
-  - id: output_dest
+  output_dest:
     type: string
-  - id: coverage_report_src
-    type: File?
-    default: stats/coverage_calculation/coverage_report.py
+  coverage_report_src:
+    type: File
+    default:
+      - class: File
+        path: stats/coverage_calculation/coverage_report.py
+
 outputs:
-  - id: assembly
-    outputSource:
-      - metaspades/contigs
+  assembly:
+    outputSource: metaspades/contigs
     type: File
-  - id: assembly_log
-    outputSource:
-      - metaspades/log
+  assembly_log:
+    outputSource: metaspades/log
     type: File
-  - id: assembly_params
-    outputSource:
-      - metaspades/params
+  assembly_params:
+    outputSource: metaspades/params
     type: File
-  - id: assembly_scaffolds
-    outputSource:
-      - metaspades/scaffolds
+  assembly_scaffolds:
+    outputSource: metaspades/scaffolds
     type: File
-  - id: samtools_index
-    outputSource:
-      - stats_report/samtools_index_output
+  samtools_index:
+    outputSource: stats_report/samtools_index_output
     type: File
-  - id: coverage_tab
-    outputSource:
-      - stats_report/metabat_coverage_output
+  coverage_tab:
+    outputSource: stats_report/metabat_coverage_output
     type: File
-  - id: logfile
-    outputSource:
-      - stats_report/logfile
+  logfile:
+    outputSource: stats_report/logfile
     type: File
+
 steps:
-  - id: metaspades
+  metaspades:
     in:
-      - id: forward_reads
+      forward_reads:
         source: forward_reads
-      - id: reverse_reads
+      reverse_reads:
         source: reverse_reads
     out:
-      - id: assembly_graph
-      - id: contigs
-      - id: contigs_assembly_graph
-      - id: contigs_before_rr
-      - id: internal_config
-      - id: internal_dataset
-      - id: log
-      - id: params
-      - id: scaffolds
-      - id: scaffolds_assembly_graph
+      - assembly_graph
+      - contigs
+      - contigs_assembly_graph
+      - contigs_before_rr
+      - internal_config
+      - internal_dataset
+      - log
+      - params
+      - scaffolds
+      - scaffolds_assembly_graph
     run: assembly/metaspades.cwl
     label: 'metaSPAdes: de novo metagenomics assembler'
-  - id: stats_report
+  stats_report:
     in:
-      - id: sequences
+      sequences:
         source: metaspades/contigs
-      - id: reads
-        source:
-          - forward_reads
-          - reverse_reads
-      - id: base_count
+      reads:
+        source: [forward_reads, reverse_reads]
+      base_count:
         source: base_count
-      - id: output_dest
+      output_dest:
         source: output_dest
-      - id: coverage_report_src
+      coverage_report_src:
         source: coverage_report_src
     out:
-      - id: bwa_index_output
-      - id: bwa_mem_output
-      - id: samtools_view_output
-      - id: samtools_sort_output
-      - id: samtools_index_output
-      - id: metabat_coverage_output
-      - id: logfile
+      - bwa_index_output
+      - bwa_mem_output
+      - samtools_view_output
+      - samtools_sort_output
+      - samtools_index_output
+      - metabat_coverage_output
+      - logfile
     run: stats/coverage.cwl
+
 requirements:
   - class: SubworkflowFeatureRequirement
   - class: MultipleInputFeatureRequirement

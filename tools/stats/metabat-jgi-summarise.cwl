@@ -4,9 +4,9 @@ cwlVersion: v1.0
 class: CommandLineTool
 
 requirements:
-  - class: DockerRequirement
+  DockerRequirement:
     dockerPull: metabat/metabat:latest
-  - class: InlineJavascriptRequirement
+  InlineJavascriptRequirement: {}
 
 inputs:
   input:

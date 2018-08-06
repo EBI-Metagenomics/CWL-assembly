@@ -7,31 +7,31 @@ $namespaces:
   sbg: 'https://www.sevenbridges.com'
 
 requirements:
-  - class: DockerRequirement
+  DockerRequirement:
     dockerPull: 'quay.io/biocontainers/bwa:0.7.17--ha92aebf_3'
-  - class: InlineJavascriptRequirement
+  InlineJavascriptRequirement: {}
 
 inputs:
-  - id: min_std_max_min
+  min_std_max_min:
     type: 'int[]?'
     inputBinding:
       position: 1
       prefix: '-I'
       itemSeparator: ','
-  - id: minimum_seed_length
+  minimum_seed_length:
     type: int?
     inputBinding:
       position: 1
       prefix: '-k'
     doc: '-k INT        minimum seed length [19]'
-  - id: output_filename
+  output_filename:
     type: string?
     default: 'aln-se.sam'
-  - id: reads
+  reads:
     type: File[]
     inputBinding:
       position: 3
-  - id: reference
+  reference:
     type: File
     inputBinding:
       position: 2
@@ -41,14 +41,14 @@ inputs:
       - .bwt
       - .pac
       - .sa
-  - id: threads
+  threads:
     type: int?
     inputBinding:
       position: 1
       prefix: '-t'
     doc: '-t INT        number of threads [1]'
 outputs:
-  - id: output
+  output:
     type: File
     outputBinding:
       glob: $(inputs.output_filename)

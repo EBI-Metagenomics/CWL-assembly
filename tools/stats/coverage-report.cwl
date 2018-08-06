@@ -3,7 +3,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 
 requirements:
-  - class: DockerRequirement
+  DockerRequirement:
     dockerPull: python:3.6-slim
 
 inputs:

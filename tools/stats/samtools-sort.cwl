@@ -6,9 +6,9 @@ $namespaces:
   s: http://schema.org/
 
 requirements:
-  - class: DockerRequirement
+  DockerRequirement:
     dockerPull: quay.io/biocontainers/samtools:1.9--h46bd0b3_0
-  - class: InlineJavascriptRequirement
+  InlineJavascriptRequirement: {}
 
 inputs:
   compression_level:
