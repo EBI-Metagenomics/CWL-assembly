@@ -20,15 +20,15 @@ requirements:
     dockerPull: "quay.io/biocontainers/megahit:1.1.3--py36_0"
   InlineJavascriptRequirement: {}
   ResourceRequirement:
-    ramMin: 250
-    coresMax: 1
+    ramMin: 2048
+    coresMin: 1
 
 baseCommand: megahit
 
 arguments:
 #  - valueFrom: $(runtime.tmpdir)
 #    prefix: --tmp-dir
-  - valueFrom: $(runtime.ram * 10**9) # GB to B conversion
+  - valueFrom: $(runtime.ram * 1000000000) # GB to B conversion
     prefix: --memory
   - valueFrom: $(runtime.cores)
     prefix: --num-cpu-threads
@@ -215,10 +215,12 @@ inputs:
 outputs:
   contigs:
     type: File
+    format: edam:format_1929  # FASTA
     outputBinding:
       glob: $(inputs.o || "megahit_out")/final.contigs.fa
   log:
     type: File
+    format: iana:text/plain
     outputBinding:
       glob: $(inputs.o || "megahit_out")/log
 

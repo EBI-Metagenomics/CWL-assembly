@@ -2,16 +2,7 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-
-label: "spades: de novo genomic assembler"
-
-requirements:
-  DockerRequirement:
-    dockerPull: "quay.io/biocontainers/spades:3.12.0--1"
-  InlineJavascriptRequirement: {}
-  ResourceRequirement:
-    ramMin: 250
-    coresMax: 1
+label: "metaSPAdes: de novo metagenomics assembler"
 
 hints:
   SoftwareRequirement:
@@ -20,7 +11,15 @@ hints:
         specs: [ "https://identifiers.org/rrid/RRID:SCR_000131" ]
         version: [ "3.12.0" ]
 
-baseCommand: [ spades.py ]
+requirements:
+  DockerRequirement:
+    dockerPull: "quay.io/biocontainers/spades:3.12.0--1"
+  InlineJavascriptRequirement: {}
+  ResourceRequirement:
+    ramMin: 2048
+    coresMin: 1
+
+baseCommand: [ metaspades.py ]
 
 arguments:
   - valueFrom: $(runtime.outdir)
@@ -49,7 +48,12 @@ inputs:
     inputBinding:
       prefix: "-s"
 
+stdout: stdout.txt
+stderr: stderr.txt
+
 outputs:
+  stdout: stdout
+  stderr: stderr
   contigs:
     type: File
     format: edam:format_1929  # FASTA
@@ -117,6 +121,9 @@ outputs:
     outputBinding:
       glob: input_dataset.yaml
 
+s:license: "https://www.apache.org/licenses/LICENSE-2.0"
+s:copyrightHolder: "EMBL - European Bioinformatics Institute"
+
 $namespaces:
  edam: http://edamontology.org/
  iana: https://www.iana.org/assignments/media-types/
@@ -124,9 +131,6 @@ $namespaces:
 $schemas:
  - http://edamontology.org/EDAM_1.16.owl
  - https://schema.org/docs/schema_org_rdfa.html
-
-s:license: "https://www.apache.org/licenses/LICENSE-2.0"
-s:copyrightHolder: "EMBL - European Bioinformatics Institute"
 
 doc: |
   https://arxiv.org/abs/1604.03071

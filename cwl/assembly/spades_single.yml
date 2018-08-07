@@ -10,10 +10,8 @@ cwltool:overrides:
     requirements:
       ResourceRequirement:
         ramMin: 5
-        coresMin: 3
-        outdir: ../../cwl-tmp
-        tmpdir: ../../cwl-tmp
+        coresMin: 1
 
 
-# cwltool --move-outputs --tmpdir cwl-spades-tmp --outdir cwl-spades-final tools/spades.cwl tools/spades_single.yml
+# cwltool --move-outputs --tmpdir cwl-spades-tmp --outdir cwl-spades-final cwl/spades.cwl cwl/spades_single.yml
 

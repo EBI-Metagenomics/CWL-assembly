@@ -11,9 +11,7 @@ cwltool:overrides:
     requirements:
       ResourceRequirement:
         ramMin: 5
-        coresMin: 3
-        outdir: ../../cwl-final
-        tmpdir: ../../cwl-tmp
+        coresMin: 1
 
 
-# cwltool --move-outputs --outdir cwl-megahit-final tools/megahit.cwl tools/megahit_interleaved.yml
+# cwltool --move-outputs --outdir cwl-megahit-final cwl/megahit.cwl cwl/megahit_interleaved.yml
