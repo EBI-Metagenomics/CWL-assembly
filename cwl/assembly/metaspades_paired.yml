@@ -8,12 +8,12 @@ reverse_reads:
   path: ../../metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
   class: File
 
-#cwltool:overrides:
-#  metaspades_pipeline.cwl:
-#    requirements:
-#      ResourceRequirement:
-#        ramMin: 5
-#        coresMin: 3
+cwltool:overrides:
+  metaspades.cwl:
+    requirements:
+      ResourceRequirement:
+        ramMin: 2048
+        coresMin: 1
 # Broken in cwltoil with batch system pending toil cwltool update
 
 # cwltool --move-outputs --tmpdir cwl-metaspades-tmp --outdir cwl-metaspades-final cwl/metaspades.cwl cwl/metaspades_paired.yml

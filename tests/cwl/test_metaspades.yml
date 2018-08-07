@@ -3,66 +3,85 @@
 - job: cwl/assembly/metaspades_paired.yml
   tool: cwl/assembly/metaspades.cwl
   output:
-    contigs:
-      format: http://edamontology.org/format_1929
-      checksum: sha1$0aca7caf45aec8e7ee064c86ce2945a340f5e5aa
-      basename: contigs.fasta
-      location: "contigs.fasta"
-      class: File
-      size: 793
-    internal_config:
-      checksum: sha1$b1de8b62cfe3755181af9bc441107215239a4f77
-      basename: dataset.info
-      location: "dataset.info"
-      class: File
-      size: 54
-    log:
-      format: https://www.iana.org/assignments/media-types/text/plain
-      basename: spades.log
-      location: "spades.log"
-      class: File
-      size: 99326
     assembly_graph:
-      checksum: sha1$6a0726b906c273e83f1c672440ae9c98931a9386
       basename: assembly_graph.fastg
-      location: "assembly_graph.fastg"
+      checksum: sha1$be77e05985e540ccb520d9ce5b92c9bbb1d14763
       class: File
-      size: 1748
-    contigs_before_rr:
+      location: assembly_graph.fastg
+      path: "assembly_graph.fastg"
+      size: 2122
+    contigs:
+      basename: contigs.fasta
+      checksum: sha1$0ad59f9a98f803eb4c12de2af019d7b9a02ea59b
+      class: File
       format: http://edamontology.org/format_1929
-      checksum: sha1$b4163df182999f91c20d8cd4864e8f1245185039
-      basename: before_rr.fasta
-      location: "before_rr.fasta"
-      class: File
-      size: 793
-    params:
-      format: https://www.iana.org/assignments/media-types/text/plain
-      basename: params.txt
-      location: "params.txt"
-      class: File
-      size: 1334
+      location: contigs.fasta
+      path: "contigs.fasta"
+      size: 943
     contigs_assembly_graph:
-      checksum: sha1$1c4b82d456eb97afd109b5ac70c20f0221746560
       basename: contigs.paths
-      location: "contigs.paths"
+      checksum: sha1$b9035537033ec2f453b24508371695eee6891abf
       class: File
-      size: 292
-    scaffolds_assembly_graph:
-      checksum: sha1$1c4b82d456eb97afd109b5ac70c20f0221746560
-      basename: scaffolds.paths
-      location: "scaffolds.paths"
+      location: contigs.paths
+      path: "contigs.paths"
+      size: 365
+    contigs_before_rr:
+      basename: before_rr.fasta
+      checksum: sha1$9ffdd038121f137f84b3d1beb605d8bb1d28171d
       class: File
-      size: 292
-    scaffolds:
       format: http://edamontology.org/format_1929
-      checksum: sha1$0aca7caf45aec8e7ee064c86ce2945a340f5e5aa
-      basename: scaffolds.fasta
-      location: "scaffolds.fasta"
+      location: before_rr.fasta
+      path: "before_rr.fasta"
+      size: 943
+    internal_config:
+      basename: dataset.info
       class: File
-      size: 793
+      location: dataset.info
+      path: "dataset.info"
     internal_dataset:
       basename: input_dataset.yaml
-      location: "input_dataset.yaml"
       class: File
+      location: input_dataset.yaml
+      path: "input_dataset.yaml"
       size: 254
-
+    log:
+      basename: spades.log
+      class: File
+      format: https://www.iana.org/assignments/media-types/text/plain
+      location: spades.log
+      path: "spades.log"
+      size: 99338
+    params:
+      basename: params.txt
+      class: File
+      format: https://www.iana.org/assignments/media-types/text/plain
+      location: params.txt
+      path: "params.txt"
+      size: 1340
+    scaffolds:
+      basename: scaffolds.fasta
+      checksum: sha1$0ad59f9a98f803eb4c12de2af019d7b9a02ea59b
+      class: File
+      format: http://edamontology.org/format_1929
+      location: scaffolds.fasta
+      path: "scaffolds.fasta"
+      size: 943
+    scaffolds_assembly_graph:
+      basename: scaffolds.paths
+      checksum: sha1$b9035537033ec2f453b24508371695eee6891abf
+      class: File
+      location: scaffolds.paths
+      path: "scaffolds.paths"
+      size: 365
+    stderr:
+      basename: stderr.txt
+      class: File
+      location: stderr.txt
+      path: "stderr.txt"
+      size: 0
+    stdout:
+      basename: stdout.txt
+      class: File
+      location: stdout.txt
+      path: "stdout.txt"
+      size: 99338
