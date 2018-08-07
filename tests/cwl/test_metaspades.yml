@@ -1,0 +1,68 @@
+# cwltest --basedir cwl_test_dir --test tests/cwl/test_metaspades.yml --tool cwltool
+
+- job: cwl/assembly/metaspades_paired.yml
+  tool: cwl/assembly/metaspades.cwl
+  output:
+    contigs:
+      format: http://edamontology.org/format_1929
+      checksum: sha1$0aca7caf45aec8e7ee064c86ce2945a340f5e5aa
+      basename: contigs.fasta
+      location: "contigs.fasta"
+      class: File
+      size: 793
+    internal_config:
+      checksum: sha1$b1de8b62cfe3755181af9bc441107215239a4f77
+      basename: dataset.info
+      location: "dataset.info"
+      class: File
+      size: 54
+    log:
+      format: https://www.iana.org/assignments/media-types/text/plain
+      basename: spades.log
+      location: "spades.log"
+      class: File
+      size: 99326
+    assembly_graph:
+      checksum: sha1$6a0726b906c273e83f1c672440ae9c98931a9386
+      basename: assembly_graph.fastg
+      location: "assembly_graph.fastg"
+      class: File
+      size: 1748
+    contigs_before_rr:
+      format: http://edamontology.org/format_1929
+      checksum: sha1$b4163df182999f91c20d8cd4864e8f1245185039
+      basename: before_rr.fasta
+      location: "before_rr.fasta"
+      class: File
+      size: 793
+    params:
+      format: https://www.iana.org/assignments/media-types/text/plain
+      basename: params.txt
+      location: "params.txt"
+      class: File
+      size: 1334
+    contigs_assembly_graph:
+      checksum: sha1$1c4b82d456eb97afd109b5ac70c20f0221746560
+      basename: contigs.paths
+      location: "contigs.paths"
+      class: File
+      size: 292
+    scaffolds_assembly_graph:
+      checksum: sha1$1c4b82d456eb97afd109b5ac70c20f0221746560
+      basename: scaffolds.paths
+      location: "scaffolds.paths"
+      class: File
+      size: 292
+    scaffolds:
+      format: http://edamontology.org/format_1929
+      checksum: sha1$0aca7caf45aec8e7ee064c86ce2945a340f5e5aa
+      basename: scaffolds.fasta
+      location: "scaffolds.fasta"
+      class: File
+      size: 793
+    internal_dataset:
+      basename: input_dataset.yaml
+      location: "input_dataset.yaml"
+      class: File
+      size: 254
+
