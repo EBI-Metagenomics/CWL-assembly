@@ -16,9 +16,8 @@ interleaved_reads:
 #        ramMin: 5
 #        coresMin: 3
 
-base_count: 400
 output_dest: "out.json"
 
 coverage_report_src:
   class: File
-  path: stats/coverage_calculation/coverage_report.py
+  path: stats/coverage_report/coverage_report.py

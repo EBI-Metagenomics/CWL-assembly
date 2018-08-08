@@ -17,15 +17,9 @@ inputs:
     type: File?
   contigs:
     type: File
-  base_count:
-    type: int
   output_dest:
     type: string
-  coverage_report_src:
-    type: File
-    default:
-      - class: File
-        path: stats/coverage_calculation/coverage_report.py
+    default: 'coverage_report.json'
 
 outputs:
   assembly:
@@ -65,12 +59,8 @@ steps:
       reads:
         source: [forward_reads, reverse_reads, interleaved_reads]
         valueFrom: $(self.filter(Boolean))
-      base_count:
-        source: base_count
       output_dest:
         source: output_dest
-      coverage_report_src:
-        source: coverage_report_src
     out:
       - bwa_index_output
       - bwa_mem_output
@@ -79,7 +69,7 @@ steps:
       - samtools_index_output
       - metabat_coverage_output
       - logfile
-    run: stats/coverage.cwl
+    run: stats/stats.cwl
 
 $schemas:
   - 'http://edamontology.org/EDAM_1.16.owl'
