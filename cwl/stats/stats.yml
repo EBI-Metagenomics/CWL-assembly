@@ -1,7 +1,7 @@
 #!/usr/bin/env cwltool
-cwl:tool: coverage.cwl
+cwl:tool: stats.cwl
 sequences:
-  path: ../../cwl-megahit-final/final.contigs.fa
+  path: ../../cwl-megahit-final/contigs.fasta
   class: File
 
 reads:
@@ -10,10 +10,4 @@ reads:
   - class: File
     path: ../../metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
 
-base_count: 400
 output_dest: "out.json"
-
-coverage_report_src:
-  class: File
-  path: coverage_calculation/coverage_report.py
-  

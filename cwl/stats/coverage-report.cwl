@@ -4,29 +4,30 @@ class: CommandLineTool
 
 requirements:
   DockerRequirement:
-    dockerPull: python:3.6-slim
+    dockerImageId: coverage_report
+    dockerFile:
+      $include: coverage_report/Dockerfile
+  InlineJavascriptRequirement: {}
 
-baseCommand:
-  - python
+baseCommand: ['python', '/coverage_report.py']
 
 inputs:
-  src:
-    type: File
-    default: coverage_calculation/coverage_report.py
-    inputBinding:
-      position: 1
   base_count:
     type: int
     inputBinding:
       position: 2
+  sequences:
+    type: File
+    intputBinding:
+      position: 3
   coverage_file:
     type: File
     inputBinding:
-      position: 3
+      position: 4
   output:
     type: string
     inputBinding:
-      position: 4
+      position: 5
 
 outputs:
   logfile:

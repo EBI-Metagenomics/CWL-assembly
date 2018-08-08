@@ -7,12 +7,8 @@ inputs:
     type: File
   reads:
     type: File[]
-  base_count:
-    type: int
   output_dest:
     type: string
-  coverage_report_src:
-    type: File
 
 
 outputs:
@@ -39,6 +35,13 @@ outputs:
     outputSource: coverage_report/logfile
 
 steps:
+  readfq:
+    run: ./readfq.cwl
+    in:
+      raw_reads:
+        source: reads
+    out:
+      - id: base_count
   bwa_index:
     run: ./bwa-index.cwl
     in:
@@ -102,14 +105,14 @@ steps:
   coverage_report:
     run: ./coverage-report.cwl
     in:
-      base_count:
-        source: base_count
-      src:
-        source: coverage_report_src
+      sequences:
+        source: sequences
       output:
         default: "output.json"
       coverage_file:
         source: metabat_jgi/output
+      base_count:
+        source: readfq/base_count
     out:
       - logfile
 

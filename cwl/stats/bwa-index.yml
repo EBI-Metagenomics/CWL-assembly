@@ -1,5 +1,5 @@
 #!/usr/bin/env cwltool
-cwl:tool: coverage.cwl
+cwl:tool: stats.cwl
 sequences:
   path: ../../cwl-megahit-final/final.contigs.fa
   class: File

@@ -1,12 +1,14 @@
 import argparse
 import json
 import sys
+import fasta_parser
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Script to calculate coverage from coverage.tab file and output report")
     parser.add_argument('base_count', type=int, help='Sum of base count for all input files')
+    parser.add_argument('sequences', type=argparse.FileType('r'), help='.fasta file')
     parser.add_argument('coverage_file', type=argparse.FileType('r'), help='Coverage.tab file')
     parser.add_argument('output', help='JSON Output file')
     return parser.parse_args()
@@ -27,12 +29,11 @@ def calc_coverage(args):
 
 def main(args):
     coverage = calc_coverage(args)
-    report = {"Stats output": {
-        "Base count": args.base_count,
-        "Coverage": coverage
-    }}
+    stats = fasta_parser.parse(args.sequences, 500)
+    stats['Base count'] = args.base_count
+    stats['Coverage'] = coverage
     with open(args.output, 'w') as output:
-        output.write(json.dumps(report, indent=4, sort_keys=True))
+        output.write(json.dumps(stats, indent=4, sort_keys=True))
     sys.exit(0)
 
 
