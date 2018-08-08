@@ -17,6 +17,7 @@ before_install:
   - mkdir "$TRAVIS_BUILD_DIR/coverage"
 
 install:
+  - pip3 install --upgrade setuptools
   - pip install -r requirements.txt
   - pip install -r requirements-test.txt
   - ./setup_env.sh

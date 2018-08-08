@@ -43,21 +43,18 @@
       class: File
       location: input_dataset.yaml
       path: "input_dataset.yaml"
-      size: 254
     log:
       basename: spades.log
       class: File
       format: https://www.iana.org/assignments/media-types/text/plain
       location: spades.log
       path: "spades.log"
-      size: 99338
     params:
       basename: params.txt
       class: File
       format: https://www.iana.org/assignments/media-types/text/plain
       location: params.txt
       path: "params.txt"
-      size: 1340
     scaffolds:
       basename: scaffolds.fasta
       checksum: sha1$0ad59f9a98f803eb4c12de2af019d7b9a02ea59b
@@ -84,4 +81,3 @@
       class: File
       location: stdout.txt
       path: "stdout.txt"
-      size: 99338
