@@ -23,6 +23,7 @@ install:
   - ./setup_env.sh
   - docker build -t readfq:latest $TRAVIS_BUILD_DIR/cwl/stats/readfq/
   - docker build -t coverage_report:latest $TRAVIS_BUILD_DIR/cwl/stats/coverage_report/
+  - docker build -t fasta_trimming:latest $TRAVIS_BUILD_DIR/cwl/stats/fasta_trimming/
 
 script:
   - pytest --cov=src --cov-report xml:$COVERAGE_FILE tests/
