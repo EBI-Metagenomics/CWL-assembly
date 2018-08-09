@@ -28,6 +28,10 @@ inputs:
     type: string
     inputBinding:
       position: 5
+  min_contig_length:
+    type: int
+    inputBinding:
+      position: 6
 
 outputs:
   logfile:

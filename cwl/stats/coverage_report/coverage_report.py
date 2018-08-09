@@ -11,6 +11,7 @@ def parse_args():
     parser.add_argument('sequences', type=argparse.FileType('r'), help='.fasta file')
     parser.add_argument('coverage_file', type=argparse.FileType('r'), help='Coverage.tab file')
     parser.add_argument('output', help='JSON Output file')
+    parser.add_argument('min_contig_length', type=int, help='Minimum contig length')
     return parser.parse_args()
 
 
@@ -29,7 +30,7 @@ def calc_coverage(args):
 
 def main(args):
     coverage = calc_coverage(args)
-    stats = fasta_parser.parse(args.sequences, 500)
+    stats = fasta_parser.parse(args.sequences, args.min_contig_length)
     stats['Base count'] = args.base_count
     stats['Coverage'] = coverage
     with open(args.output, 'w+') as output:
