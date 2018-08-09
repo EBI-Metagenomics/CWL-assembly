@@ -1,0 +1,23 @@
+#!/usr/bin/env cwltool
+cwl:tool: metaspades.cwl
+run_id: run_id_tmp
+
+unpaired_reads:
+  path: forward_reads_tmp
+  class: File
+
+coverage_report_src:
+  class: File
+  path: cwl/stats/coverage_report/coverage_report.py
+
+
+#cwltool:overrides:
+#  metaspades.cwl:
+#    requirements:
+#      ResourceRequirement:
+#        ramMin: ram_tmp
+#        coresMin: cores_tmp
+# TODO: Broken in cwltoil with batch system pending toil cwltool update
+
+# cwltool --move-outputs --tmpdir cwl-metaspades-tmp --outdir cwl-metaspades-final cwl/metaspades.cwl cwl/metaspades_paired.yml
+

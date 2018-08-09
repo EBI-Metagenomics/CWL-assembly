@@ -49,7 +49,12 @@ inputs:
     inputBinding:
       prefix: "-s"
 
+stdout: stdout.txt
+stderr: stderr.txt
+
 outputs:
+  stdout: stdout
+  stderr: stderr
   contigs:
     type: File
     format: edam:format_1929  # FASTA
@@ -61,11 +66,6 @@ outputs:
     format: edam:format_1929  # FASTA
     outputBinding:
       glob: scaffolds.fasta
-
-  #everything:
-  #  type: Directory
-  #  outputBinding:
-  #    glob: .
 
   assembly_graph:
     type: File

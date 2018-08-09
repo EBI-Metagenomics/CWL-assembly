@@ -1,0 +1,18 @@
+#!/usr/bin/env cwltool
+cwl:tool: spades.cwl
+run_id: ERR866589
+
+unpaired_reads:
+  path: ../../../../fixtures/ERP0128/ERP012806/raw/ERR1078287.fastq.gz
+  class: File
+
+cwltool:overrides:
+  spades.cwl:
+    requirements:
+      ResourceRequirement:
+        ramMin: 5
+        coresMin: 1
+
+
+# cwltool --move-outputs --tmpdir cwl-spades-tmp --outdir cwl-spades-final cwl/spades.cwl cwl/spades_single.yml
+

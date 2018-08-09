@@ -18,7 +18,7 @@ def is_valid_file(parser, arg):
 
 class Assembler(Enum):
     metaspades = 'metaspades'
-    # spades = 'spades'
+    spades = 'spades'
     megahit = 'megahit'
 
     def __str__(self):
@@ -27,11 +27,14 @@ class Assembler(Enum):
 
 job_template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, 'cwl', 'job_templates'))
 job_templates = {
-    'metaspades_paired': os.path.join(job_template_dir, 'metaspades_paired.yml')
+    'metaspades_paired': os.path.join(job_template_dir, 'metaspades_paired.yml'),
+    'spades_paired': os.path.join(job_template_dir, 'spades_paired.yml'),
+    'spades_single': os.path.join(job_template_dir, 'spades_single')
 }
 pipeline_workflows_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, 'cwl'))
 pipeline_workflows = {
-    Assembler.metaspades: os.path.join(pipeline_workflows_dir, 'metaspades_pipeline.cwl')
+    Assembler.metaspades: os.path.join(pipeline_workflows_dir, 'metaspades_pipeline.cwl'),
+    Assembler.spades: os.path.join(pipeline_workflows_dir, 'spades_pipeline.cwl')
 }
 
 TEMPLATE_NAME = 'job_config.yml'
@@ -79,8 +82,8 @@ class AssemblyJob:
             self.write_metaspades_job()
         elif self.assembler == Assembler.megahit:
             self.write_megahit_job()
-        # elif self.assembler == Assembler.spades:
-        #     self.write_spades_job()
+        elif self.assembler == Assembler.spades:
+            self.write_spades_job()
         else:
             raise ValueError(f'Assembler {self.assembler} not supported.')
         return self
@@ -91,8 +94,13 @@ class AssemblyJob:
         else:
             raise NotImplementedError('Assemblies using metaspades in non-paired mode are not yet supported')
 
-    # def write_spades_job(self):
-    #     pass
+    def write_spades_job(self):
+        if self.run['library_layout'] == 'PAIRED':
+            self.write_template(job_templates['spades_paired'])
+        elif self.run['library_layout'] == 'SINGLE':
+            self.write_template(job_templates['spades_single'])
+        else:
+            raise NotImplementedError('Assemblies using metaspades in non-paired mode are not yet supported')
 
     def write_megahit_job(self):
         # if self.run.library_layout == 'paired':
@@ -211,7 +219,6 @@ def main(args):
         print('\tLaunching pipeline')
         assembly.launch_pipeline()
         print('\tFinished!')
-
 
 
 if __name__ == '__main__':
