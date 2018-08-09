@@ -15,7 +15,6 @@
       location: aln-se.sam
       path: aln-se.sam
       class: File
-      size: 265474
     samtools_index_output:
       basename: sorted.bam
       location: sorted.bam
@@ -26,7 +25,6 @@
       location: unsorted.bam
       path: unsorted.bam
       class: File
-      size: 222254
     logfile:
       checksum: sha1$daf445b2a20b9125b1c12741c0ea3d46021ac069
       basename: output.json
