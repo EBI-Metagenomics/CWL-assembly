@@ -1,4 +1,4 @@
-- job: tests/cwl/tools/stats/job_descriptions/coverage-report.yml
+- job: tests/cwl/tools/stats/job_descriptions/coverage_report.yml
   tool: cwl/stats/coverage-report.cwl
   output:
     logfile:

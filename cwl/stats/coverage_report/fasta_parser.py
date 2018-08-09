@@ -52,7 +52,13 @@ class FastaStats:
         return sum(self.contigs)
 
 
-def parse(file, min_contig_length):
+def parse(file, min_contig_length, assembler):
+    if assembler in ['spades', 'metaspades']:
+        contig_regex = 'NODE_\d+_length_(\d+)_cov_*'
+    elif assembler == 'megahit':
+        contig_regex = 'k.+flag=.+multi=.+len=(\d+)'
+    else:
+        raise ValueError(f'Assembler {assembler} is not supported')
     stat = FastaStats()
     largest_contig = 0
     lines = iter(file)
@@ -76,7 +82,7 @@ def parse(file, min_contig_length):
                     largest_contig = current_length
 
             current_calculated_length = 0
-            current_length, current_coverage = re.findall('NODE_\d+_length_(\d+)_cov_(\d+\.?\d*)+', line)[0]
+            current_length = re.findall(contig_regex, line)[0]
             current_length = int(current_length)
     return {
         'Min length 1000 bp': stat.get_filtered_stats(1000),

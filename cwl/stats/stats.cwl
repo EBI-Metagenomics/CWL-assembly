@@ -9,7 +9,10 @@ inputs:
     type: File[]
   output_dest:
     type: string
-
+  min_contig_length:
+    type: int
+  assembler:
+    type: string
 
 outputs:
   bwa_index_output:
@@ -105,6 +108,8 @@ steps:
   coverage_report:
     run: ./coverage-report.cwl
     in:
+      assembler:
+        source: assembler
       sequences:
         source: sequences
       output:
@@ -113,6 +118,8 @@ steps:
         source: metabat_jgi/output
       base_count:
         source: readfq/base_count
+      min_contig_length:
+        source: min_contig_length
     out:
       - logfile
 

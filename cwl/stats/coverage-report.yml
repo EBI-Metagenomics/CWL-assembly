@@ -2,7 +2,7 @@
 cwl:tool: coverage-report.cwl
 src:
   class: File
-  path: coverage_calculation/coverage_report.py
+  path: coverage_calculation/trim_fasta.py
 base_count: 400
 coverage_file:
   class: File

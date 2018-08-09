@@ -32,6 +32,10 @@ inputs:
     type: int
     inputBinding:
       position: 6
+  assembler:
+    type: string
+    inputBinding:
+      position: 7
 
 outputs:
   logfile:
