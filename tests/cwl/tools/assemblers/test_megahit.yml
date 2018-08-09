@@ -1,6 +1,6 @@
 # cwltest --basedir cwl_test_dir --test tests/cwl/test_megahit.yml --tool cwltool
 
-- job: tests/cwl/tools/assemblers/megahit_single.yml
+- job: tests/cwl/tools/assemblers/job_descriptions/megahit_single.yml
   tool: cwl/assembly/megahit.cwl
   output:
     contigs:
@@ -16,7 +16,7 @@
       location: "log"
       class: File
 
-- job: tests/cwl/tools/assemblers/megahit_interleaved.yml
+- job: tests/cwl/tools/assemblers/job_descriptions/megahit_interleaved.yml
   tool: cwl/assembly/megahit.cwl
   output:
     contigs:
@@ -32,7 +32,7 @@
       location: "log"
       class: File
 
-- job: tests/cwl/tools/assemblers/megahit_paired.yml
+- job: tests/cwl/tools/assemblers/job_descriptions/megahit_paired.yml
   tool: cwl/assembly/megahit.cwl
   output:
     contigs:

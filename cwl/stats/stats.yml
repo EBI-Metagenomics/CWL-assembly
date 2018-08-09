@@ -1,5 +1,5 @@
 #!/usr/bin/env cwltool
-cwl:tool: stats.cwl
+cwl:tool: test_stats.cwl
 sequences:
   path: ../../cwl-megahit-final/contigs.fasta
   class: File

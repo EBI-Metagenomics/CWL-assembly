@@ -1,0 +1,14 @@
+#!/usr/bin/env cwltool
+cwl:tool: test_stats.cwl
+
+sequences:
+  path: ../../../fixtures/ERP0102/ERP010229/ERR8665/ERR866589/metaspades/001/contigs.fasta
+  class: File
+
+reads:
+  - class: File
+    path: ../../../fixtures/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz
+  - class: File
+    path: ../../../fixtures/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
+
+output_dest: "out.json"
