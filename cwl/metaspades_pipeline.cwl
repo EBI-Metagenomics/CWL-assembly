@@ -87,4 +87,4 @@ $namespaces:
 's:copyrightHolder': EMBL - European Bioinformatics Institute
 's:license': 'https://www.apache.org/licenses/LICENSE-2.0'
 
-# export TMP=$PWD/tmp cwltoil --user-space-docker-cmd=udocker --debug --outdir $PWD/out --logFile $PWD/log  --workDir $PWD/tmp_toil --retryCount 0 pipeline.cwl pipeline.yml
+# export TMP=$PWD/tmp; cwltoil --user-space-docker-cmd=docker --debug --outdir $PWD/out --logFile $PWD/log  --workDir $PWD/tmp_toil --retryCount 0 cwl/metaspades_pipeline.cwl cwl/metaspades_pipeline.yml

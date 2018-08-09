@@ -1,0 +1,6 @@
+- "left reads":
+  - "/home/data/raw/ERR866589_1.fastq.gz"
+  "orientation": "fr"
+  "right reads":
+  - "/home/data/raw/ERR866589_2.fastq.gz"
+  "type": "paired-end"

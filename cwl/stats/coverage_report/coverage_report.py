@@ -32,7 +32,7 @@ def main(args):
     stats = fasta_parser.parse(args.sequences, 500)
     stats['Base count'] = args.base_count
     stats['Coverage'] = coverage
-    with open(args.output, 'w') as output:
+    with open(args.output, 'w+') as output:
         output.write(json.dumps(stats, indent=4, sort_keys=True))
     sys.exit(0)
 

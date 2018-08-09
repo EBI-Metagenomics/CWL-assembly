@@ -18,7 +18,7 @@ inputs:
       position: 2
   sequences:
     type: File
-    intputBinding:
+    inputBinding:
       position: 3
   coverage_file:
     type: File

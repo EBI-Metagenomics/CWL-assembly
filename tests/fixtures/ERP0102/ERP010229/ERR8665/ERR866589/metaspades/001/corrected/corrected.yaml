@@ -1,0 +1,8 @@
+- "left reads":
+  - "/home/data/ERR8665/ERR866589/metaspades/001/corrected/ERR866589_1.fastq.00.0_0.cor.fastq.gz"
+  "orientation": "fr"
+  "right reads":
+  - "/home/data/ERR8665/ERR866589/metaspades/001/corrected/ERR866589_2.fastq.00.0_0.cor.fastq.gz"
+  "single reads":
+  - "/home/data/ERR8665/ERR866589/metaspades/001/corrected/ERR866589__unpaired.00.0_0.cor.fastq.gz"
+  "type": "paired-end"

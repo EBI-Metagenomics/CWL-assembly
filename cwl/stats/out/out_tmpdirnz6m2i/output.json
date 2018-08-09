@@ -1,0 +1,21 @@
+{
+    "Base count": 106000,
+    "Coverage": 0.01,
+    "Min length 1000 bp": {
+        "num_contigs": 0,
+        "total_base_pairs": 0
+    },
+    "Min length 10000 bp": {
+        "num_contigs": 0,
+        "total_base_pairs": 0
+    },
+    "Min length 50000 bp": {
+        "num_contigs": 0,
+        "total_base_pairs": 0
+    },
+    "l50": 0,
+    "largest_contig": 262,
+    "n50": 0,
+    "num_contigs": 0,
+    "total_assembled_pairs": 0
+}

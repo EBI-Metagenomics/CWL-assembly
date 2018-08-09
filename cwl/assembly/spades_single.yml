@@ -2,7 +2,7 @@
 cwl:tool: spades.cwl
 run_id: ERR866589
 unpaired_reads:
-  path: ../../metaspades_test_data/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
+  path: ../../fixtures/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
   class: File
 
 cwltool:overrides:

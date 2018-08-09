@@ -1,0 +1,17 @@
+#!/usr/bin/env cwltool
+cwl:tool: metaspades.cwl
+run_id: ERR866589
+
+interleaved_reads:
+  path: ../../../../fixtures/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
+  class: File
+
+cwltool:overrides:
+  megahit.cwl:
+    requirements:
+      ResourceRequirement:
+        ramMin: 5
+        coresMin: 1
+
+
+# cwltool --move-outputs --outdir cwl-megahit-final cwl/megahit.cwl cwl/megahit_interleaved.yml

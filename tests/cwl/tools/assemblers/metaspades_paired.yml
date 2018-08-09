@@ -1,0 +1,20 @@
+#!/usr/bin/env cwltool
+cwl:tool: metaspades.cwl
+run_id: ERR866589
+forward_reads:
+  path: ../../../../fixtures/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz
+  class: File
+reverse_reads:
+  path: ../../../../fixtures/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
+  class: File
+
+cwltool:overrides:
+  metaspades.cwl:
+    requirements:
+      ResourceRequirement:
+        ramMin: 2048
+        coresMin: 1
+# Broken in cwltoil with batch system pending toil cwltool update
+
+# cwltool --move-outputs --tmpdir cwl-metaspades-tmp --outdir cwl-metaspades-final cwl/metaspades.cwl cwl/metaspades_paired.yml
+

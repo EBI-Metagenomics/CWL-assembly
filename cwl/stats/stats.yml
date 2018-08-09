@@ -6,8 +6,8 @@ sequences:
 
 reads:
   - class: File
-    path: ../../metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz
+    path: ../../fixtures/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz
   - class: File
-    path: ../../metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
+    path: ../../fixtures/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
 
 output_dest: "out.json"

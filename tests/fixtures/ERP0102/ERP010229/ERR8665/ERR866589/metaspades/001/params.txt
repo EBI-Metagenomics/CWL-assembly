@@ -1,0 +1,36 @@
+Command line: /usr/local/bin/spades.py	--meta	-1	/home/data/raw/ERR866589_1.fastq.gz	-2	/home/data/raw/ERR866589_2.fastq.gz	-o	/home/data/ERR8665/ERR866589/metaspades/001	-m	8000	
+
+System information:
+  SPAdes version: 3.12.0
+  Python version: 3.6.5
+  OS: Linux-4.9.93-linuxkit-aufs-x86_64-with-glibc2.2.5
+
+Output dir: /home/data/ERR8665/ERR866589/metaspades/001
+Mode: read error correction and assembling
+Debug mode is turned OFF
+
+Dataset parameters:
+  Metagenomic mode
+  Reads:
+    Library number: 1, library type: paired-end
+      orientation: fr
+      left reads: ['/home/data/raw/ERR866589_1.fastq.gz']
+      right reads: ['/home/data/raw/ERR866589_2.fastq.gz']
+      interlaced reads: not specified
+      single reads: not specified
+      merged reads: not specified
+Read error correction parameters:
+  Iterations: 1
+  PHRED offset will be auto-detected
+  Corrected reads will be compressed
+Assembly parameters:
+  k: [21, 33, 55]
+  Repeat resolution is enabled
+  Mismatch careful mode is turned OFF
+  MismatchCorrector will be SKIPPED
+  Coverage cutoff is turned OFF
+Other parameters:
+  Dir for temp files: /home/data/ERR8665/ERR866589/metaspades/001/tmp
+  Threads: 16
+  Memory limit (in Gb): 8000
+

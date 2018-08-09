@@ -5,7 +5,7 @@ reference:
   path: ../../cwl-megahit-final/final.contigs.fa
 
 reads:
-  - {class: File, path: ../../metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz}
-  - {class: File, path: ../../metaspades_test_data/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz}
+  - {class: File, path: ../../fixtures/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz}
+  - {class: File, path: ../../fixtures/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz}
 
 output_filename: aln-se.sam

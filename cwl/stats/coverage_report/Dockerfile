@@ -7,7 +7,7 @@ MAINTAINER Miguel Boland <mdb@ebi.ac.uk>
 # Software Version:     1.0.0
 # Description:          Calculate report and output directory
 ##############################################################
-COPY coverage_report.py /
+COPY *.py /
 
 CMD ["python", "/coverage_report.py"]
 
