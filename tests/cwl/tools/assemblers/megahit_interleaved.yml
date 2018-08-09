@@ -3,7 +3,7 @@ cwl:tool: metaspades.cwl
 run_id: ERR866589
 
 interleaved_reads:
-  path: ../../../../fixtures/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
+  path: ../../../fixtures/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
   class: File
 
 cwltool:overrides:

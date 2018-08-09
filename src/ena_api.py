@@ -66,5 +66,5 @@ class EnaApiHandler:
             num_runs = len(runs)
             runs = list(filter(run_filter, runs))
             num_filtered_runs = num_runs - len(runs)
-            logging.info('Filtered out %s runs.', num_filtered_runs)
+            print('Filtered out %s runs.', num_filtered_runs)
         return runs
