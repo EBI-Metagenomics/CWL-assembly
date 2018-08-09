@@ -1,12 +1,11 @@
 #!/usr/bin/env cwltool
 cwl:tool: metaspades_pipeline.cwl
 run_id: SRR6257420
-contigs:
-  path: out/final.contigs.fa
-  class: File
+
+assembler: megahit
 
 interleaved_reads:
-  path: ../fixtures/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
+  path: ../../../fixtures/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
   class: File
 
 #cwltool:overrides:
@@ -18,6 +17,6 @@ interleaved_reads:
 
 output_dest: "out.json"
 
-coverage_report_src:
-  class: File
-  path: stats/coverage_report/coverage_report.py
+output_assembly_name: "SRR6257420"
+
+min_contig_length: 0

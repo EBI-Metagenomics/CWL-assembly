@@ -4,6 +4,8 @@ cwlVersion: v1.0
 requirements:
   SubworkflowFeatureRequirement: {}
   MultipleInputFeatureRequirement: {}
+  InlineJavascriptRequirement: {}
+  StepInputExpressionRequirement: {}
 
 inputs:
   forward_reads:
@@ -13,6 +15,10 @@ inputs:
   output_dest:
     type: string
     default: 'coverage_report.json'
+  min_contig_length:
+    type: int
+  output_assembly_name:
+    type: string
 
 outputs:
   assembly:
@@ -32,6 +38,15 @@ outputs:
     type: File
   coverage_tab:
     outputSource: stats_report/metabat_coverage_output
+    type: File
+  trimmed_sequences:
+    outputSource: fasta_processing/trimmed_sequences
+    type: File
+  trimmed_sequences_gz:
+    outputSource: fasta_processing/trimmed_sequences_gz
+    type: File
+  trimmed_sequences_gz_md5:
+    outputSource: fasta_processing/trimmed_sequences_gz_md5
     type: File
   logfile:
     outputSource: stats_report/logfile
@@ -59,12 +74,16 @@ steps:
     label: 'metaSPAdes: de novo metagenomics assembler'
   stats_report:
     in:
+      assembler:
+        valueFrom: $('metaspades')
       sequences:
         source: metaspades/contigs
       reads:
         source: [forward_reads, reverse_reads]
       output_dest:
         source: output_dest
+      min_contig_length:
+        source: min_contig_length
     out:
       - bwa_index_output
       - bwa_mem_output
@@ -74,6 +93,21 @@ steps:
       - metabat_coverage_output
       - logfile
     run: stats/stats.cwl
+  fasta_processing:
+    in:
+      sequences:
+        source: metaspades/contigs
+      min_contig_length:
+        source: min_contig_length
+      output_filename:
+        source: output_assembly_name
+      assembler:
+        valueFrom: $('metaspades')
+    out:
+      - trimmed_sequences
+      - trimmed_sequences_gz
+      - trimmed_sequences_gz_md5
+    run: stats/fasta-trimming.cwl
 
 $schemas:
   - 'http://edamontology.org/EDAM_1.16.owl'

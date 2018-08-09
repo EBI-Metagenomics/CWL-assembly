@@ -1,11 +1,14 @@
 #!/usr/bin/env cwltool
 cwl:tool: metaspades_pipeline.cwl
 run_id: ERR866589
+
+assembler: metaspades
+
 forward_reads:
-  path: ../fixtures/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz
+  path: ../../../fixtures/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz
   class: File
 reverse_reads:
-  path: ../fixtures/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
+  path: ../../../fixtures/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
   class: File
 
 #cwltool:overrides:
@@ -17,6 +20,6 @@ reverse_reads:
 
 output_dest: "out.json"
 
-coverage_report_src:
-  class: File
-  path: stats/coverage_report/coverage_report.py
+output_assembly_name: ERR866589
+
+min_contig_length: 200

@@ -1,6 +1,8 @@
 #!/usr/bin/env cwltool
 cwl:tool: coverage-report.cwl
 
+assembler: metaspades
+
 base_count: 106000
 sequences:
   class: File
