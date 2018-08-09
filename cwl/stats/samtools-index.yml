@@ -1,3 +1,5 @@
+#!/usr/bin/env cwltool
+cwl:tool: samtools-index.cwl
 alignments:
   class: File
   path: ../../tools/stats/out/sorted.bam

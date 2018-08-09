@@ -1,3 +1,5 @@
+#!/usr/bin/env cwltool
+cwl:tool: coverage-report.cwl
 src:
   class: File
   path: coverage_calculation/coverage_report.py

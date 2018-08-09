@@ -1,3 +1,5 @@
+#!/usr/bin/env cwltool
+cwl:tool: readfq.cwl
 raw_reads:
   - class: File
     path: >-

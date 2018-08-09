@@ -69,7 +69,7 @@ steps:
       - samtools_index_output
       - metabat_coverage_output
       - logfile
-    run: stats/test_stats.cwl
+    run: stats/stats.cwl
 
 $schemas:
   - 'http://edamontology.org/EDAM_1.16.owl'

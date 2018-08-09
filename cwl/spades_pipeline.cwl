@@ -16,16 +16,16 @@ inputs:
 
 outputs:
   assembly:
-    outputSource: metaspades/contigs
+    outputSource: spades/contigs
     type: File
   assembly_log:
-    outputSource: metaspades/log
+    outputSource: spades/log
     type: File
   assembly_params:
-    outputSource: metaspades/params
+    outputSource: spades/params
     type: File
   assembly_scaffolds:
-    outputSource: metaspades/scaffolds
+    outputSource: spades/scaffolds
     type: File
   samtools_index:
     outputSource: stats_report/samtools_index_output
@@ -38,7 +38,7 @@ outputs:
     type: File
 
 steps:
-  metaspades:
+  spades:
     in:
       forward_reads:
         source: forward_reads
@@ -55,12 +55,12 @@ steps:
       - params
       - scaffolds
       - scaffolds_assembly_graph
-    run: assembly/metaspades.cwl
-    label: 'metaSPAdes: de novo metagenomics assembler'
+    run: assembly/spades.cwl
+    label: 'spades: de novo metagenomics assembler'
   stats_report:
     in:
       sequences:
-        source: metaspades/contigs
+        source: spades/contigs
       reads:
         source: [forward_reads, reverse_reads]
       output_dest:
@@ -87,4 +87,4 @@ $namespaces:
 's:copyrightHolder': EMBL - European Bioinformatics Institute
 's:license': 'https://www.apache.org/licenses/LICENSE-2.0'
 
-# export TMP=$PWD/tmp; cwltoil --user-space-docker-cmd=docker --debug --outdir $PWD/out --logFile $PWD/log  --workDir $PWD/tmp_toil --retryCount 0 cwl/metaspades_pipeline.cwl cwl/metaspades_pipeline.yml
+# export TMP=$PWD/tmp; cwltoil --user-space-docker-cmd=docker --debug --outdir $PWD/out --logFile $PWD/log  --workDir $PWD/tmp_toil --retryCount 0 cwl/spades_pipeline.cwl cwl/spades_pipeline.yml
