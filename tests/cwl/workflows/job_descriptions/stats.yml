@@ -1,5 +1,5 @@
 #!/usr/bin/env cwltool
-cwl:tool: test_stats.cwl
+cwl:tool: test_stats.yml
 
 sequences:
   path: ../../../fixtures/ERP0102/ERP010229/ERR8665/ERR866589/metaspades/001/contigs.fasta
