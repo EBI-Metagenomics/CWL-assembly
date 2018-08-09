@@ -95,12 +95,10 @@ class AssemblyJob:
             raise NotImplementedError('Assemblies using metaspades in non-paired mode are not yet supported')
 
     def write_spades_job(self):
-        if self.run['library_layout'] == 'PAIRED':
-            self.write_template(job_templates['spades_paired'])
-        elif self.run['library_layout'] == 'SINGLE':
+        if self.run['library_layout'] == 'SINGLE':
             self.write_template(job_templates['spades_single'])
         else:
-            raise NotImplementedError('Assemblies using metaspades in non-paired mode are not yet supported')
+            raise NotImplementedError('Assemblies using metaspades in paired mode are not yet supported')
 
     def write_megahit_job(self):
         # if self.run.library_layout == 'paired':

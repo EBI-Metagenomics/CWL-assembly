@@ -12,7 +12,7 @@ cwltool:overrides:
       ResourceRequirement:
         ramMin: 5
         coresMin: 1
+# Broken in cwltoil with batch system pending toil cwltool update
 
-
-# cwltool --move-outputs --tmpdir cwl-spades-tmp --outdir cwl-spades-final cwl/spades.cwl cwl/spades_single.yml
+# cwltest --basedir cwl_test_dir --test tests/cwl/test_spades.yml --tool cwltool --verbose
 
