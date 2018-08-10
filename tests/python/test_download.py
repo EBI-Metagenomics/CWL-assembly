@@ -10,7 +10,7 @@
 #
 # class TestDownloadLib(TestCase):
 #     @classmethod
-#     def setUpClass(cls):
+#     def setup_class(cls):
 #         os.makedirs(test_dir, exist_ok=True)
 #
 #     def test_download_urls_should_download_all_urls_2downloads(self):

@@ -13,4 +13,5 @@ udocker install
 wget https://nodejs.org/dist/v8.11.1/node-v8.11.1-linux-x64.tar.xz && tar -xJf node-v8.11.1-linux-x64.tar.xz
 export PATH="$PWD/node-v8.11.1-linux-x64/bin/:$PATH"
 echo "PATH=$PWD/node-v8.11.1-linux-x64/bin/:\$PATH" >> bin/activate
+cd ..
 

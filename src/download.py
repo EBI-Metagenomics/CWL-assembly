@@ -1,4 +1,4 @@
-import urllib.request
+import urllib2
 import multiprocessing
 import shutil
 
@@ -8,10 +8,10 @@ def process_download(download_job):
     dest = download_job[1]
     if 'ftp' in url:
         url = 'ftp://' + url
-    print(f'\t\tDownloading {dest}')
-    with urllib.request.urlopen(url) as response, open(dest, 'wb') as out_file:
+    print('\t\tDownloading '+dest)
+    with urllib2.urlopen(url) as response, open(dest, 'wb') as out_file:
         shutil.copyfileobj(response, out_file)
-    print(f'\t\tFinished downloading {dest}')
+    print('\t\tFinished downloading '+dest)
 
 
 def download_urls(urls):

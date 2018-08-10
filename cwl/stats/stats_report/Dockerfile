@@ -10,5 +10,5 @@ LABEL maintainer="Miguel Boland <mdb@ebi.ac.uk>"
 ##############################################################
 COPY . /
 
-CMD ["python", "/coverage_report.py"]
+CMD ["python", "/gen_stats_report.py"]
 

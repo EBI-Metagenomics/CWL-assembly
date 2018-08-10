@@ -1,5 +1,5 @@
 import pytest
-from unittest import TestCase, mock
+from mock import patch
 from src import ena_api
 
 
@@ -19,9 +19,9 @@ def mocked_requests_post(*args, **kwargs):
     return MockResponse(None, 404)
 
 
-class TestEnaHandler(TestCase):
+class TestEnaHandler(object):
     @classmethod
-    def setUpClass(cls):
+    def setup_class(cls):
         cls.api = ena_api.EnaApiHandler()
 
     def test_get_study_runs_should_filter_amplicons(self):
@@ -40,7 +40,7 @@ class TestEnaHandler(TestCase):
         with pytest.raises(ValueError):
             self.api.get_study_runs('IllegalAccession')
 
-    @mock.patch('src.ena_api.requests.post', side_effect=mocked_requests_post)
+    @patch('src.ena_api.requests.post', side_effect=mocked_requests_post)
     def test_get_study_runs_raises_exception_on_http_error(self, ignored):
         with pytest.raises(ValueError):
             self.api.get_study_runs('ERP106645')
@@ -58,7 +58,7 @@ class TestEnaHandler(TestCase):
         with pytest.raises(ValueError):
             self.api.get_run_metadata('IllegalAccession')
 
-    @mock.patch('src.ena_api.requests.post', side_effect=mocked_requests_post)
+    @patch('src.ena_api.requests.post', side_effect=mocked_requests_post)
     def test_get_run_metadata_raises_exception_on_http_error(self, ignored):
         with pytest.raises(ValueError):
             self.api.get_run_metadata('ERR2359761')

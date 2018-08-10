@@ -2,7 +2,7 @@ import argparse
 from enum import Enum
 import os.path
 from src import ena_api, download
-from ruamel.yaml import YAML
+from ruamel import yaml
 import subprocess
 
 from src.path_finder import PathFinder
@@ -39,6 +39,11 @@ pipeline_workflows = {
 TEMPLATE_NAME = 'job_config.yml'
 
 
+def safe_make_dir(dirname):
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)
+
+
 class AssemblyJob:
     def __init__(self, path_finder, ena, args, run):
         self.ena = ena
@@ -58,11 +63,10 @@ class AssemblyJob:
         self.pipeline_workflow = pipeline_workflows[self.assembler]
 
     def create_dirs(self):
-        os.makedirs(self.study_dir, exist_ok=True)
-        os.makedirs(self.run_dir, exist_ok=True)
-        os.makedirs(self.raw_dir, exist_ok=True)
-        os.makedirs(self.tmp_dir, exist_ok=True)
-        return self
+        safe_make_dir(self.study_dir)
+        safe_make_dir(self.run_dir)
+        safe_make_dir(self.raw_dir)
+        safe_make_dir(self.tmp_dir)
 
     def download_raw_data(self):
         run_accession = self.run['run_accession']
@@ -74,7 +78,6 @@ class AssemblyJob:
         downloads = list(zip(self.run['submitted_ftp'].split(';'), filepaths))
         download.download_urls(downloads)
         self.raw_files.extend(filepaths)
-        return self
 
     def write_job(self):
         if self.assembler == Assembler.metaspades:
@@ -84,8 +87,7 @@ class AssemblyJob:
         elif self.assembler == Assembler.spades:
             self.write_spades_job()
         else:
-            raise ValueError(f'Assembler {self.assembler} not supported.')
-        return self
+            raise ValueError('Assembler {} not supported.'.format(self.assembler))
 
     def write_metaspades_job(self):
         if self.run['library_layout'] == 'PAIRED':
@@ -107,9 +109,8 @@ class AssemblyJob:
         pass
 
     def write_template(self, template_src):
-        yaml = YAML(typ='safe')
         with open(template_src, 'r') as f:
-            template = yaml.load(f)
+            template = yaml.safe_load(f)
         template['run_id'] = self.run['run_accession']
         template['forward_reads']['path'] = self.raw_files[0]
         template['reverse_reads']['path'] = self.raw_files[1]
@@ -123,12 +124,12 @@ class AssemblyJob:
 
     def create_pipeline_cmd(self):
         # return f'cwltoil --user-space-docker-cmd=udocker --cleanWorkDir onSuccess --debug --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf megahit_pipeline.cwl megahit_pipeline.yml'
-        return f'cwltoil ' \
-               f'--cleanWorkDir onSuccess ' \
-               f'--debug ' \
-               f'--outdir {self.run_dir} ' \
-               f'--workDir {os.getcwd()} ' \
-               f'{self.pipeline_workflow} {self.job_desc_file}'
+        return 'cwltoil ' \
+               '--cleanWorkDir onSuccess ' \
+               '--debug ' \
+               '--outdir {self.run_dir} ' \
+               '--workDir {} ' \
+               '{} {}'.format(self.run_dir, os.getcwd(), self.pipeline_workflow, self.job_desc_file)
 
     def launch_pipeline(self):
         cmd = self.create_pipeline_cmd()

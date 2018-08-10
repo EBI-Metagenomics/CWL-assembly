@@ -4,12 +4,12 @@ class: CommandLineTool
 
 requirements:
   DockerRequirement:
-    dockerImageId: coverage_report
+    dockerImageId: stats_report
     dockerFile:
-      $include: coverage_report/Dockerfile
+      $include: stats_report/Dockerfile
   InlineJavascriptRequirement: {}
 
-baseCommand: ['python', '/coverage_report.py']
+baseCommand: ['python', '/gen_stats_report.py']
 
 inputs:
   base_count:
@@ -44,7 +44,7 @@ outputs:
       glob: $(inputs.output)
 
 doc: |
-  usage: coverage_report.py [-h] output coverage_file base_count
+  usage: gen_coverage_report.py [-h] output coverage_file base_count
 
   Script to calculate coverage from coverage.tab file and output report
 

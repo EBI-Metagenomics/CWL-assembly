@@ -12,7 +12,7 @@ def trim_fasta_file(source_file, threshold, output_file, assembler):
     elif assembler == 'megahit':
         contig_regex = 'k.+flag=.+multi=.+len=(\d+)'
     else:
-        raise ValueError(f'Assembler {assembler} is not supported')
+        raise ValueError('Assembler '+assembler+' is not supported')
     with open(output_file, 'w+') as out:
         with open(source_file, 'r') as inp:
             store_line = False
@@ -58,7 +58,7 @@ def parse_args():
 
 def main(args):
     if not os.path.exists(args.sequences):
-        raise FileNotFoundError(f'Fasta file does not exist: {args.sequences}')
+        raise EnvironmentError('Fasta file does not exist: {}'.format(args.sequences))
 
     final_contig_name = args.contig_filename
 

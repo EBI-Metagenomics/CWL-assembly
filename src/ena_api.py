@@ -2,7 +2,7 @@ from __future__ import print_function
 
 import requests
 import json
-import yaml
+import ruamel.yaml as yaml
 import os
 
 config_file = os.path.realpath(os.path.join(__file__, os.pardir, os.pardir, 'ena_api_creds.yml'))

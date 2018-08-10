@@ -1,5 +1,5 @@
 #!/usr/bin/env cwltool
-cwl:tool: coverage-report.cwl
+cwl:tool: stats-report.cwl
 src:
   class: File
   path: coverage_calculation/trim_fasta.py
