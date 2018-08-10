@@ -1,7 +1,7 @@
 import urllib.request
 import multiprocessing
 import shutil
-import os
+
 
 def process_download(download_job):
     url = download_job[0]

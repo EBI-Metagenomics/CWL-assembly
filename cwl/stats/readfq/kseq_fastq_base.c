@@ -15,14 +15,14 @@ KSEQ_INIT(gzFile, gzread)
 int main(int argc, char *argv[])
 {
     gzFile fp;
-    kseq_t *seq;
-    int l;
     if (argc == 1) {
         fprintf(stderr, "Usage: %s <in.seq>\n", argv[0]);
         return 1;
     }
     long int totalSlen = 0;
     for (int i = 1; i< argc; i++){
+        kseq_t *seq;
+        int l;
         long int slen = 0;
         fp = gzopen(argv[i], "r"); // STEP 2: open the file handler
         seq = kseq_init(fp); // STEP 3: initialize seq

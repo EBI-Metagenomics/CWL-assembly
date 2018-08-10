@@ -1,11 +1,6 @@
 import os
 
-import shutil
-
-from src import util
-import glob
-
-STATS_FILENAME = 'assembly_stats.p'
+# STATS_FILENAME = 'assembly_stats.p'
 
 
 class PathFinder:

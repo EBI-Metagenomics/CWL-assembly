@@ -1,5 +1,6 @@
 FROM python:3.6-slim
-MAINTAINER Miguel Boland <mdb@ebi.ac.uk>
+
+LABEL maintainer="Miguel Boland <mdb@ebi.ac.uk>"
 
 ##############################################################
 # Dockerfile Version:   18.06.0-ce

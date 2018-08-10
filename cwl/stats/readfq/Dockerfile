@@ -1,4 +1,6 @@
-FROM amd64/gcc:latest
+FROM amd64/gcc:8.2.0
+
+LABEL maintainer="Miguel Boland <mdb@ebi.ac.uk>"
 
 COPY . /
 RUN gcc -lz -o kseq_fastq_base /kseq_fastq_base.c

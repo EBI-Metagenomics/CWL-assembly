@@ -2,7 +2,6 @@ from __future__ import print_function
 
 import requests
 import json
-import logging
 import yaml
 import os
 

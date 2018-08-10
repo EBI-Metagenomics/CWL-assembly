@@ -1,4 +1,3 @@
-import requests
 import pytest
 from unittest import TestCase, mock
 from src import ena_api

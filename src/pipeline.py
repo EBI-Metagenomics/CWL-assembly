@@ -1,5 +1,4 @@
 import argparse
-import logging
 from enum import Enum
 import os.path
 from src import ena_api, download
