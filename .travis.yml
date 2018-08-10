@@ -26,7 +26,20 @@ install:
 
 script:
   - pytest --cov=src --cov-report xml:$COVERAGE_FILE tests/
-  - bash $TRAVIS_BUILD_DIR/tests/cwl/run_cwl_tests.sh
+
+#  CWL Tests
+#  Assemblers
+  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/assemblers/test_megahit.yml --tool cwltool --verbose 
+  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/assemblers/test_metaspades.yml --tool cwltool --verbose 
+  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/assemblers/test_spades.yml --tool cwltool --verbose 
+
+# Stats tools
+  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/stats/test_readfq.yml --tool cwltool --verbose 
+  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/stats/test_trim_fasta.yml --tool cwltool --verbose 
+  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/stats/test_stats_report.yml --tool cwltool --verbose 
+
+# Stats workflows
+  - cwltest --basedir cwl_test_dir --test tests/cwl/workflows/test_stats.yml --tool cwltool --verbose
 
 after_script:
   - python-codacy-coverage -r $COVERAGE_FILE

@@ -12,7 +12,9 @@ inputs:
     type: File
   output_dest:
     type: string
-    default: 'coverage_report.json'
+    default: 'stats_report.json'
+  min_contig_length:
+    type: int
 
 outputs:
   assembly:
@@ -65,6 +67,8 @@ steps:
         source: [forward_reads, reverse_reads]
       output_dest:
         source: output_dest
+      min_contig_length:
+        source: min_contig_length
     out:
       - bwa_index_output
       - bwa_mem_output

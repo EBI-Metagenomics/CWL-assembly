@@ -1,6 +1,7 @@
 #!/usr/bin/env cwltool
 cwl:tool: metaspades.cwl
-run_id: run_id_tmp
+output_assembly_name: run_id_tmp
+
 forward_reads:
   path: forward_reads_tmp
   class: File
@@ -9,9 +10,10 @@ reverse_reads:
   class: File
 
 
-coverage_report_src:
-  class: File
-  path: cwl/stats/coverage_report/coverage_report.py
+output_dest: "out.json"
+
+
+min_contig_length: 200
 
 
 #cwltool:overrides:

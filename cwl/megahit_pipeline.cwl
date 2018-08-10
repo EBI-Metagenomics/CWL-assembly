@@ -19,7 +19,7 @@ inputs:
     type: int
   output_dest:
     type: string
-    default: 'coverage_report.json'
+    default: 'stats_report.json'
   output_assembly_name:
     type: string
 

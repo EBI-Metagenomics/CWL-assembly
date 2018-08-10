@@ -8,7 +8,7 @@ unpaired_reads:
 
 coverage_report_src:
   class: File
-  path: cwl/stats/coverage_report/coverage_report.py
+  path: cwl/stats/stats_report/trim_fasta.py
 
 
 #cwltool:overrides:

@@ -35,7 +35,7 @@ outputs:
     outputSource: metabat_jgi/output
   logfile:
     type: File
-    outputSource: coverage_report/logfile
+    outputSource: stats_report/logfile
 
 steps:
   readfq:
@@ -105,8 +105,8 @@ steps:
         default: "coverage.tab"
     out:
       - output
-  coverage_report:
-    run: ./coverage-report.cwl
+  stats_report:
+    run: ./stats-report.cwl
     in:
       assembler:
         source: assembler
