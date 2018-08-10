@@ -111,9 +111,9 @@ class AssemblyJob:
     def write_template(self, template_src):
         with open(template_src, 'r') as f:
             template = yaml.safe_load(f)
-        template['run_id'] = self.run['run_accession']
-        template['forward_reads']['path'] = self.raw_files[0]
-        template['reverse_reads']['path'] = self.raw_files[1]
+        template['run_id'] = str(self.run['run_accession'])
+        template['forward_reads']['path'] = str(self.raw_files[0])
+        template['reverse_reads']['path'] = str(self.raw_files[1])
         # template['cwltool:overrides'][self.assembler.__str__() + '.cwl']['requirements']['ResourceRequirement'] = {
         #     'ramMin': self.memory,
         #     'coresMin': self.cores
@@ -123,13 +123,11 @@ class AssemblyJob:
             yaml.dump(template, f)
 
     def create_pipeline_cmd(self):
-        # return f'cwltoil --user-space-docker-cmd=udocker --cleanWorkDir onSuccess --debug --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf megahit_pipeline.cwl megahit_pipeline.yml'
-        return 'cwltoil ' \
-               '--cleanWorkDir onSuccess ' \
-               '--debug ' \
-               '--outdir {self.run_dir} ' \
-               '--workDir {} ' \
-               '{} {}'.format(self.run_dir, os.getcwd(), self.pipeline_workflow, self.job_desc_file)
+        print(self)
+        # return f'cwltoil --user-space-docker-cmd=udocker --cleanWorkDir onSuccess --debug
+        # --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf megahit_pipeline.cwl megahit_pipeline.yml'
+        return 'cwltoil  --cleanWorkDir onSuccess  --debug  --outdir {}  --workDir {}  {} {}'.format(
+            self.run_dir, os.getcwd(), self.pipeline_workflow, self.job_desc_file)
 
     def launch_pipeline(self):
         cmd = self.create_pipeline_cmd()

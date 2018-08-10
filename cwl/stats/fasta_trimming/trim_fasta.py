@@ -4,6 +4,7 @@ import gzip
 import os
 import shutil
 import hashlib
+import sys
 
 
 def trim_fasta_file(source_file, threshold, output_file, assembler):
@@ -12,7 +13,7 @@ def trim_fasta_file(source_file, threshold, output_file, assembler):
     elif assembler == 'megahit':
         contig_regex = 'k.+flag=.+multi=.+len=(\d+)'
     else:
-        raise ValueError('Assembler '+assembler+' is not supported')
+        raise ValueError('Assembler ' + assembler + ' is not supported')
     with open(output_file, 'w+') as out:
         with open(source_file, 'r') as inp:
             store_line = False
@@ -26,8 +27,9 @@ def trim_fasta_file(source_file, threshold, output_file, assembler):
 
 
 def compress_file(in_file, out_file):
-    if os.sep in out_file:
-        os.makedirs(os.path.pardir(out_file), exist_ok=True)
+    out_dir = os.path.dirname(out_file)
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
     with open(in_file, 'rb') as f_in, gzip.open(out_file, 'wb+') as f_out:
         shutil.copyfileobj(f_in, f_out)
 
@@ -46,14 +48,14 @@ def md5(fname):
     return hash_md5.hexdigest()
 
 
-def parse_args():
+def parse_args(args):
     parser = argparse.ArgumentParser(description='Remove contigs of length < min_contig_length from a fasta file.')
     parser.add_argument("sequences", help='Path to fasta file to trim')
     parser.add_argument("min_contig_length", help='Minimum contig length, set to 0 for no trimming', type=int)
     parser.add_argument("contig_filename", help='Filename (without ANY extension) to give to contig files')
     parser.add_argument('assembler', choices=['metaspades', 'spades', 'megahit'],
                         help='Assembler used to generate sequence.')
-    return parser.parse_args()
+    return parser.parse_args(args)
 
 
 def main(args):
@@ -74,4 +76,5 @@ def main(args):
 
 
 if __name__ == '__main__':
-    main(parse_args())
+    args = parse_args(sys.argv[1:])
+    main(args)

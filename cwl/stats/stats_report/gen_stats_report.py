@@ -32,7 +32,7 @@ class FastaStats:
         elif assembler == 'megahit':
             self.contig_regex = 'k.+flag=.+multi=.+len=(\d+)'
         else:
-            raise ValueError('Assembler '+assembler+' is not supported')
+            raise ValueError('Assembler ' + assembler + ' is not supported')
         self.assembler = assembler
 
         self.parse_file()
@@ -125,6 +125,7 @@ def main(args):
         raise ValueError('Base count ({}) cannot be <= 0.'.format(args.base_count))
     coverage = calc_coverage(args)
     fstats = FastaStats(args.sequences, args.min_contig_length, args.assembler)
+    args.sequences.close()
     report = fstats.gen_report()
     report['Base count'] = args.base_count
     report['Coverage'] = coverage

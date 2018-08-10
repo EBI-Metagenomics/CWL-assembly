@@ -1,31 +1,8 @@
-from unittest import TestCase
-import os
-import shutil
 import pytest
 import json
 
 from cwl.stats.stats_report import gen_stats_report
-
-TEST_DIR = 'pytest_tmp'
-
-FIXTURE_DIR = os.path.join(os.path.dirname(__file__), os.pardir, 'fixtures')
-
-
-def write_empty_file(filename):
-    path = os.path.join(TEST_DIR, filename)
-    open(path, 'a').close()
-    return path
-
-
-def copy_fixture(src, dest):
-    shutil.copy(os.path.join(FIXTURE_DIR, src), dest)
-    return dest
-
-
-def remove_file(filename):
-    path = os.path.join(TEST_DIR, filename)
-    if os.path.exists(path):
-        shutil.rmtree(path)
+from tests.python.utils import write_empty_file, copy_fixture
 
 
 class TestStatsReporter(object):
@@ -158,7 +135,8 @@ class TestFastaStats(object):
 
     def test_stats_valid_metaspades_fasta_no_contig_filtering(self, tmpdir):
         tmpdir = str(tmpdir)
-        contig_file = copy_fixture('ERP0102/ERP010229/ERR8665/ERR866589/metaspades/001/contigs.fasta', tmpdir+'contigs.fasta')
+        contig_file = copy_fixture('ERP0102/ERP010229/ERR8665/ERR866589/metaspades/001/contigs.fasta',
+                                   tmpdir + 'contigs.fasta')
         with open(contig_file) as f:
             fstats = gen_stats_report.FastaStats(f, 0, 'metaspades')
             fstats.parse_file()
