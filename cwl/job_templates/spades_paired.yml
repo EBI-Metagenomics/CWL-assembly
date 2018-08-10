@@ -13,7 +13,7 @@ coverage_report_src:
   class: File
   path: cwl/stats/coverage_report/coverage_report.py
 
-
+min_contig_length: min_contig_length_tmp
 #cwltool:overrides:
 #  metaspades.cwl:
 #    requirements:

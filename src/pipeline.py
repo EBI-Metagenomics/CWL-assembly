@@ -2,7 +2,7 @@ import argparse
 from enum import Enum
 import os.path
 from src import ena_api, download
-from ruamel.yaml import YAML
+import ruamel_yaml as yaml
 import subprocess
 
 from src.path_finder import PathFinder
@@ -56,6 +56,7 @@ class AssemblyJob:
         self.tmp_dir = path_finder.get_tmp_dir(self.study_dir, run['run_accession'])
         self.job_desc_file = os.path.join(self.run_dir, TEMPLATE_NAME)
         self.pipeline_workflow = pipeline_workflows[self.assembler]
+        self.min_contig_length = args.min_contig_length
 
     def create_dirs(self):
         os.makedirs(self.study_dir, exist_ok=True)
@@ -107,12 +108,12 @@ class AssemblyJob:
         pass
 
     def write_template(self, template_src):
-        yaml = YAML(typ='safe')
         with open(template_src, 'r') as f:
-            template = yaml.load(f)
-        template['run_id'] = self.run['run_accession']
+            template = yaml.safe_load(f)
+        template['output_assembly_name'] = self.run['run_accession']
         template['forward_reads']['path'] = self.raw_files[0]
         template['reverse_reads']['path'] = self.raw_files[1]
+        template['min_contig_length'] = self.min_contig_length
         # template['cwltool:overrides'][self.assembler.__str__() + '.cwl']['requirements']['ResourceRequirement'] = {
         #     'ramMin': self.memory,
         #     'coresMin': self.cores
@@ -186,6 +187,7 @@ def parse_args():
     parser.add_argument('-m', '--memory', default=240, type=int, help='Memory allocation for pipeline (GB)')
     parser.add_argument('-d', '--dir', default='.', help='Root directory in which to run assemblies')
     parser.add_argument('-s', '--study', help='ENA project accession')
+    parser.add_argument('-c', '--min-contig-length', type=int, help='Minimum contig length', default=500)
     parser.add_argument('-r', '--runs',
                         help='comma-seperated ENA run accessions to assemble (1 assembly per run) in specified project')
     # data_inputs = parser.add_mutually_exclusive_group()
