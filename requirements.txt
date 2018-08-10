@@ -2,4 +2,3 @@ requests==2.19.1
 lib==3.0.0
 PyYAML==3.13
 toil[cwl]~=3.17.0
-ruamel.yaml==0.15.52
