@@ -1,9 +1,10 @@
 language: python
 python:
-  - "3.4"
-  - "3.5"
-  - "3.6"
-  - "3.7-dev"
+  - "2.7"
+#  - "3.4"
+#  - "3.5"
+#  - "3.6"
+#  - "3.7-dev"
 sudo: required
 
 services:
@@ -17,13 +18,11 @@ before_install:
   - mkdir "$TRAVIS_BUILD_DIR/coverage"
 
 install:
-  - pip install --upgrade setuptools
-  - pip install -r requirements.txt
-  - pip install -r requirements-test.txt
-  - ./setup_env.sh
   - docker build -t readfq:latest $TRAVIS_BUILD_DIR/cwl/stats/readfq/
-  - docker build -t coverage_report:latest $TRAVIS_BUILD_DIR/cwl/stats/coverage_report/
+  - docker build -t stats_report:latest $TRAVIS_BUILD_DIR/cwl/stats/stats_report/
   - docker build -t fasta_trimming:latest $TRAVIS_BUILD_DIR/cwl/stats/fasta_trimming/
+
+  - source ./setup_env.sh
 
 script:
   - pytest --cov=src --cov-report xml:$COVERAGE_FILE tests/
