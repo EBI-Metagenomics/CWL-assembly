@@ -4,6 +4,7 @@ cwlVersion: v1.0
 requirements:
   SubworkflowFeatureRequirement: {}
   MultipleInputFeatureRequirement: {}
+  StepInputExpressionRequirement: {}
 
 inputs:
   forward_reads:
@@ -61,6 +62,8 @@ steps:
     label: 'spades: de novo metagenomics assembler'
   stats_report:
     in:
+      assembler:
+        valueFrom: $('spades')
       sequences:
         source: spades/contigs
       reads:
