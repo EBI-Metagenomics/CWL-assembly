@@ -2,7 +2,7 @@ from __future__ import print_function
 
 import requests
 import json
-import ruamel.yaml as yaml
+from ruamel import yaml
 import os
 
 config_file = os.path.realpath(os.path.join(__file__, os.pardir, os.pardir, 'ena_api_creds.yml'))
@@ -65,5 +65,4 @@ class EnaApiHandler:
             num_runs = len(runs)
             runs = list(filter(run_filter, runs))
             num_filtered_runs = num_runs - len(runs)
-            print('Filtered out %s runs.', num_filtered_runs)
         return runs
