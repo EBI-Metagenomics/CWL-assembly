@@ -1,14 +1,11 @@
-from unittest import TestCase
 import os
-import shutil
 import pytest
-import json
-import mimetypes
 import gzip
 
-from tests.python.utils import write_empty_file, copy_fixture
+from tests.python.utils import copy_fixture
 
-from cwl.stats.fasta_trimming.trim_fasta import parse_args, write_md5, md5, trim_fasta_file, compress_file
+from cwl.stats.fasta_trimming.trim_fasta import parse_args, write_md5, main as fasta_trim_main, trim_fasta_file, \
+    compress_file
 from cwl.stats.stats_report.gen_stats_report import FastaStats
 
 
@@ -77,7 +74,7 @@ class TestFastaTrimmer(object):
         compress_file(fasta_file, out_file)
         assert os.path.exists(out_file)
 
-    def test_write_md5(self, tmpdir):
+    def test_write_md5_should_output_md5file(self, tmpdir):
         tmpdir = str(tmpdir)
         fasta_file = copy_fixture('SRP0741/SRP074153/SRR6257/SRR6257420/megahit/001/final.contigs.fa',
                                   tmpdir + '/contigs.fasta')
@@ -85,3 +82,28 @@ class TestFastaTrimmer(object):
         with open(fasta_file + '.md5') as f:
             md5 = f.read()
         assert md5 == 'dc94b51a736f6a43e146f1c1133d7aab'
+
+    def test_main_should_output_files(self, tmpdir):
+        tmpdir = str(tmpdir)
+        fasta_file = copy_fixture('SRP0741/SRP074153/SRR6257/SRR6257420/megahit/001/final.contigs.fa',
+                                  tmpdir + '/contigs.fasta')
+        output_name = os.path.join(tmpdir, 'output')
+        args = parse_args([fasta_file, '500', output_name, 'megahit'])
+        fasta_trim_main(args)
+        os.path.exists(tmpdir + '.contigs.fasta')
+        os.path.exists(tmpdir + '.contigs.fasta.gz')
+        os.path.exists(tmpdir + '.contigs.fasta.gz.md5')
+
+    def test_main_raises_error_if_missing_contigs(self):
+        with pytest.raises(EnvironmentError):
+            args = parse_args(['invalid_path_name', '500', 'output', 'megahit'])
+            fasta_trim_main(args)
+
+    def test_main_should_duplicate_fasta_if_no_trimming_required(self, tmpdir):
+        tmpdir = str(tmpdir)
+        fasta_file = copy_fixture('SRP0741/SRP074153/SRR6257/SRR6257420/megahit/001/final.contigs.fa',
+                                  tmpdir + '/contigs.fasta')
+        output_name = os.path.join(tmpdir, 'output')
+        args = parse_args([fasta_file, '0', output_name, 'megahit'])
+        fasta_trim_main(args)
+        assert open(fasta_file, 'rb').read() == open(output_name + '.fasta', 'rb').read()
