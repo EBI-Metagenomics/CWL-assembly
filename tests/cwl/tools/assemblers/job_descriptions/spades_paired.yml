@@ -3,10 +3,10 @@ cwl:tool: spades.cwl
 run_id: ERR866589
 
 forward_reads:
-  path: ../../../../fixtures/unknown/unknown/raw/ERR1624620_1.fastq.gz
+  path: ../../../../fixtures/ERP0156/ERP015692/raw/ERR1624620_1.fastq.gz
   class: File
 reverse_reads:
-  path: ../../../../fixtures/unknown/unknown/raw/ERR1624620_2.fastq.gz
+  path: ../../../../fixtures/ERP0156/ERP015692/raw/ERR1624620_2.fastq.gz
   class: File
 
 #cwltool:overrides:
