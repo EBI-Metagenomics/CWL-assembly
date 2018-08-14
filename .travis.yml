@@ -18,9 +18,9 @@ before_install:
   - mkdir "$TRAVIS_BUILD_DIR/coverage"
 
 install:
-  - docker build -t readfq:latest $TRAVIS_BUILD_DIR/cwl/stats/readfq/
-  - docker build -t stats_report:latest $TRAVIS_BUILD_DIR/cwl/stats/stats_report/
-  - docker build -t fasta_trimming:latest $TRAVIS_BUILD_DIR/cwl/stats/fasta_trimming/
+  - docker build -t "migueldboland/cwl-assembly-readfq" $TRAVIS_BUILD_DIR/cwl/stats/readfq/
+  - docker build -t "migueldboland/cwl-assembly-stats-report" $TRAVIS_BUILD_DIR/cwl/stats/stats_report/
+  - docker build -t "migueldboland/cwl-assembly-fasta-trimming" $TRAVIS_BUILD_DIR/cwl/stats/fasta_trimming/
 
   - source ./setup_env.sh
 

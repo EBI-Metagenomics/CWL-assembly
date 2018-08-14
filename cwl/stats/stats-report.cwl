@@ -4,9 +4,7 @@ class: CommandLineTool
 
 requirements:
   DockerRequirement:
-    dockerImageId: stats_report
-    dockerFile:
-      $include: stats_report/Dockerfile
+    dockerPull: "migueldboland/cwl-assembly-stats-report:latest"
   InlineJavascriptRequirement: {}
 
 baseCommand: ['python', '/gen_stats_report.py']

@@ -4,9 +4,7 @@ class: CommandLineTool
 
 requirements:
   DockerRequirement:
-    dockerImageId: readfq
-    dockerFile:
-      $include: readfq/Dockerfile
+    dockerPull: "migueldboland/cwl-assembly-readfq"
   InlineJavascriptRequirement: {}
 
 baseCommand:

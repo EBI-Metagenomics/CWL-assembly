@@ -4,9 +4,7 @@ class: CommandLineTool
 
 requirements:
   DockerRequirement:
-    dockerImageId: fasta_trimming
-    dockerFile:
-      $include: fasta_trimming/Dockerfile
+    dockerPull: "migueldboland/cwl-assembly-fasta-trimming"
   InlineJavascriptRequirement: {}
 
 baseCommand: ['python', '/trim_fasta.py']
