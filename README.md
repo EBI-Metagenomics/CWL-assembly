@@ -3,11 +3,23 @@
 [![Build Status](https://travis-ci.org/EBI-Metagenomics/CWL-assembly.svg?branch=develop)](https://travis-ci.org/EBI-Metagenomics/CWL-assembly)
 
 
-# Setting up env
+# Installation
+## Create local environment
+```bash
+bash setup_env.sh
 source /hps/nobackup2/production/metagenomics/mdb/CWL-assembly/toil-3.16.0-dev/bin/activateL-assembly/
 cd /hps/nobackup2/production/metagenomics/mdb/CWL-assembly/cwl/assembly
 export TMP=$PWD/tmp
 mkdir tmp toil_work out
+```
+
+## Build docker containers
+```bash
+docker build -t readfq:latest $TRAVIS_BUILD_DIR/cwl/stats/readfq/
+docker build -t stats_report:latest $TRAVIS_BUILD_DIR/cwl/stats/stats_report/
+docker build -t fasta_trimming:latest $TRAVIS_BUILD_DIR/cwl/stats/fasta_trimming/
+```
+
 
 # Running full pipeline from CLI
 ```bash

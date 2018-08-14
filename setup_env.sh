@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-virtualenv toil-3.16.0-dev
-source toil-3.16.0-dev/bin/activate
+virtualenv venv
+source venv/bin/activate
 pip install -U pip setuptools
 pip install -r requirements.txt
 pip install -r requirements-test.txt
 
-cd toil-3.16.0-dev
+cd venv
 
 curl https://raw.githubusercontent.com/indigo-dc/udocker/devel/udocker.py > bin/udocker
 chmod 775 bin/udocker

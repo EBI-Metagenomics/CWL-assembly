@@ -1,7 +1,6 @@
 requests==2.19.1
 lib==3.0.0
-PyYAML==3.13
 toil[cwl]~=3.17.0
 ruamel.yaml<0.15
 subprocess32==3.5.2
-mock==2.0.0
+enum34==1.1.6
