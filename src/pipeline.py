@@ -61,6 +61,9 @@ def parse_args():
     parser.add_argument('-s', '--study', help='ENA project accession')
     parser.add_argument('-r', '--runs',
                         help='comma-seperated ENA run accessions to assemble (1 assembly per run) in specified project')
+    parser.add_argument('--docker-cmd', dest='docker_cmd', choices=['docker', 'udocker'], default='docker',
+                        help='Docker command to use in environemnt')
+
     # data_inputs = parser.add_mutually_exclusive_group()
     # single_projects = data_inputs.add_argument_group()
     # single_projects.add_argument('-s', '--study', help='ENA project accession')
@@ -79,7 +82,8 @@ def main(args):
     assembly_jobs = instantiate_jobs_from_args(path_finder, ena, args)
     assembly_jobs = [job.launch_pipeline() for job in assembly_jobs]
     for job in assembly_jobs:
-        print('Study {} Run {} Return code: {}'.format(job.study_accession, job.run['run_accession'], job.process.wait()))
+        print(
+            'Study {} Run {} Return code: {}'.format(job.study_accession, job.run['run_accession'], job.process.wait()))
 
 
 if __name__ == '__main__':

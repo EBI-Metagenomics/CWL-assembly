@@ -29,6 +29,7 @@ def safe_make_dir(dirname):
 
 class AssemblyJob:
     def __init__(self, path_finder, ena, args, run):
+        self.docker_cmd = args.docker_cmd
         self.ena = ena
         self.memory = args.memory
         self.cores = 32 if args.memory >= 240 else 16
@@ -118,8 +119,8 @@ class AssemblyJob:
     def create_pipeline_cmd(self):
         # return f'cwltoil --user-space-docker-cmd=udocker --cleanWorkDir onSuccess --debug
         # --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf megahit_pipeline.cwl megahit_pipeline.yml'
-        return 'cwltoil  --cleanWorkDir onSuccess  --debug  --outdir {}  --workDir {}  {} {}'.format(
-            self.run_dir, os.getcwd(), self.pipeline_workflow, self.job_desc_file)
+        return 'cwltoil  --user-space-docker-cmd={} --cleanWorkDir onSuccess  --debug  --outdir {}  --workDir {}  {} {}'.format(
+            self.docker_cmd, self.run_dir, os.getcwd(), self.pipeline_workflow, self.job_desc_file)
 
     def launch_pipeline(self):
         cmd = self.create_pipeline_cmd()
