@@ -72,7 +72,5 @@ class EnaApiHandler:
 
         runs = json.loads(response.text)
         if filter_runs:
-            num_runs = len(runs)
             runs = list(filter(run_filter, runs))
-            num_filtered_runs = num_runs - len(runs)
         return runs

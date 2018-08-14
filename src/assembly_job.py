@@ -100,7 +100,6 @@ class AssemblyJob:
             self.write_template(job_templates['megahit_paired'])
         else:
             raise NotImplementedError('Assemblies using metaspades in non-paired mode are not yet supported')
-        pass
 
     def write_template(self, template_src):
         with open(template_src, 'r') as f:

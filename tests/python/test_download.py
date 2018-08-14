@@ -58,7 +58,7 @@ class TestDownloadManager(object):
     def reset_socket(self):
         yield
         download_manager.urllib.urlretrieve = urllib.urlretrieve
-        
+
     def test_download_manager_should_download_all_urls_2downloads(self, tmpdir):
         download_manager.urllib.urlretrieve = fake_valid_urlretrieve
         tmpdir = str(tmpdir)
