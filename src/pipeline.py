@@ -76,7 +76,10 @@ def parse_args():
 def main(args):
     path_finder = PathFinder(args.dir, args.assembler.__str__())
     ena = ena_api.EnaApiHandler()
-    instantiate_jobs_from_args(path_finder, ena, args)
+    assembly_jobs = instantiate_jobs_from_args(path_finder, ena, args)
+    assembly_jobs = [job.launch_pipeline() for job in assembly_jobs]
+    for job in assembly_jobs:
+        print('Study {} Run {} Return code: {}'.format(job.study_accession, job.run['run_accession'], job.process.wait()))
 
 
 if __name__ == '__main__':

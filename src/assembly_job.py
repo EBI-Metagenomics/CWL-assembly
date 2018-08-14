@@ -38,6 +38,8 @@ class AssemblyJob:
         self.study_accession = run['secondary_study_accession']
         self.raw_files = []
 
+        self.process = None
+
         self.study_dir = path_finder.get_study_dir(run['secondary_study_accession'])
         self.run_dir = path_finder.get_run_dir(self.study_dir, run['run_accession'])
         self.raw_dir = path_finder.get_raw_dir(self.study_dir)
@@ -55,9 +57,6 @@ class AssemblyJob:
         logging.info('\tFinished downloading raw data')
         self.write_job()
         logging.info('\tWrote CWL job description')
-        logging.info('\tLaunching pipeline')
-        self.launch_pipeline()
-        logging.info('\tFinished!')
 
     def create_dirs(self):
         safe_make_dir(self.study_dir)
@@ -125,8 +124,8 @@ class AssemblyJob:
     def launch_pipeline(self):
         cmd = self.create_pipeline_cmd()
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-        process.wait()
-        return process.returncode
+        self.process = process
+        return self
 
     def __repr__(self):
         return 'Study: {}\n'.format(self.study_accession) + \
