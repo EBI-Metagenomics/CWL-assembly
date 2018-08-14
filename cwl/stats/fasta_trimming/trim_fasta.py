@@ -28,7 +28,7 @@ def trim_fasta_file(source_file, threshold, output_file, assembler):
 
 def compress_file(in_file, out_file):
     out_dir = os.path.dirname(out_file)
-    if not os.path.exists(out_dir):
+    if not os.path.exists(out_dir) and len(out_dir) > 0:
         os.makedirs(out_dir)
     with open(in_file, 'rb') as f_in, gzip.open(out_file, 'wb+') as f_out:
         shutil.copyfileobj(f_in, f_out)
