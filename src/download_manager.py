@@ -71,7 +71,7 @@ class DownloadManager:
 def process_download(download_job):
     url = download_job[0]
     dest = download_job[1]
-    if 'ftp' in url:
+    if 'ftp' in url and 'ftp://' not in url:
         url = 'ftp://' + url
     logging.info('\t\tDownloading ' + os.path.basename(dest))
     try:
