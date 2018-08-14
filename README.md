@@ -7,7 +7,7 @@
 ## Create local environment
 ```bash
 bash setup_env.sh
-source /hps/nobackup2/production/metagenomics/mdb/CWL-assembly/toil-3.16.0-dev/bin/activateL-assembly/
+source /hps/nobackup2/production/metagenomics/mdb/CWL-assembly/venv/bin/activateL-assembly/
 cd /hps/nobackup2/production/metagenomics/mdb/CWL-assembly/cwl/assembly
 export TMP=$PWD/tmp
 mkdir tmp toil_work out
