@@ -5,7 +5,7 @@ import json
 from ruamel import yaml
 import os
 
-config_file = os.path.realpath(os.path.join(__file__, os.pardir, os.pardir, 'ena_api_creds.yml'))
+config_file = os.path.realpath(os.path.join(__file__, os.pardir, os.pardir, 'ena_config.yml'))
 
 
 def get_default_connection_headers():
@@ -38,12 +38,22 @@ class EnaApiHandler:
             config = yaml.safe_load(f)
 
         self.url = config['API_URL']
-        self.auth = (config['USER'], config['PASSWORD'])
+        if 'USER' in config and 'PASSWORD' in config:
+            self.auth = (config['USER'], config['PASSWORD'])
+        else:
+            self.auth = None
+
+    def post_request(self, data):
+        if self.auth:
+            response = requests.post(self.url, data=data, auth=self.auth, **get_default_connection_headers())
+        else:
+            response = requests.post(self.url, data=data, **get_default_connection_headers())
+        return response
 
     def get_run_metadata(self, run_acc, filter_runs=True):
         data = get_default_params()
         data['query'] = "run_accession=\"{}\"".format(run_acc)
-        response = requests.post(self.url, data=data, auth=self.auth, **get_default_connection_headers())
+        response = self.post_request(data)
         if str(response.status_code)[0] != '2':
             raise ValueError('Could not retrieve run %s.', run_acc)
         run = json.loads(response.text)[0]
@@ -56,7 +66,7 @@ class EnaApiHandler:
         data = get_default_params()
         data['query'] = "secondary_study_accession=\"{}\"".format(study_sec_acc)
 
-        response = requests.post(self.url, data=data, auth=self.auth, **get_default_connection_headers())
+        response = self.post_request(data)
         if str(response.status_code)[0] != '2':
             raise ValueError('Could not retrieve runs for study %s.', study_sec_acc)
 
