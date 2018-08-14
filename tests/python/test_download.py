@@ -1,5 +1,4 @@
 import os
-import random
 import shutil
 import urllib
 
@@ -7,11 +6,6 @@ from ruamel import yaml
 import pytest
 
 from src import download_manager
-
-
-def guard(*args, **kwargs):
-    raise Exception("Internet access not available")
-
 
 current_dir = os.path.dirname(__file__)
 fixtures_dir = os.path.join(current_dir, os.pardir, 'fixtures')
@@ -29,7 +23,7 @@ def fake_valid_urlretrieve(url, dest):
 
 
 def fake_invalid_urlretrieve(url, dest):
-    raise EnvironmentError('Blocked mock download.')
+    raise EnvironmentError('Blocked mock download. (arguments {}, {})'.format(url, dest))
 
 
 def download_and_validate_downloaded_files(tmpdir):
