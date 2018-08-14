@@ -16,7 +16,7 @@ class DownloadManager:
         self.raw_dir = raw_dir
         self.logged_downloads = None
         if not os.path.exists(raw_dir):
-            os.mkdir(raw_dir)
+            os.makedirs(raw_dir)
 
     def __enter__(self):
         logging.debug('Reading download manager file {}'.format(self.logfile))

@@ -23,7 +23,7 @@ def get_default_params():
         "dataPortal": "metagenome",
         "format": "json",
         "fields": "secondary_study_accession,run_accession,library_source,"
-                  "library_strategy,library_layout,submitted_ftp",
+                  "library_strategy,library_layout,fastq_ftp",
         "limit": 10000
     }
 

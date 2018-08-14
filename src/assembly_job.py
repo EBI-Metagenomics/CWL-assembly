@@ -56,7 +56,6 @@ class AssemblyJob:
         self.write_job()
         logging.info('\tWrote CWL job description')
         logging.info('\tLaunching pipeline')
-        quit()
         self.launch_pipeline()
         logging.info('\tFinished!')
 
@@ -67,8 +66,8 @@ class AssemblyJob:
         safe_make_dir(self.tmp_dir)
 
     def download_raw_data(self):
-        dest_paths = map(lambda x: os.path.join(self.raw_dir, os.path.basename(x)), self.run['submitted_ftp'].split(';'))
-        downloads = list(zip(self.run['submitted_ftp'].split(';'), dest_paths))
+        dest_paths = map(lambda x: os.path.join(self.raw_dir, os.path.basename(x)), self.run['fastq_ftp'].split(';'))
+        downloads = list(zip(self.run['fastq_ftp'].split(';'), dest_paths))
         with self.download_logger:
             self.download_logger.download_urls(downloads)
 
@@ -107,9 +106,9 @@ class AssemblyJob:
         with open(template_src, 'r') as f:
             template = yaml.safe_load(f)
         template['run_id'] = str(self.run['run_accession'])
-        # TODO update
-        # template['forward_reads']['path'] = str(self.raw_files[0])
-        # template['reverse_reads']['path'] = str(self.raw_files[1])
+        raw_files = sorted(self.download_logger.logged_downloads)
+        template['forward_reads']['path'] = str(os.path.join(self.raw_dir, raw_files[0]))
+        template['reverse_reads']['path'] = str(os.path.join(self.raw_dir, raw_files[1]))
         # template['cwltool:overrides'][self.assembler.__str__() + '.cwl']['requirements']['ResourceRequirement'] = {
         #     'ramMin': self.memory,
         #     'coresMin': self.cores

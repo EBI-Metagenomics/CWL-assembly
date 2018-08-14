@@ -3,14 +3,25 @@
 [![Build Status](https://travis-ci.org/EBI-Metagenomics/CWL-assembly.svg?branch=develop)](https://travis-ci.org/EBI-Metagenomics/CWL-assembly)
 
 
-# Running pipelines on cluster
-## Setting up env
+# Setting up env
 source /hps/nobackup2/production/metagenomics/mdb/CWL-assembly/toil-3.16.0-dev/bin/activateL-assembly/
 cd /hps/nobackup2/production/metagenomics/mdb/CWL-assembly/cwl/assembly
 export TMP=$PWD/tmp
 mkdir tmp toil_work out
-## MegaHit
-cwltoil --user-space-docker-cmd=udocker --cleanWorkDir onSuccess --debug --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf megahit_pipeline.cwl megahit_pipeline.yml
 
-##MetaSpades
+# Running full pipeline from CLI
+```bash
+python2 src/pipeline.py metaspades -s ERP010229 -r ERR866589  -d output
+```
+
+# Running cwl pipelines on cluster
+
+## MegaHit
+```bash
+cwltoil --user-space-docker-cmd=udocker --cleanWorkDir onSuccess --debug --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf megahit_pipeline.cwl megahit_pipeline.yml
+```
+
+## MetaSpades
+```bash
 cwltoil --user-space-docker-cmd=udocker --debug --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf  metaspades_pipeline.cwl metaspades_pipeline.yml
+```
