@@ -43,11 +43,16 @@ inputs:
 #     format: edam:format_1930  # FASTQ
     inputBinding:
       prefix: "-2"
-  unpaired_reads:
+  single_reads:
     type: File?
 #     format: edam:format_1930  # FASTQ
     inputBinding:
       prefix: "-s"
+  interleaved_reads:
+    type: File?
+    #     format: edam:format_1930  # FASTQ
+    inputBinding:
+      prefix: "--12"
 
 stdout: stdout.txt
 stderr: stderr.txt

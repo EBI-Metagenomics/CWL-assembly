@@ -42,11 +42,11 @@ inputs:
 #     format: edam:format_1930  # FASTQ
     inputBinding:
       prefix: "-2"
-  unpaired_reads:
-    type: File?
+#  single_reads:
+#    type: File?
 #     format: edam:format_1930  # FASTQ
-    inputBinding:
-      prefix: "-s"
+#    inputBinding:
+#      prefix: "-s"
   interleaved_reads:
     type: File?
     #     format: edam:format_1930  # FASTQ
@@ -107,7 +107,7 @@ outputs:
       glob: params.txt
 
   log:
-    label: SPAdes log
+    label: MetaSP log
     type: File
     format: iana:text/plain
     outputBinding:

@@ -15,6 +15,8 @@ inputs:
     type: File?
   interleaved_reads:
     type: File?
+  single_reads:
+    type: File?
   min_contig_length:
     type: int
   output_dest:
@@ -58,6 +60,8 @@ steps:
         source: reverse_reads
       interleaved_reads:
         source: interleaved_reads
+      single_reads:
+        source: single_reads
     out:
       - contigs
       - log
@@ -70,7 +74,7 @@ steps:
       sequences:
         source: megahit/contigs
       reads:
-        source: [forward_reads, reverse_reads, interleaved_reads]
+        source: [forward_reads, reverse_reads, interleaved_reads, single_reads]
         valueFrom: $(self.filter(Boolean))
       output_dest:
         source: output_dest

@@ -9,9 +9,11 @@ requirements:
 
 inputs:
   forward_reads:
-    type: File
+    type: File?
   reverse_reads:
-    type: File
+    type: File?
+  interleaved_reads:
+    type: File?
   output_dest:
     type: string
     default: 'stats_report.json'
@@ -59,6 +61,8 @@ steps:
         source: forward_reads
       reverse_reads:
         source: reverse_reads
+      interleaved_reads:
+        source: interleaved_reads
     out:
       - assembly_graph
       - contigs
@@ -79,7 +83,8 @@ steps:
       sequences:
         source: metaspades/contigs
       reads:
-        source: [forward_reads, reverse_reads]
+        source: [forward_reads, reverse_reads, interleaved_reads]
+        valueFrom: $(self.filter(Boolean))
       output_dest:
         source: output_dest
       min_contig_length:

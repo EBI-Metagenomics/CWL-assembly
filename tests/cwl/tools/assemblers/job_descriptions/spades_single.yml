@@ -2,7 +2,7 @@
 cwl:tool: spades.cwl
 run_id: ERR866589
 
-unpaired_reads:
+single_reads:
   path: ../../../../fixtures/ERP0128/ERP012806/raw/ERR1078287.fastq.gz
   class: File
 

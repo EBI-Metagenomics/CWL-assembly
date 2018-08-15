@@ -1,8 +1,8 @@
 #!/usr/bin/env cwltool
 cwl:tool: spades.cwl
 run_id: ERR866589
-unpaired_reads:
-  path: ../../fixtures/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
+single_reads:
+  path: ../../tests/fixtures/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
   class: File
 
 cwltool:overrides:
