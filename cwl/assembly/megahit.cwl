@@ -222,7 +222,7 @@ outputs:
     type: File
     format: iana:text/plain
     outputBinding:
-      glob: $(inputs.o || "megahit_out")/megahit.log
+      glob: $(inputs.o || "megahit_out")/log
 
 $namespaces:
  edam: http://edamontology.org/
