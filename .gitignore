@@ -108,4 +108,7 @@ venv.bak/
 
 # Project specific
 venv
+venv3
 ena_api_creds.yml
+old/
+tmp/
