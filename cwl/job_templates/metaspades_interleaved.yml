@@ -2,19 +2,13 @@
 cwl:tool: metaspades_pipeline.cwl
 output_assembly_name: run_id_tmp
 
-forward_reads:
+interleaved_reads:
   path: forward_reads_tmp
   class: File
-reverse_reads:
-  path: reverse_reads_tmp
-  class: File
-
 
 output_dest: "out.json"
 
-
 min_contig_length: 200
-
 
 #cwltool:overrides:
 #  metaspades.cwl:

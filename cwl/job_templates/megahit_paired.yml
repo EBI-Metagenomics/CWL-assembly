@@ -1,0 +1,26 @@
+#!/usr/bin/env cwltool
+cwl:tool: megahit_pipeline.cwl
+
+output_assembly_name: run_id_tmp
+
+forward_reads:
+  path: forward_reads_tmp
+  class: File
+reverse_reads:
+  path: reverse_reads_tmp
+  class: File
+
+
+output_dest: "out.json"
+
+min_contig_length: 200
+
+#cwltool:overrides:
+#  megahit.cwl:
+#    requirements:
+#      ResourceRequirement:
+#        ramMin: 5
+#        coresMin: 1
+
+
+# cwltool --move-outputs --outdir cwl-megahit-final cwl/megahit.cwl cwl/megahit_paired.yml

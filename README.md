@@ -26,6 +26,25 @@ docker build -t fasta_trimming:latest $TRAVIS_BUILD_DIR/cwl/stats/fasta_trimming
 python2 src/pipeline.py metaspades -s ERP010229 -r ERR866589  -d output
 ```
 
+## Working pipeline examples
+### MEGAHIT
+```bash
+Interleaved: python2 src/pipeline.py megahit -s SRP074153 -r SRR6257420 -d tmp
+Single:      python2 src/pipeline.py megahit -s ERP012806 -r ERR1078287 -d tmp
+```
+### Metaspades
+```bash
+Paired:      python2 src/pipeline.py metaspades -s ERP010229 -r ERR866589  -d tmp
+Interleaved: python2 src/pipeline.py metaspades -s SRP074153 -r SRR6257420 -d tmp
+```
+
+### Spades
+```bash
+Paired:      python2 src/pipeline.py spades -s SRP040765 -r SRR1567464  -d tmp
+Interleaved: python2 src/pipeline.py spades -s SRP074153 -r SRR6257420 -d tmp
+Single:      python2 src/pipeline.py spades -s ERP012806 -r ERR1078287 -d tmp
+```
+
 # Running cwl pipelines on cluster
 
 ## MegaHit
@@ -36,4 +55,39 @@ cwltoil --user-space-docker-cmd=udocker --cleanWorkDir onSuccess --debug --outdi
 ## MetaSpades
 ```bash
 cwltoil --user-space-docker-cmd=udocker --debug --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf  metaspades_pipeline.cwl metaspades_pipeline.yml
+```
+
+
+
+# Example output directory structure
+```
+SRP0741
+    └── SRP074153               Project directory containing all assemblies under that project
+        ├── downloads.yml       Raw data download caching logfile, to avoid duplicate downloads of raw data
+        ├── SRR6257
+        │   └── SRR6257420      Run directory
+        │       └── megahit
+        │           ├── 001     Assembly directory
+        │           │   ├── SRR6257420.fasta               Trimmed assembly
+        │           │   ├── SRR6257420.fasta.gz            Archive trimmed assembly
+        │           │   ├── SRR6257420.fasta.gz.md5        MD5 hash of above archive
+        │           │   ├── coverage.tab                   Coverage file
+        │           │   ├── final.contigs.fa               Raw assembly
+        │           │   ├── job_config.yml                 CWL job configuration
+        │           │   ├── megahit.log                    Assembler output log
+        │           │   ├── output.json                    Human-readable Assembly stats file
+        │           │   ├── sorted.bam                     BAM file of assembly
+        │           │   ├── sorted.bam.bai                 Secondary BAM file
+        │           │   └── toil.log                       cwlToil output log
+        │           └── metaspades Assembly of equivalent data using another assembler (eg metaspades, spades...)
+        │               └── ... 
+        │ 
+        ├── raw                 Raw data directory
+        │   └── SRR6257420.fastq.gz                        Raw data files
+        │
+        └── tmp                 Temporary directory for assemblies
+            └── SRR6257
+                └── SRR6257420
+                    └── megahit
+                        └── 001
 ```

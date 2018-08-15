@@ -9,14 +9,19 @@ from download_manager import DownloadManager
 job_template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, 'cwl', 'job_templates'))
 job_templates = {
     'metaspades_paired': os.path.join(job_template_dir, 'metaspades_paired.yml'),
-    # 'metaspades_interleaved': os.path.join(job_template_dir, 'metaspades_interleaved.yml'),
+    'metaspades_interleaved': os.path.join(job_template_dir, 'metaspades_interleaved.yml'),
     'spades_paired': os.path.join(job_template_dir, 'spades_paired.yml'),
-    'spades_single': os.path.join(job_template_dir, 'spades_single.yml')
+    'spades_interleaved': os.path.join(job_template_dir, 'spades_interleaved.yml'),
+    'spades_single': os.path.join(job_template_dir, 'spades_single.yml'),
+    'megahit_paired': os.path.join(job_template_dir, 'megahit_paired.yml'),
+    'megahit_interleaved': os.path.join(job_template_dir, 'megahit_interleaved.yml'),
+    'megahit_single': os.path.join(job_template_dir, 'megahit_single.yml')
 }
 pipeline_workflows_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, 'cwl'))
 pipeline_workflows = {
     Assembler.metaspades: os.path.join(pipeline_workflows_dir, 'metaspades_pipeline.cwl'),
-    Assembler.spades: os.path.join(pipeline_workflows_dir, 'spades_pipeline.cwl')
+    Assembler.spades: os.path.join(pipeline_workflows_dir, 'spades_pipeline.cwl'),
+    Assembler.megahit: os.path.join(pipeline_workflows_dir, 'megahit_pipeline.cwl')
 }
 
 TEMPLATE_NAME = 'job_config.yml'
@@ -85,31 +90,48 @@ class AssemblyJob:
 
     def write_metaspades_job(self):
         if self.run['library_layout'] == 'PAIRED':
-            self.write_template(job_templates['metaspades_paired'])
+            if len(self.download_logger.logged_downloads) == 1:
+                template = 'metaspades_interleaved'
+            else:
+                template = 'metaspades_paired'
+            self.write_template(job_templates[template])
         else:
             raise NotImplementedError('Assemblies using metaspades in non-paired mode are not yet supported')
 
     def write_spades_job(self):
-        if self.run['library_layout'] == 'SINGLE':
-            self.write_template(job_templates['spades_single'])
-        elif self.run['library_layout'] == 'PAIRED':
-            self.write_template(job_templates['spades_paired'])
+        if self.run['library_layout'] == 'PAIRED':
+            if len(self.download_logger.logged_downloads) == 1:
+                template = 'spades_interleaved'
+            else:
+                template = 'spades_paired'
         else:
-            raise NotImplementedError('Assemblies using metaspades in paired mode are not yet supported')
+            template = 'spades_single'
+        self.write_template(job_templates[template])
 
     def write_megahit_job(self):
-        if self.run.library_layout == 'paired':
-            self.write_template(job_templates['megahit_paired'])
+        if self.run['library_layout'] == 'PAIRED':
+            if len(self.download_logger.logged_downloads) == 1:
+                template = 'megahit_interleaved'
+            else:
+                template = 'megahit_paired'
         else:
-            raise NotImplementedError('Assemblies using metaspades in non-paired mode are not yet supported')
+            template = 'megahit_single'
+        self.write_template(job_templates[template])
 
     def write_template(self, template_src):
         with open(template_src, 'r') as f:
             template = yaml.safe_load(f)
-        template['run_id'] = str(self.run['run_accession'])
+        template['output_assembly_name'] = str(self.run['run_accession'])
         raw_files = sorted(self.download_logger.logged_downloads)
-        template['forward_reads']['path'] = str(os.path.join(self.raw_dir, raw_files[0]))
-        template['reverse_reads']['path'] = str(os.path.join(self.raw_dir, raw_files[1]))
+        if template.get('forward_reads'):
+            template['forward_reads']['path'] = str(os.path.join(self.raw_dir, raw_files[0]))
+            template['reverse_reads']['path'] = str(os.path.join(self.raw_dir, raw_files[1]))
+        elif template.get('interleaved_reads'):
+            template['interleaved_reads']['path'] = str(os.path.join(self.raw_dir, raw_files[0]))
+        elif template.get('single_reads'):
+            template['single_reads']['path'] = str(os.path.join(self.raw_dir, raw_files[0]))
+        else:
+            raise NotImplementedError('No valid fields for reads found in template {}'.format(template_src))
         # template['cwltool:overrides'][self.assembler.__str__() + '.cwl']['requirements']['ResourceRequirement'] = {
         #     'ramMin': self.memory,
         #     'coresMin': self.cores
@@ -121,13 +143,14 @@ class AssemblyJob:
     def create_pipeline_cmd(self):
         # return f'cwltoil --user-space-docker-cmd=udocker --cleanWorkDir onSuccess --debug
         # --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf megahit_pipeline.cwl megahit_pipeline.yml'
-        return 'cwltoil  --user-space-docker-cmd={} --cleanWorkDir onSuccess --outdir {}  --workDir {}  {} {} '.format(
+        return 'cwltoil  --retryCount 1 --user-space-docker-cmd={} --cleanWorkDir onSuccess --outdir {} --debug --workDir {}  {} {} '.format(
             self.docker_cmd, self.run_dir, os.getcwd(), self.pipeline_workflow, self.job_desc_file)
 
     def launch_pipeline(self):
         cmd = self.create_pipeline_cmd()
         with open(self.toil_log_file, 'wb') as logfile:
-            self.process = subprocess.Popen(cmd, stdout=logfile, stderr=logfile, shell=True)
+            # self.process = subprocess.Popen(cmd, stdout=logfile, stderr=logfile, shell=True)
+            self.process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
         print('Launching pipeline {} {}'.format(self.study_accession, self.run['run_accession']))
         return self
 
