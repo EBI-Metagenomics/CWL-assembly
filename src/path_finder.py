@@ -1,5 +1,6 @@
 import os
 
+
 # STATS_FILENAME = 'assembly_stats.p'
 
 
@@ -20,6 +21,8 @@ class PathFinder:
     def get_tmp_dir(self, study_dir, run_accession):
         return os.path.join(study_dir, 'tmp', run_accession[0:7], run_accession, self.assembler, '001')
 
+    def get_toil_log_file(self, run_dir):
+        return os.path.join(run_dir, 'toil.log')
 
         # def get_all_studies(self):
         #     # Find Dirs with format of

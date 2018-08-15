@@ -84,6 +84,8 @@ def main(args):
     for job in assembly_jobs:
         print(
             'Study {} Run {} Return code: {}'.format(job.study_accession, job.run['run_accession'], job.process.wait()))
+        if job.process.wait()!=0:
+            print(job.toil_log_file)
 
 
 if __name__ == '__main__':

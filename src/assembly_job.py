@@ -48,6 +48,8 @@ class AssemblyJob:
         self.job_desc_file = os.path.join(self.run_dir, TEMPLATE_NAME)
         self.pipeline_workflow = pipeline_workflows[self.assembler]
 
+        self.toil_log_file = path_finder.get_toil_log_file(self.run_dir)
+
         download_log_file = os.path.join(self.study_dir, 'downloads.yml')
         self.download_logger = DownloadManager(download_log_file, self.raw_dir)
         logging.info('Starting assembly')
@@ -119,13 +121,14 @@ class AssemblyJob:
     def create_pipeline_cmd(self):
         # return f'cwltoil --user-space-docker-cmd=udocker --cleanWorkDir onSuccess --debug
         # --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf megahit_pipeline.cwl megahit_pipeline.yml'
-        return 'cwltoil  --user-space-docker-cmd={} --cleanWorkDir onSuccess  --debug  --outdir {}  --workDir {}  {} {}'.format(
+        return 'cwltoil  --user-space-docker-cmd={} --cleanWorkDir onSuccess --outdir {}  --workDir {}  {} {} '.format(
             self.docker_cmd, self.run_dir, os.getcwd(), self.pipeline_workflow, self.job_desc_file)
 
     def launch_pipeline(self):
         cmd = self.create_pipeline_cmd()
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-        self.process = process
+        with open(self.toil_log_file, 'wb') as logfile:
+            self.process = subprocess.Popen(cmd, stdout=logfile, stderr=logfile, shell=True)
+        print('Launching pipeline {} {}'.format(self.study_accession, self.run['run_accession']))
         return self
 
     def __repr__(self):
