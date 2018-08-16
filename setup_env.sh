@@ -14,4 +14,5 @@ wget https://nodejs.org/dist/v8.11.1/node-v8.11.1-linux-x64.tar.xz && tar -xJf n
 export PATH="$PWD/node-v8.11.1-linux-x64/bin/:$PATH"
 echo "PATH=$PWD/node-v8.11.1-linux-x64/bin/:\$PATH" >> bin/activate
 cd ..
+mkdir tmp
 

@@ -1,3 +1,4 @@
+setuptools==40.0.0
 requests==2.19.1
 lib==3.0.0
 toil[cwl]~=3.17.0
