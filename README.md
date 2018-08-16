@@ -4,22 +4,16 @@
 
 
 # Installation
+## Dependencies
+
 ## Create local environment
 ```bash
 bash setup_env.sh
-source /hps/nobackup2/production/metagenomics/mdb/CWL-assembly/venv/bin/activateL-assembly/
-cd /hps/nobackup2/production/metagenomics/mdb/CWL-assembly/cwl/assembly
-export TMP=$PWD/tmp
-mkdir tmp toil_work out
-```
+source venv/bin/activate
 
-## Build docker containers
-```bash
-docker build -t readfq:latest $TRAVIS_BUILD_DIR/cwl/stats/readfq/
-docker build -t stats_report:latest $TRAVIS_BUILD_DIR/cwl/stats/stats_report/
-docker build -t fasta_trimming:latest $TRAVIS_BUILD_DIR/cwl/stats/fasta_trimming/
+# If running on a multi-volume cluster, the following is required to avoid cross-volume symlinks / mounts
+export TMP=$PWD/tmp 
 ```
-
 
 # Running full pipeline from CLI
 ```bash
