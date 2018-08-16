@@ -38,28 +38,44 @@ inputs:
   # TODO exclusive 1 & 2 || 12
   
   forward_reads:
-    type: File?
+    type:
+      - File?
+      - type: array
+        items: File
     inputBinding:
       position: 1
       prefix: "-1"
+      itemSeparator: ","
 
   reverse_reads:
-    type: File?
+    type:
+      - File?
+      - type: array
+        items: File
     inputBinding:
       position: 2
       prefix: "-2"
+      itemSeparator: ","
 
   interleaved_reads:
-    type: File?
+    type:
+      - File?
+      - type: array
+        items: File
     inputBinding:
       position: 3
       prefix: "--12"
+      itemSeparator: ","
 
   single_reads:
-    type: File?
+    type:
+      - File?
+      - type: array
+        items: File
     inputBinding:
       position: 4
       prefix: "-r"
+      itemSeparator: ","
       # TODO check if multiple prefixes are possible?
 
   input-cmd:

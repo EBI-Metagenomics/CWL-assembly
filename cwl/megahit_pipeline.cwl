@@ -10,13 +10,33 @@ requirements:
 
 inputs:
   forward_reads:
-    type: File?
+    type:
+      - File?
+      - type: array
+        items: File
+    inputBinding:
+      itemSeparator: ","
   reverse_reads:
-    type: File?
+    type:
+      - File?
+      - type: array
+        items: File
+    inputBinding:
+      itemSeparator: ","
   interleaved_reads:
-    type: File?
+    type:
+      - File?
+      - type: array
+        items: File
+    inputBinding:
+      itemSeparator: ","
   single_reads:
-    type: File?
+    type:
+      - File?
+      - type: array
+        items: File
+    inputBinding:
+      itemSeparator: ","
   min_contig_length:
     type: int
   output_dest:
@@ -75,7 +95,7 @@ steps:
         source: megahit/contigs
       reads:
         source: [forward_reads, reverse_reads, interleaved_reads, single_reads]
-        valueFrom: $(self.filter(Boolean))
+        valueFrom: $([].concat.apply([], self).filter(Boolean))
       output_dest:
         source: output_dest
       min_contig_length:
