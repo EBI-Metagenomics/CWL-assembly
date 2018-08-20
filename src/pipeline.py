@@ -65,6 +65,7 @@ def instantiate_jobs_from_args(path_finder, ena, args):
 
 def parse_args(args):
     parser = argparse.ArgumentParser(description='Metagenomic assembly pipeline kickoff script')
+    parser.add_argument('--batch_system', choices=['lsf'])
     parser.add_argument('assembler', type=Assembler, choices=list(Assembler))
     parser.add_argument('--private', action='store_true')
     parser.add_argument('-m', '--memory', default=240, type=int, help='Memory allocation for pipeline (GB)')

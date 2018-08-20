@@ -41,6 +41,7 @@ class AssemblyJob:
         self.study_accession = run['secondary_study_accession']
 
         self.process = None
+        self.batch_system = args.batch_system
 
         self.study_dir = path_finder.get_study_dir(run['secondary_study_accession'])
         self.run_dir = path_finder.get_run_dir(self.study_dir, run['run_accession'])
@@ -114,8 +115,11 @@ class AssemblyJob:
             yaml.dump(template, f)
 
     def create_pipeline_cmd(self):
-        return 'cwltoil  --retryCount 1 --user-space-docker-cmd={} --cleanWorkDir onSuccess --outdir {} --debug --workDir {}  {} {} '.format(
-            self.docker_cmd, self.run_dir, self.tmp_dir, self.pipeline_workflow, self.job_desc_file)
+        batch_system = ''
+        if self.batch_system:
+            batch_system = '--batch_system ' + self.batch_system
+        return 'cwltoil {} --retryCount 1 --user-space-docker-cmd={} --cleanWorkDir onSuccess --outdir {} --debug --workDir {}  {} {} '.format(
+            batch_system, self.docker_cmd, self.run_dir, os.getcwd(), self.pipeline_workflow, self.job_desc_file)
 
     def launch_pipeline(self):
         cmd = self.create_pipeline_cmd()
@@ -231,5 +235,6 @@ class CoAssemblyJob(AssemblyJob):
         self.write_single_runs(template)
 
         self.write_requirements(template)
+
         with open(self.job_desc_file, 'w+') as f:
             yaml.dump(template, f)
