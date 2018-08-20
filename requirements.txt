@@ -1,7 +1,8 @@
+cwltool==1.0.20180819175200
 setuptools==40.0.0
-requests==2.19.1
+requests==2.18.4
 lib==3.0.0
 toil[cwl]~=3.17.0
-ruamel.yaml<0.15
+ruamel.yaml<=0.15.51
 subprocess32==3.5.2
 enum34==1.1.6

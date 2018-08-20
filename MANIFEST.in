@@ -1,0 +1,7 @@
+include cwl/*
+include cwl/assembly/*
+include cwl/job_templates/*
+include cwl/stats/*
+include cwl/stats/fasta_trimming/*
+include cwl/stats/readfq/*
+include cwl/stats/stats_report/*

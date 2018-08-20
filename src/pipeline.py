@@ -89,7 +89,9 @@ def parse_args(args):
     return parser.parse_args(args)
 
 
-def main(args):
+def main(args=None):
+    if not args:
+        args = parse_args(sys.argv[1:])
     if not (args.study or args.studies):
         logging.error('No studies specified, please provide -s SRP###### or -ss SRP######[,SRP######]')
         sys.exit(1)
