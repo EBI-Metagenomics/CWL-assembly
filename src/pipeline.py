@@ -68,7 +68,8 @@ def parse_args(args):
     parser.add_argument('--batch_system', choices=['lsf'])
     parser.add_argument('assembler', type=Assembler, choices=list(Assembler))
     parser.add_argument('--private', action='store_true')
-    parser.add_argument('-m', '--memory', default=240, type=int, help='Memory allocation for pipeline (GB)')
+    parser.add_argument('-m', '--memory', default=240, type=int, help='Memory allocation for assembly (GB).')
+    parser.add_argument('-c', '--cores', default=16, type=int, help='Number of cores / threads for assembly.')
     parser.add_argument('-d', '--dir', default='.', help='Root directory in which to run assemblies')
     parser.add_argument('--docker-cmd', dest='docker_cmd', choices=['docker', 'udocker'], default='docker',
                         help='Docker command to use in environemnt')

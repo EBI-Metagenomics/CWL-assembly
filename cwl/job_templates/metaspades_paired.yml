@@ -19,6 +19,3 @@ cwltool:overrides:
       ResourceRequirement:
         ramMin: ram_tmp
         coresMin: cores_tmp
-
-# cwltool --move-outputs --tmpdir cwl-metaspades-tmp --outdir cwl-metaspades-final cwl/metaspades.cwl cwl/metaspades_paired.yml
-

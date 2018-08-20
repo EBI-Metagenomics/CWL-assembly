@@ -33,7 +33,7 @@ class AssemblyJob:
         self.docker_cmd = args.docker_cmd
         self.ena = ena
         self.memory = args.memory
-        self.cores = 32 if args.memory >= 240 else 16
+        self.cores = args.cores
         self.assembler = args.assembler
         self.assembly_name = run['run_accession']
         # Fetch run data, remove duplicate runs, flatten list
@@ -140,7 +140,7 @@ class CoAssemblyJob(AssemblyJob):
         self.docker_cmd = args.docker_cmd
         self.ena = ena
         self.memory = args.memory
-        self.cores = 32 if args.memory >= 240 else 16
+        self.cores = args.cores
         self.assembler = args.assembler
         # Fetch run data, remove duplicate runs, flatten list
         self.runs = runs

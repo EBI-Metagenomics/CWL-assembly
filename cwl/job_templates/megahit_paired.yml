@@ -19,5 +19,5 @@ cwltool:overrides:
   assembly/megahit.cwl:
     requirements:
       ResourceRequirement:
-        ramMin: 5
-        coresMin: 1
+        ramMin: ram_tmp
+        coresMin: cores_tmp
