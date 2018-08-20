@@ -20,7 +20,7 @@ output_dest: "out.json"
 min_contig_length: 200
 
 cwltool:overrides:
-  metaspades.cwl:
+  assembly/megahit.cwl:
     requirements:
       ResourceRequirement:
         ramMin: ram_tmp

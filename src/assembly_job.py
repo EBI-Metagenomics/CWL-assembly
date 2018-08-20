@@ -86,6 +86,13 @@ class AssemblyJob:
             raise NotImplementedError('Assemblies using metaspades in non-paired mode are not yet supported')
         self.write_template(get_job_template(str(self.assembler) + template))
 
+    def write_requirements(self, template):
+        template['cwltool:overrides']['assembly/' + self.assembler.__str__() + '.cwl']['requirements'][
+            'ResourceRequirement'] = {
+            'ramMin': self.memory,
+            'coresMin': self.cores
+        }
+
     def write_template(self, template_src):
         with open(template_src, 'r') as f:
             template = yaml.safe_load(f)
@@ -100,21 +107,22 @@ class AssemblyJob:
             template['single_reads']['path'] = str(os.path.join(self.raw_dir, raw_files[0]))
         else:
             raise NotImplementedError('No valid fields for reads found in template {}'.format(template_src))
-        template['cwltool:overrides']['assembly/'+self.assembler.__str__() + '.cwl']['requirements']['ResourceRequirement'] = {
-            'ramMin': self.memory,
-            'coresMin': self.cores
-        }
+
+        self.write_requirements(template)
+
         with open(self.job_desc_file, 'w+') as f:
             yaml.dump(template, f)
 
     def create_pipeline_cmd(self):
         return 'cwltoil  --retryCount 1 --user-space-docker-cmd={} --cleanWorkDir onSuccess --outdir {} --debug --workDir {}  {} {} '.format(
-            self.docker_cmd, self.run_dir, os.getcwd(), self.pipeline_workflow, self.job_desc_file)
+            self.docker_cmd, self.run_dir, self.tmp_dir, self.pipeline_workflow, self.job_desc_file)
 
     def launch_pipeline(self):
         cmd = self.create_pipeline_cmd()
+        print(cmd)
         with open(self.toil_log_file, 'wb') as logfile:
             self.process = subprocess.Popen(cmd, stdout=logfile, stderr=logfile, shell=True)
+            # self.process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         print('Launching pipeline {} {}'.format(self.study_accession, self.assembly_name))
         return self
 
@@ -191,7 +199,8 @@ class CoAssemblyJob(AssemblyJob):
             forward_read_files, reverse_reads_files = zip(
                 *[sorted(str(run['fastq_ftp']).split(';')) for run in paired_runs])
             template['forward_reads'] = [{'path': self.map_url_to_file(f), 'class': 'File'} for f in forward_read_files]
-            template['reverse_reads'] = [{'path': self.map_url_to_file(f), 'class': 'File'} for f in reverse_reads_files]
+            template['reverse_reads'] = [{'path': self.map_url_to_file(f), 'class': 'File'} for f in
+                                         reverse_reads_files]
 
     def write_interleaved_runs(self, template):
         interleaved_runs = self.get_interleaved_runs()
@@ -199,7 +208,8 @@ class CoAssemblyJob(AssemblyJob):
             del template['interleaved_reads']
         else:
             interleaved_read_files = [str(run['fastq_ftp']) for run in interleaved_runs]
-            template['interleaved_reads'] = [{'path': self.map_url_to_file(f), 'class': 'File'} for f in interleaved_read_files]
+            template['interleaved_reads'] = [{'path': self.map_url_to_file(f), 'class': 'File'} for f in
+                                             interleaved_read_files]
 
     def write_single_runs(self, template):
         single_runs = self.get_single_runs()
@@ -220,9 +230,6 @@ class CoAssemblyJob(AssemblyJob):
 
         self.write_single_runs(template)
 
-        template['cwltool:overrides']['assembly/'+self.assembler.__str__() + '.cwl']['requirements']['ResourceRequirement'] = {
-            'ramMin': self.memory,
-            'coresMin': self.cores
-        }
+        self.write_requirements(template)
         with open(self.job_desc_file, 'w+') as f:
             yaml.dump(template, f)

@@ -15,9 +15,6 @@ requirements:
   DockerRequirement:
     dockerPull: "quay.io/biocontainers/spades:3.12.0--1"
   InlineJavascriptRequirement: {}
-  ResourceRequirement:
-    ramMin: 2048
-    coresMin: 1
 
 baseCommand: [ metaspades.py ]
 

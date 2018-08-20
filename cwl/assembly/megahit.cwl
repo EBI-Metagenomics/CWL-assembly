@@ -19,9 +19,6 @@ requirements:
   DockerRequirement:
     dockerPull: "quay.io/biocontainers/megahit:1.1.3--py36_0"
   InlineJavascriptRequirement: {}
-  ResourceRequirement:
-    ramMin: 2048
-    coresMin: 1
 
 baseCommand: megahit
 

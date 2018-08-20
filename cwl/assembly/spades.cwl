@@ -9,9 +9,6 @@ requirements:
   DockerRequirement:
     dockerPull: "quay.io/biocontainers/spades:3.12.0--1"
   InlineJavascriptRequirement: {}
-  ResourceRequirement:
-    ramMin: 250
-    coresMin: 1
 
 hints:
   SoftwareRequirement:
