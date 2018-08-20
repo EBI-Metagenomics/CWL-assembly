@@ -100,25 +100,21 @@ class AssemblyJob:
             template['single_reads']['path'] = str(os.path.join(self.raw_dir, raw_files[0]))
         else:
             raise NotImplementedError('No valid fields for reads found in template {}'.format(template_src))
-        # template['cwltool:overrides'][self.assembler.__str__() + '.cwl']['requirements']['ResourceRequirement'] = {
-        #     'ramMin': self.memory,
-        #     'coresMin': self.cores
-        # }
-        # PENDING CWLTOOL UPDATE IN TOIL
+        template['cwltool:overrides']['assembly/'+self.assembler.__str__() + '.cwl']['requirements']['ResourceRequirement'] = {
+            'ramMin': self.memory,
+            'coresMin': self.cores
+        }
         with open(self.job_desc_file, 'w+') as f:
             yaml.dump(template, f)
 
     def create_pipeline_cmd(self):
-        # return f'cwltoil --user-space-docker-cmd=udocker --cleanWorkDir onSuccess --debug
-        # --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf megahit_pipeline.cwl megahit_pipeline.yml'
         return 'cwltoil  --retryCount 1 --user-space-docker-cmd={} --cleanWorkDir onSuccess --outdir {} --debug --workDir {}  {} {} '.format(
             self.docker_cmd, self.run_dir, os.getcwd(), self.pipeline_workflow, self.job_desc_file)
 
     def launch_pipeline(self):
         cmd = self.create_pipeline_cmd()
         with open(self.toil_log_file, 'wb') as logfile:
-            # self.process = subprocess.Popen(cmd, stdout=logfile, stderr=logfile, shell=True)
-            self.process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+            self.process = subprocess.Popen(cmd, stdout=logfile, stderr=logfile, shell=True)
         print('Launching pipeline {} {}'.format(self.study_accession, self.assembly_name))
         return self
 
@@ -224,10 +220,9 @@ class CoAssemblyJob(AssemblyJob):
 
         self.write_single_runs(template)
 
-        # template['cwltool:overrides'][self.assembler.__str__() + '.cwl']['requirements']['ResourceRequirement'] = {
-        #     'ramMin': self.memory,
-        #     'coresMin': self.cores
-        # }
-        # PENDING CWLTOOL UPDATE IN TOIL
+        template['cwltool:overrides']['assembly/'+self.assembler.__str__() + '.cwl']['requirements']['ResourceRequirement'] = {
+            'ramMin': self.memory,
+            'coresMin': self.cores
+        }
         with open(self.job_desc_file, 'w+') as f:
             yaml.dump(template, f)

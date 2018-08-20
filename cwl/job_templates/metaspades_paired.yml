@@ -9,20 +9,16 @@ reverse_reads:
   path: reverse_reads_tmp
   class: File
 
-
 output_dest: "out.json"
-
 
 min_contig_length: 200
 
-
-#cwltool:overrides:
-#  metaspades.cwl:
-#    requirements:
-#      ResourceRequirement:
-#        ramMin: ram_tmp
-#        coresMin: cores_tmp
-# TODO: Broken in cwltoil with batch system pending toil cwltool update
+cwltool:overrides:
+  metaspades.cwl:
+    requirements:
+      ResourceRequirement:
+        ramMin: ram_tmp
+        coresMin: cores_tmp
 
 # cwltool --move-outputs --tmpdir cwl-metaspades-tmp --outdir cwl-metaspades-final cwl/metaspades.cwl cwl/metaspades_paired.yml
 
