@@ -117,7 +117,7 @@ class AssemblyJob:
     def create_pipeline_cmd(self):
         batch_system = ''
         if self.batch_system:
-            batch_system = '--batch_system ' + self.batch_system
+            batch_system = '--batchSystem ' + self.batch_system
         return 'cwltoil {} --retryCount 1 --user-space-docker-cmd={} --cleanWorkDir onSuccess --outdir {} --debug --workDir {}  {} {} '.format(
             batch_system, self.docker_cmd, self.run_dir, os.getcwd(), self.pipeline_workflow, self.job_desc_file)
 
