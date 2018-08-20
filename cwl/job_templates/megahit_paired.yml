@@ -15,12 +15,9 @@ output_dest: "out.json"
 
 min_contig_length: 200
 
-#cwltool:overrides:
-#  megahit.cwl:
-#    requirements:
-#      ResourceRequirement:
-#        ramMin: 5
-#        coresMin: 1
-
-
-# cwltool --move-outputs --outdir cwl-megahit-final cwl/megahit.cwl cwl/megahit_paired.yml
+cwltool:overrides:
+  assembly/megahit.cwl:
+    requirements:
+      ResourceRequirement:
+        ramMin: 5
+        coresMin: 1

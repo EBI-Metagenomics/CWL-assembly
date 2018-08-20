@@ -3,11 +3,8 @@ from __future__ import print_function
 import requests
 import json
 from ruamel import yaml
-import os
 
-config_file = os.path.realpath(os.path.join(__file__, os.pardir, os.pardir, 'ena_config.yml'))
-
-
+ENA_API_URL = "https://www.ebi.ac.uk/ena/portal/api/search"
 def get_default_connection_headers():
     return {
         "headers": {
@@ -33,11 +30,14 @@ def run_filter(d):
 
 
 class EnaApiHandler:
-    def __init__(self):
-        with open(config_file, 'r') as f:
-            config = yaml.safe_load(f)
+    url = ENA_API_URL
+    def __init__(self, config_file=None):
+        config = []
+        if config_file:
+            with open(config_file, 'r') as f:
+                config = yaml.safe_load(f)
 
-        self.url = config['API_URL']
+            self.url = config['API_URL']
         if 'USER' in config and 'PASSWORD' in config:
             self.auth = (config['USER'], config['PASSWORD'])
         else:
