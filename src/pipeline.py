@@ -65,6 +65,7 @@ def instantiate_jobs_from_args(path_finder, ena, args):
 
 def parse_args(args):
     parser = argparse.ArgumentParser(description='Metagenomic assembly pipeline kickoff script')
+    parser.add_argument('--batch_system', choices=['lsf'])
     parser.add_argument('assembler', type=Assembler, choices=list(Assembler))
     parser.add_argument('--private', action='store_true')
     parser.add_argument('-m', '--memory', default=240, type=int, help='Memory allocation for pipeline (GB)')
@@ -89,7 +90,9 @@ def parse_args(args):
     return parser.parse_args(args)
 
 
-def main(args):
+def main(args=None):
+    if not args:
+        args = parse_args(sys.argv[1:])
     if not (args.study or args.studies):
         logging.error('No studies specified, please provide -s SRP###### or -ss SRP######[,SRP######]')
         sys.exit(1)

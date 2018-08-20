@@ -1,18 +1,31 @@
 #!/usr/bin/env bash
-virtualenv venv
-source venv/bin/activate
-pip install -U pip setuptools
-pip install -r requirements.txt
-pip install -r requirements-test.txt
+#virtualenv venv
+#source venv/bin/activate
+#pip install -U pip setuptools
+#pip install -r requirements.txt
+#pip install -r requirements-test.txt
+#
 
-cd venv
+INSTALL_DIR="$(dirname $(dirname $(which python)))"
+echo "Checking docker installation..."
+if ! [ -x "$(command -v docker)" ]; then
+    echo "Docker not found, installing udocker in ${INSTALL_DIR}"
+    curl https://raw.githubusercontent.com/indigo-dc/udocker/devel/udocker.py > ${INSTALL_DIR}/bin/udocker
+    chmod 775 ${INSTALL_DIR}/bin/udocker
+    udocker install
+    echo "Installed udocker in venv"
+else
+    echo "Found docker installation."
+fi
 
-curl https://raw.githubusercontent.com/indigo-dc/udocker/devel/udocker.py > bin/udocker
-chmod 775 bin/udocker
-udocker install
-wget https://nodejs.org/dist/v8.11.1/node-v8.11.1-linux-x64.tar.xz && tar -xJf node-v8.11.1-linux-x64.tar.xz
-export PATH="$PWD/node-v8.11.1-linux-x64/bin/:$PATH"
-echo "PATH=$PWD/node-v8.11.1-linux-x64/bin/:\$PATH" >> bin/activate
-cd ..
-mkdir tmp
-
+echo "Checking for node installation..."
+if ! [ -x "$(command -v node)" ]; then
+    echo "Node not found, installing in ${INSTALL_DIR}"
+    curl https://nodejs.org/dist/v8.11.1/node-v8.11.1-linux-x64.tar.xz > ${INSTALL_DIR}/node-v8.11.1-linux-x64.tar.xz
+    tar -xJf ${INSTALL_DIR}/node-v8.11.1-linux-x64.tar.xz -C ${INSTALL_DIR}
+    export PATH="${INSTALL_DIR}/node-v8.11.1-linux-x64/bin/:$PATH"
+    echo "PATH=${INSTALL_DIR}/node-v8.11.1-linux-x64/bin/:\$PATH" >> ${INSTALL_DIR}/bin/activate
+    echo "Installed node in venv"
+else
+    echo "Found node installation."
+fi

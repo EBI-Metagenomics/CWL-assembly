@@ -4,39 +4,45 @@
 
 
 # Installation
-## Dependencies
-
-## Create local environment
+## Create local environment named venv using Miniconda (eg below) or virtualenv
 ```bash
-bash setup_env.sh
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86.sh
+bash Miniconda2-latest-Linux-x86_64.sh -b -p $PWD/venv
 source venv/bin/activate
 
+pip install -U git+https://github.com/EBI-Metagenomics/CWL-assembly.git@develop
+
+# Temporary requirement until fixes for cwltool in toil are released.
+pip install git+https://github.com/mr-c/toil.git@fix_cwl_overrides
+```
+
+##
+```bash
 # If running on a multi-volume cluster, the following is required to avoid cross-volume symlinks / mounts
 export TMP=$PWD/tmp 
 ```
-
 # Running full pipeline from CLI
 ```bash
-python2 src/pipeline.py metaspades -s ERP010229 -r ERR866589  -d output
+assembly_cli metaspades -s ERP010229 -r ERR866589  -d output
 ```
 
 ## Working pipeline examples
 ### MEGAHIT
 ```bash
-Interleaved: python2 src/pipeline.py megahit -s SRP074153 -r SRR6257420 -d tmp
-Single:      python2 src/pipeline.py megahit -s ERP012806 -r ERR1078287 -d tmp
+Interleaved: assembly_cli megahit -s SRP074153 -r SRR6257420 -d tmp
+Single:      assembly_cli megahit -s ERP012806 -r ERR1078287 -d tmp
 ```
 ### Metaspades
 ```bash
-Paired:      python2 src/pipeline.py metaspades -s ERP010229 -r ERR866589  -d tmp
-Interleaved: python2 src/pipeline.py metaspades -s SRP074153 -r SRR6257420 -d tmp
+Paired:      assembly_cli metaspades -s ERP010229 -r ERR866589  -d tmp
+Interleaved: assembly_cli metaspades -s SRP074153 -r SRR6257420 -d tmp
 ```
 
 ### Spades
 ```bash
-Paired:      python2 src/pipeline.py spades -s SRP040765 -r SRR1567464  -d tmp
-Interleaved: python2 src/pipeline.py spades -s SRP074153 -r SRR6257420 -d tmp
-Single:      python2 src/pipeline.py spades -s ERP012806 -r ERR1078287 -d tmp
+Paired:      assembly_cli spades -s SRP040765 -r SRR1567464  -d tmp
+Interleaved: assembly_cli spades -s SRP074153 -r SRR6257420 -d tmp
+Single:      assembly_cli spades -s ERP012806 -r ERR1078287 -d tmp
 ```
 
 # Running cwl pipelines on cluster
