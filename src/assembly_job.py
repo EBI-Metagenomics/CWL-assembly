@@ -128,8 +128,8 @@ class AssemblyJob:
         cmd = self.create_pipeline_cmd()
         print(cmd)
         with open(self.toil_log_file, 'wb') as logfile:
-            self.process = subprocess.Popen(cmd, stdout=logfile, stderr=logfile, shell=True)
-            # self.process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            # self.process = subprocess.Popen(cmd, stdout=logfile, stderr=logfile, shell=True)
+            self.process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         print('Launching pipeline {} {}'.format(self.study_accession, self.assembly_name))
         return self
 
