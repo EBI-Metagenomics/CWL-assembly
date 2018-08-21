@@ -24,7 +24,7 @@ arguments:
     prefix: -o
 #  - valueFrom: $(runtime.tmpdir)
 #    prefix: --tmp-dir
-  - valueFrom: $(runtime.ram)
+  - valueFrom: $(runtime.ram/1000)
     prefix: --memory
   - valueFrom: $(runtime.cores)
     prefix: --threads
