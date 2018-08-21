@@ -1,4 +1,3 @@
-cwltool==1.0.20180819175200
 setuptools==40.0.0
 requests==2.18.4
 lib==3.0.0
