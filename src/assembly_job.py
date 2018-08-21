@@ -90,7 +90,7 @@ class AssemblyJob:
     def write_requirements(self, template):
         template['cwltool:overrides']['assembly/' + self.assembler.__str__() + '.cwl']['requirements'][
             'ResourceRequirement'] = {
-            'ramMin': self.memory,
+            'ramMin': self.memory * 1000,
             'coresMin': self.cores
         }
 

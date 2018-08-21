@@ -25,7 +25,7 @@ baseCommand: megahit
 arguments:
 #  - valueFrom: $(runtime.tmpdir)
 #    prefix: --tmp-dir
-  - valueFrom: $(runtime.ram * 1000000000) # GB to B conversion
+  - valueFrom: $(runtime.ram * 1000000) # GB to B conversion
     prefix: --memory
   - valueFrom: $(runtime.cores)
     prefix: --num-cpu-threads
