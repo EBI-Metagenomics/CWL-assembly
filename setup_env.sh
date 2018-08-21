@@ -14,6 +14,14 @@ if ! [ -x "$(command -v docker)" ]; then
     chmod 775 ${INSTALL_DIR}/bin/udocker
     udocker install
     echo "Installed udocker in venv"
+
+    echo "Installing latest curl to bypass HTTP 400 error in udocker pull"
+    wget https://curl.haxx.se/download/curl-7.61.0.tar.gz;
+    cd curl-7.61.0;
+    make;
+    mv src/curl ../venv/bin/;
+    cd ..;
+    echo "Installed curl v7.61 in venv"
 else
     echo "Found docker installation."
 fi
