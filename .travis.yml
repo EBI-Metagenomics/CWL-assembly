@@ -23,11 +23,14 @@ install:
   - docker build -t "migueldboland/cwl-assembly-fasta-trimming" $TRAVIS_BUILD_DIR/cwl/stats/fasta_trimming/
 
   - source ./setup_env.sh
+  - pip install -r requirements.txt
+  - pip install -r requirements-test.txt
 
 script:
 # Package installation
-  - pip install -r requirements.txt
-  - pip install -r requirements-test.txt
+  - pip install -U git+https://github.com/EBI-Metagenomics/CWL-assembly.git@$TRAVIS_BRANCH
+  - pip install git+https://github.com/DataBiosphere/toil.git
+  - assembly_cli megahit -s SRP074153 -r SRR6257420 -d $TRAVIS_BUILD_DIR/tests/assembly_dir --docker-cmd udocker -m 5 -c 1
 
   - pytest --cov=src --cov-report xml:$COVERAGE_FILE tests/
 
