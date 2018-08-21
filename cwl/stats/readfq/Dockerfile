@@ -1,9 +1,11 @@
-FROM amd64/gcc:8.2.0
+FROM frolvlad/alpine-gcc:latest
 
 LABEL maintainer="Miguel Boland <mdb@ebi.ac.uk>"
 
 COPY . /
-RUN gcc -lz -o kseq_fastq_base /kseq_fastq_base.c
+RUN apk add zlib-dev; \
+    gcc -o kseq_fastq_base /kseq_fastq_base.c -lz
+ENV LIBRARY_PATH=/lib:/usr/lib
 
 CMD ["/bin/bash", "/kseq_fastq_base"]
 
