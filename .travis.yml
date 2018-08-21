@@ -11,7 +11,7 @@ services:
   - docker
 
 env:
-  - COVERAGE_FILE="$TRAVIS_BUILD_DIR/coverage/coverage.xml"
+  - COVERAGE_FILE="$TRAVIS_BUILD_DIR/coverage/coverage.xml" BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
 
 before_install:
   - bash travis/setup_creds.sh
@@ -28,7 +28,7 @@ install:
 
 script:
 # Package installation
-  - pip install -U git+https://github.com/EBI-Metagenomics/CWL-assembly.git@$TRAVIS_BRANCH
+  - pip install -U git+https://github.com/EBI-Metagenomics/CWL-assembly.git@$BRANCH
   - pip install git+https://github.com/DataBiosphere/toil.git
   - assembly_cli megahit -s SRP074153 -r SRR6257420 -d $TRAVIS_BUILD_DIR/tests/assembly_dir --docker-cmd udocker -m 5 -c 1
 
