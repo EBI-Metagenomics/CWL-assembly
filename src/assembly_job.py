@@ -121,7 +121,7 @@ class AssemblyJob:
             #
             if self.batch_system == 'lsf':
                 batch_system += ' --disableCaching'
-        return 'cwltoil {} --disableChaining --retryCount 1 --user-space-docker-cmd={} --cleanWorkDir onSuccess --outdir {} --logWarning --workDir {}  {} {} '.format(
+        return 'cwltoil {} --disableChaining --retryCount 1 --user-space-docker-cmd={} --cleanWorkDir onSuccess --outdir {} --logDebug --workDir {}  {} {} '.format(
             batch_system, self.docker_cmd, self.run_dir, self.tmp_dir, self.pipeline_workflow, self.job_desc_file)
 
     def launch_pipeline(self):

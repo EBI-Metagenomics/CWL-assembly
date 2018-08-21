@@ -108,13 +108,18 @@ def main(args=None):
     else:
         assembly_jobs = instantiate_jobs_from_args(path_finder, ena, args)
     assembly_jobs = [job.launch_pipeline() for job in assembly_jobs]
+    all_jobs_succesful = True
     for job in assembly_jobs:
         print(
             'Study {} Run {} Return code: {}'.format(job.study_accession, job.assembly_name, job.process.wait()))
         if job.process.wait() != 0:
             print(job.toil_log_file)
+            all_jobs_succesful = False
+
+    sys.exit(0 if all_jobs_succesful else 1)
 
 
 if __name__ == '__main__':
     args = parse_args(sys.argv[1:])
     main(args)
+
