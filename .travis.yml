@@ -28,7 +28,7 @@ install:
 
 script:
 # Package installation
-  - pip install -U git+https://github.com/EBI-Metagenomics/CWL-assembly.git@$BRANCH
+  - pip install git+https://github.com/EBI-Metagenomics/CWL-assembly.git@$BRANCH
   - pip install git+https://github.com/DataBiosphere/toil.git
   - assembly_cli megahit -s SRP074153 -r SRR6257420 -d $TRAVIS_BUILD_DIR/tests/assembly_dir --docker-cmd udocker -m 5 -c 1
 
