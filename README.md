@@ -6,14 +6,14 @@
 # Installation
 ## Create local environment named venv using Miniconda (eg below) or virtualenv
 ```bash
-wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86.sh
+wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86.sh
 bash Miniconda2-latest-Linux-x86_64.sh -b -p $PWD/venv
 source venv/bin/activate
 
-pip install -U git+https://github.com/EBI-Metagenomics/CWL-assembly.git@develop
+pip install git+https://github.com/EBI-Metagenomics/CWL-assembly.git@develop
 
 # Temporary requirement until fixes for cwltool in toil are released.
-pip install git+https://github.com/mr-c/toil.git@fix_cwl_overrides
+pip install git+https://github.com/DataBiosphere/toil.git
 ```
 
 ##
@@ -21,40 +21,49 @@ pip install git+https://github.com/mr-c/toil.git@fix_cwl_overrides
 # If running on a multi-volume cluster, the following is required to avoid cross-volume symlinks / mounts
 export TMP=$PWD/tmp 
 ```
-# Running full pipeline from CLI
+
+## Working pipeline examples on LSF cluster
+### MegaHit
 ```bash
-assembly_cli metaspades -s ERP010229 -r ERR866589  -d output
+Interleaved: assembly_cli megahit -s SRP074153 -r SRR6257420 -d out --batch_system lsf --docker-cmd udocker -m 16 -c 16
+Single:      assembly_cli megahit -s ERP012806 -r ERR1078287 -d out --batch_system lsf --docker-cmd udocker -m 16 -c 16
+```
+### MetaSPAdes
+```bash
+Paired:      assembly_cli metaspades -s ERP010229 -r ERR866603  -d out --batch_system lsf --docker-cmd udocker -m 16 -c 16
+Interleaved: assembly_cli metaspades -s SRP074153 -r SRR6257420 -d out --batch_system lsf --docker-cmd udocker -m 16 -c 16
 ```
 
-## Working pipeline examples
-### MEGAHIT
+### SPAdes
 ```bash
-Interleaved: assembly_cli megahit -s SRP074153 -r SRR6257420 -d tmp
-Single:      assembly_cli megahit -s ERP012806 -r ERR1078287 -d tmp
-```
-### Metaspades
-```bash
-Paired:      assembly_cli metaspades -s ERP010229 -r ERR866589  -d tmp
-Interleaved: assembly_cli metaspades -s SRP074153 -r SRR6257420 -d tmp
+Paired:      assembly_cli spades -s SRP040765 -r SRR1567464  -d out --batch_system lsf --docker-cmd udocker -m 16 -c 16
+Interleaved: assembly_cli spades -s SRP074153 -r SRR6257420 -d out --batch_system lsf --docker-cmd udocker -m 16 -c 16
+Single:      assembly_cli spades -s ERP012806 -r ERR1078287 -d out --batch_system lsf --docker-cmd udocker -m 16 -c 16
 ```
 
-### Spades
+## Handling docker dependencies
+If using udocker, images need to be pre-loaded at install time to avoid a known issue with udocker pull.
+On your machine:
 ```bash
-Paired:      assembly_cli spades -s SRP040765 -r SRR1567464  -d tmp
-Interleaved: assembly_cli spades -s SRP074153 -r SRR6257420 -d tmp
-Single:      assembly_cli spades -s ERP012806 -r ERR1078287 -d tmp
+docker pull migueldboland/cwl-assembly-readfq:latest && docker save migueldboland/cwl-assembly-readfq:latest -o readfq.tar
+docker pull migueldboland/cwl-assembly-fasta-trimming:latest && docker save migueldboland/cwl-assembly-fasta-trimming:latest -o fasta-trimming.tar
+docker pull migueldboland/cwl-assembly-stats-report:latest && docker save migueldboland/cwl-assembly-stats-report:latest -o stats-report.tar
+docker pull quay.io/biocontainers/samtools:1.9--h46bd0b3_0 && docker save quay.io/biocontainers/samtools:1.9--h46bd0b3_0 -o samtools.tar
+docker pull quay.io/biocontainers/bwa:0.7.17--ha92aebf_3 && docker save quay.io/biocontainers/bwa:0.7.17--ha92aebf_3 -o bwa.tar
+docker pull quay.io/biocontainers/spades:3.12.0--1 && docker save quay.io/biocontainers/spades:3.12.0--1 -o spades.tar
+docker pull quay.io/biocontainers/megahit:1.1.3--py36_0 && docker save quay.io/biocontainers/megahit:1.1.3--py36_0 -o megahit.tar
+docker pull metabat/metabat:latest && docker save metabat/metabat:latest -o metabat.tar
 ```
-
-# Running cwl pipelines on cluster
-
-## MegaHit
+On target machine:
 ```bash
-cwltoil --user-space-docker-cmd=udocker --cleanWorkDir onSuccess --debug --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf megahit_pipeline.cwl megahit_pipeline.yml
-```
-
-## MetaSpades
-```bash
-cwltoil --user-space-docker-cmd=udocker --debug --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf  metaspades_pipeline.cwl metaspades_pipeline.yml
+docker load -i readfq.tar
+docker load -i fasta-trimming.tar
+docker load -i stats-report.tar
+docker load -i samtools.tar
+docker load -i bwa.tar
+docker load -i spades.tar
+docker load -i megahit.tar
+docker load -i metabat.tar
 ```
 
 
