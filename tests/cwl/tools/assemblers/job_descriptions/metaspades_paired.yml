@@ -12,7 +12,7 @@ cwltool:overrides:
   metaspades.cwl:
     requirements:
       ResourceRequirement:
-        ramMin: 2048
+        ramMin: 5000
         coresMin: 1
 # Broken in cwltoil with batch system pending toil cwltool update
 

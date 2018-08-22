@@ -9,12 +9,12 @@ reverse_reads:
   path: ../../../../fixtures/ERP0156/ERP015692/raw/ERR1624620_2.fastq.gz
   class: File
 
-#cwltool:overrides:
-#  pipeline.cwl:
-#    requirements:
-#      ResourceRequirement:
-#        ramMin: 5
-#        coresMin: 3
+cwltool:overrides:
+  spades.cwl:
+    requirements:
+      ResourceRequirement:
+        ramMin: 5000
+        coresMin: 3
 
 output_dest: "out.json"
 

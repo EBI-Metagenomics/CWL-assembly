@@ -10,7 +10,7 @@ cwltool:overrides:
   megahit.cwl:
     requirements:
       ResourceRequirement:
-        ramMin: 5
+        ramMin: 5000
         coresMin: 1
 
 
