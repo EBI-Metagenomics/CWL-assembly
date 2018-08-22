@@ -85,7 +85,7 @@
   tool: cwl/assembly/spades.cwl
   output:
     assembly_graph:
-      checksum: sha1$2619a9fb8d8cfac6c589067931987b6f41fb5097
+      checksum: sha1$134d020eedad66fdb993a7ddc8bd4c10f4ba9357
       basename: assembly_graph.fastg
       location: assembly_graph.fastg
       path: assembly_graph.fastg
@@ -101,7 +101,7 @@
       size: 17373
 
     contigs_assembly_graph:
-      checksum: sha1$2c53f5e73c4ba32712b2d486a39a23b1d9858598
+      checksum: sha1$80ef7d696fd061435c77cfa6e7cd4381c18fd157
       basename: contigs.paths
       location: contigs.paths
       path: contigs.paths
@@ -146,7 +146,7 @@
       class: File
       size: 17373
     scaffolds_assembly_graph:
-      checksum: sha1$2c53f5e73c4ba32712b2d486a39a23b1d9858598
+      checksum: sha1$80ef7d696fd061435c77cfa6e7cd4381c18fd157
       basename: scaffolds.paths
       location: scaffolds.paths
       path: scaffolds.paths
