@@ -10,6 +10,13 @@ wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86.sh
 bash Miniconda2-latest-Linux-x86_64.sh -b -p $PWD/venv
 source venv/bin/activate
 
+OR using a python 2.7 virtualenv
+
+python -m virtualenv venv
+pip install setuptools -U
+source venv/bin/activate
+
+
 pip install -U git+https://github.com/EBI-Metagenomics/CWL-assembly.git@develop
 
 # Temporary requirement until fixes for cwltool in toil are released.
