@@ -1,5 +1,5 @@
 cwltool==1.0.20180819175200
-setuptools==40.0.0
+setuptools
 requests==2.18.4
 lib==3.0.0
 toil[cwl]>=3.17.0
