@@ -13,7 +13,7 @@ source venv/bin/activate
 pip install -U git+https://github.com/EBI-Metagenomics/CWL-assembly.git@develop
 
 # Temporary requirement until fixes for cwltool in toil are released.
-pip install git+https://github.com/mr-c/toil.git@fix_cwl_overrides
+pip install git+https://github.com/DataBiosphere/toil.git
 ```
 
 ##
