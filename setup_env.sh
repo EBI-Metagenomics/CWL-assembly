@@ -5,6 +5,7 @@
 #pip install -r requirements.txt
 #pip install -r requirements-test.txt
 #
+SET -eux;
 
 INSTALL_DIR="$(dirname $(dirname $(which python)))";
 CURL_VERSION="7.61.0";
