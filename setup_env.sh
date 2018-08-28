@@ -13,7 +13,7 @@ CURL_VERSION="7.61.0";
 echo "Checking docker installation..."
 if ! [ -x "$(command -v docker)" ]; then
     echo "Docker not found, installing udocker in ${INSTALL_DIR}";
-    curl https://raw.githubusercontent.com/indigo-dc/udocker/devel/udocker.py > ${INSTALL_DIR}/bin/udocker;
+    wget -O ${INSTALL_DIR}/bin/udocker.py https://raw.githubusercontent.com/indigo-dc/udocker/devel/udocker.py;
     chmod 775 ${INSTALL_DIR}/bin/udocker;
      ${INSTALL_DIR}/bin/udocker install;
     echo "Installed udocker in venv";
