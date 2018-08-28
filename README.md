@@ -6,7 +6,7 @@
 # Installation
 ## Create local environment named venv using Miniconda (eg below) or virtualenv
 ```bash
-wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86.sh
+wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86.sh
 bash Miniconda2-latest-Linux-x86_64.sh -b -p $PWD/venv
 source venv/bin/activate
 
