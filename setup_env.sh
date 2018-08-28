@@ -15,12 +15,12 @@ if ! [ -x "$(command -v docker)" ]; then
     echo "Docker not found, installing udocker in ${INSTALL_DIR}";
     curl https://raw.githubusercontent.com/indigo-dc/udocker/devel/udocker.py > ${INSTALL_DIR}/bin/udocker;
     chmod 775 ${INSTALL_DIR}/bin/udocker;
-    udocker install;
+     ${INSTALL_DIR}/bin/udocker install;
     echo "Installed udocker in venv";
 
     echo "Installing latest curl to bypass HTTP 400 error in udocker pull";
     wget -O ${INSTALL_DIR}/curl-${CURL_VERSION}.tar.gz https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz;
-    tar -xzf ${INSTALL_DIR}/curl-${CURL_VERSION}.tar.gz
+    tar -xzf ${INSTALL_DIR}/curl-${CURL_VERSION}.tar.gz;
     cd ${INSTALL_DIR}/curl-${CURL_VERSION};
     make;
     mv ${INSTALL_DIR}/curl-${CURL_VERSION}/src/curl ${INSTALL_DIR}/bin/;
