@@ -22,7 +22,7 @@ if ! [ -x "$(command -v docker)" ]; then
     tar -xzf ${INSTALL_DIR}/curl-${CURL_VERSION}.tar.gz
     cd ${INSTALL_DIR}/curl-${CURL_VERSION};
     make;
-    mv ${INSTALL_DIR}/curl-${CURL_VERSION}/src/curl ${INSTALL_DIR}/venv/bin/;
+    mv ${INSTALL_DIR}/curl-${CURL_VERSION}/src/curl ${INSTALL_DIR}/bin/;
     cd ${INSTALL_DIR};
     echo "Installed curl v7.61 in venv";
 else
