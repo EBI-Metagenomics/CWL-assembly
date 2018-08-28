@@ -6,7 +6,7 @@
 # Installation
 ## Create local environment named venv using Miniconda (eg below) or virtualenv
 ```bash
-wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86.sh
+wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
 bash Miniconda2-latest-Linux-x86_64.sh -b -p $PWD/venv
 source venv/bin/activate
 
@@ -26,6 +26,7 @@ pip install git+https://github.com/DataBiosphere/toil.git
 ##
 ```bash
 # If running on a multi-volume cluster, the following is required to avoid cross-volume symlinks / mounts
+mkdir $PWD/tmp
 export TMP=$PWD/tmp 
 ```
 # Running full pipeline from CLI

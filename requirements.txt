@@ -3,6 +3,6 @@ setuptools
 requests==2.18.4
 lib==3.0.0
 toil[cwl]>=3.17.0
-ruamel.yaml<=0.15.51
+ruamel.yaml (<=0.15.51,>=0.12.4)
 subprocess32==3.5.2
 enum34==1.1.6
