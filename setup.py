@@ -24,9 +24,9 @@ if "test" in sys.argv:
 
 class InstallCommand(install):
     def run(self):
-        ret = subprocess.Popen(['bash', './setup_env.sh']).wait()
-        if ret:
-            raise EnvironmentError('Failed to install non-python dependencies.')
+        #£ret = subprocess.Popen(['bash', './setup_env.sh']).wait()
+        #if ret:
+        #    raise EnvironmentError('Failed to install non-python dependencies.')
         install.run(self)
 
 setup(
