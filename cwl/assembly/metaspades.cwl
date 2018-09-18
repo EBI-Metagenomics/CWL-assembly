@@ -30,25 +30,9 @@ arguments:
 
 inputs:
   forward_reads:
-    type: File?
-#     format: edam:format_1930  # FASTQ
-    inputBinding:
-      prefix: "-1"
+    type: File
   reverse_reads:
-    type: File?
-#     format: edam:format_1930  # FASTQ
-    inputBinding:
-      prefix: "-2"
-#  single_reads:
-#    type: File?
-#     format: edam:format_1930  # FASTQ
-#    inputBinding:
-#      prefix: "-s"
-  interleaved_reads:
-    type: File?
-    #     format: edam:format_1930  # FASTQ
-    inputBinding:
-      prefix: "--12"
+    type: File
 
 stdout: stdout.txt
 stderr: stderr.txt
