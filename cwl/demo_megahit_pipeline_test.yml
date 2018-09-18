@@ -1,0 +1,24 @@
+#!/usr/bin/env cwltool
+cwl:tool: megahit_pipeline_simple.cwl
+run_id: ERR866589
+
+forward_reads:
+  path: ../tests/fixtures/ERP0102/ERP010229/raw/ERR866603_1.fastq.gz
+  class: File
+
+reverse_reads:
+  path: ../tests/fixtures/ERP0102/ERP010229/raw/ERR866603_2.fastq.gz
+  class: File
+
+cwltool:overrides:
+  assembly/megahit.cwl:
+    requirements:
+      ResourceRequirement:
+        ramMin: 5000
+        coresMin: 2
+
+output_dest: "out.json"
+
+output_assembly_name: ERR866589
+
+min_contig_length: 200
