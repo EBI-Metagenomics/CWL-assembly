@@ -36,8 +36,17 @@ inputs:
   
   forward_reads:
     type: File
+    inputBinding:
+      position: 1
+      prefix: "-1"
+      itemSeparator: ","
+
   reverse_reads:
     type: File
+    inputBinding:
+      position: 2
+      prefix: "-2"
+      itemSeparator: ","
 
   input-cmd:
     type: boolean?

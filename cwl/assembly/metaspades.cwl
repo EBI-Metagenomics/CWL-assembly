@@ -31,8 +31,13 @@ arguments:
 inputs:
   forward_reads:
     type: File
+    inputBinding:
+      prefix: "-1"
+
   reverse_reads:
     type: File
+    inputBinding:
+      prefix: "-2"
 
 stdout: stdout.txt
 stderr: stderr.txt
