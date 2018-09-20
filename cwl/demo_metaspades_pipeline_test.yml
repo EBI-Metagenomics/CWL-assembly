@@ -9,13 +9,6 @@ reverse_reads:
   path: ../tests/fixtures/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
   class: File
 
-cwltool:overrides:
-  assembly/metaspades.cwl:
-    requirements:
-      ResourceRequirement:
-        ramMin: 5000
-        coresMin: 2
-
 output_dest: "out.json"
 
 output_assembly_name: ERR866589
