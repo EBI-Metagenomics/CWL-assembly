@@ -84,7 +84,7 @@ steps:
   stats_report:
     in:
       assembler:
-        valueFrom: $('metaspades')
+        default: metaspades
       sequences:
         source: metaspades/contigs
       reads:

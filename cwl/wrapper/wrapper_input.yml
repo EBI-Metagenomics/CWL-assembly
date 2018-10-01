@@ -4,3 +4,4 @@ cwl:tool: study_metaspades_wrapper.cwl
 study_accession: "ERP010229"
 
 lineage: "root:Host-associated:Human:Digestive system"
+

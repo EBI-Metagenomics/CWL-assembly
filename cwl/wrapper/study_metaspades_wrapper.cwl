@@ -62,7 +62,7 @@ steps:
            }
     out:
       - memory
-    run: ../../mem_prediction/python/mem_predict.cwl
+    run: ../mem_prediction/mem_predict.cwl
 
   metaspades_pipeline:
     scatter:

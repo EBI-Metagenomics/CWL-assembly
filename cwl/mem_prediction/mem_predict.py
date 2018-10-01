@@ -3,7 +3,6 @@ import dill
 import logging
 
 from sklearn import neighbors
-from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
