@@ -29,3 +29,7 @@ outputs:
               type: string
             - name: library_source
               type: string
+            - name: read_count
+              type: long
+            - name: base_count
+              type: long

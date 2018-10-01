@@ -23,7 +23,7 @@ arguments:
     prefix: -o
 #  - valueFrom: $(runtime.tmpdir)
 #    prefix: --tmp-dir
-  - valueFrom: $(runtime.ram/1000)
+  - valueFrom: $(runtime.ram)
     prefix: --memory
   - valueFrom: $(runtime.cores)
     prefix: --threads
@@ -61,6 +61,11 @@ outputs:
     format: edam:format_1929  # FASTA
     outputBinding:
       glob: contigs.fasta
+      outputEval: |
+        ${var ret = self[0];
+          ret.basename=inputs.forward_reads.nameroot;
+          return ret;
+         }
 
   scaffolds:
     type: File

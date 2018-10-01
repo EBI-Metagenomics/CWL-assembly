@@ -25,7 +25,7 @@ def get_default_params():
         "dataPortal": "metagenome",
         "format": "json",
         "fields": "secondary_study_accession,run_accession,library_source,"
-                  "library_strategy,library_layout,fastq_ftp",
+                  "library_strategy,library_layout,fastq_ftp,base_count,read_count",
         "limit": 10000
     }
 
@@ -71,7 +71,7 @@ class EnaApiHandler:
     def get_study_runs(self, study_sec_acc, filter_runs=True):
         data = get_default_params()
         data['query'] = "secondary_study_accession=\"{}\"".format(study_sec_acc)
-        data['fields'] = "run_accession,fastq_ftp,library_strategy,library_source,library_layout"
+        data['fields'] = "run_accession,fastq_ftp,library_strategy,library_source,library_layout,read_count,base_count"
         response = self.post_request(data)
         if str(response.status_code)[0] != '2':
             raise ValueError('Could not retrieve runs for study %s.', study_sec_acc)
@@ -100,6 +100,8 @@ if __name__ == '__main__':
     runs = list(filter(lambda r: r['run_accession'] in ['ERR866589', 'ERR866603'], runs))
     for d in runs[0:2]:
         d['raw_reads'] = convert_file_locations(d['fastq_ftp'])
+        d['read_count'] = long(d['read_count'])
+        d['base_count'] = long(d['base_count'])
         del d['fastq_ftp']
         # TODO remove section if needed
         for f in d['raw_reads']:

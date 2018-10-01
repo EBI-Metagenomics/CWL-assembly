@@ -21,6 +21,8 @@ inputs:
     type: int
   output_assembly_name:
     type: string
+  assembly_memory:
+    type: int
 
 outputs:
   assembly:
@@ -63,6 +65,9 @@ steps:
         source: reverse_reads
       interleaved_reads:
         source: interleaved_reads
+    requirements:
+      ResourceRequirement:
+        ramMin: $(inputs.assembly_memory*1024)
     out:
       - assembly_graph
       - contigs
