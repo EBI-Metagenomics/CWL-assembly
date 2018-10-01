@@ -1,0 +1,5 @@
+#!/usr/bin/env cwltool
+cwl:tool: study_metaspades_wrapper.cwl
+
+study_accession: "ERP010229"
+
