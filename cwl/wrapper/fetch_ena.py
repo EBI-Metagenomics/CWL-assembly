@@ -97,7 +97,7 @@ def download_file(path):
 if __name__ == '__main__':
     api = EnaApiHandler()
     runs = api.get_study_runs(sys.argv[1])
-    runs = list(filter(lambda r: r['run_accession'] in ['ERR866589', 'ERR866603'], runs))
+    runs = list(filter(lambda r: r['run_accession'] in ['SRR6257420'], runs))
     for d in runs[0:2]:
         d['raw_reads'] = convert_file_locations(d['fastq_ftp'])
         d['read_count'] = long(d['read_count'])

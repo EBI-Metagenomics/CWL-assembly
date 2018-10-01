@@ -1,7 +1,7 @@
 #!/usr/bin/env cwltool
 cwl:tool: study_metaspades_wrapper.cwl
 
-study_accession: "ERP010229"
+study_accession: "SRP074153"
 
 lineage: "root:Host-associated:Human:Digestive system"
 

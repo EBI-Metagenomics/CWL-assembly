@@ -68,6 +68,7 @@ steps:
     scatter:
       - forward_reads
       - reverse_reads
+      - interleaved_reads
       - assembly_memory
     scatterMethod: dotproduct
     in:
@@ -75,10 +76,17 @@ steps:
         source: predict_mem/memory
       forward_reads:
         source: fetch_ena/assembly_jobs
-        valueFrom: $(self.raw_reads[0])
+        valueFrom: |
+          $(self.raw_reads.length==2 ? self.raw_reads[0] : null)
       reverse_reads:
         source: fetch_ena/assembly_jobs
-        valueFrom: $(self.raw_reads[1])
+        valueFrom: |
+          $(self.raw_reads.length==2 ? self.raw_reads[1] : null)
+      interleaved_reads:
+        source: fetch_ena/assembly_jobs
+        valueFrom: |
+          $(self.raw_reads.length==1 ? self.raw_reads[0] : null)
+
       min_contig_length:
         default: 500
       output_assembly_name:
