@@ -55,7 +55,7 @@ steps:
         source: fetch_ena/assembly_jobs
         valueFrom: |
           ${var ret = 0;
-            self.raw_reads.forEach(f => {
+            self.raw_reads.forEach(function(f){
               ret += 0
             });
             return ret;

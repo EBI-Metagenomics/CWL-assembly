@@ -59,15 +59,11 @@ outputs:
 steps:
   metaspades:
     in:
-      forward_reads:
-        source: forward_reads
-      reverse_reads:
-        source: reverse_reads
-      interleaved_reads:
-        source: interleaved_reads
-    requirements:
-      ResourceRequirement:
-        ramMin: $(inputs.assembly_memory*1024)
+      forward_reads: forward_reads
+      reverse_reads: reverse_reads
+      interleaved_reads: interleaved_reads
+      assembly_memory: assembly_memory
+
     out:
       - assembly_graph
       - contigs

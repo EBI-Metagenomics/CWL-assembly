@@ -10,6 +10,8 @@ hints:
       spades:
         specs: [ "https://identifiers.org/rrid/RRID:SCR_000131" ]
         version: [ "3.12.0" ]
+  ResourceRequirement:
+    ramMin: $(inputs.assembly_memory*1024)
 
 requirements:
   DockerRequirement:
@@ -63,7 +65,13 @@ outputs:
       glob: contigs.fasta
       outputEval: |
         ${var ret = self[0];
-          ret.basename=inputs.forward_reads.nameroot;
+          var base;
+          if (inputs.forward_reads){
+            base = inputs.forward_reads
+          } else {
+            base = inputs.interleaved_reads
+          }
+          ret.basename = base.nameroot;
           return ret;
          }
 
