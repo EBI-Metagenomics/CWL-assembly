@@ -104,7 +104,7 @@ outputs:
   assembly_log:
     type: File[]
     outputSource: metaspades_pipeline/assembly_log
-  memory_estimationes:
+  memory_estimations:
     type: int[]
     outputSource: predict_mem/memory
 
