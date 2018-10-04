@@ -2,7 +2,12 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-baseCommand: ['/Users/mdb/miniconda3/bin/python', '/Users/mdb/work/CWL_assembly_pipeline/mem_prediction/python/mem_predict.py']
+requirements:
+  DockerRequirement:
+    dockerPull: "migueldboland/cwl-assembly-mem-prediction"
+  InlineJavascriptRequirement: {}
+
+baseCommand: ['python', '/mem_predict.py']
 
 inputs:
   lineage:

@@ -1,0 +1,18 @@
+FROM python:3.6-slim
+
+LABEL maintainer="Miguel Boland <mdb@ebi.ac.uk>"
+
+##############################################################
+# Dockerfile Version:   18.06.0-ce
+# Software:             trim_fasta.py
+# Software Version:     1.0.0
+# Description:          Calculate report and output directory
+##############################################################
+COPY ./mem_predict.py /
+COPY ./data.csv /
+COPY ./model.p /
+COPY ./requirements.txt /
+
+RUN pip install -r /requirements.txt
+CMD ["python", "/mem_predict.py"]
+
