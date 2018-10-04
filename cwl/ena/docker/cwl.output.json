@@ -1,0 +1,18 @@
+{
+    "assembly_jobs": [
+        {
+            "run_accession": "ERR1772200",
+            "library_strategy": "WGS",
+            "library_source": "METAGENOMIC",
+            "library_layout": "SINGLE",
+            "read_count": 15000,
+            "base_count": 1500000,
+            "raw_reads": [
+                {
+                    "class": "File",
+                    "location": "file:///Users/mdb/work/CWL_assembly_pipeline/cwl/ena/docker/ERR1772200.fastq.gz"
+                }
+            ]
+        }
+    ]
+}

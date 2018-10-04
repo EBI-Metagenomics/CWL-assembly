@@ -2,7 +2,14 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-baseCommand: ['python2', '/Users/mdb/work/CWL_assembly_pipeline/cwl/wrapper/fetch_ena.py']
+
+requirements:
+  DockerRequirement:
+    dockerPull: "migueldboland/cwl-assembly-fetch-ena"
+  InlineJavascriptRequirement: {}
+
+
+baseCommand: ['python', '/fetch_ena.py']
 
 inputs:
   study_accession:

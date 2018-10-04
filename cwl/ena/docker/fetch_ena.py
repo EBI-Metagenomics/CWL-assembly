@@ -5,7 +5,8 @@ from ruamel import yaml
 import sys
 import json
 import os
-import subprocess
+import logging
+from multiprocessing.pool import ThreadPool
 
 ENA_API_URL = "https://www.ebi.ac.uk/ena/portal/api/search"
 
@@ -56,18 +57,6 @@ class EnaApiHandler:
             response = requests.post(self.url, data=data, **get_default_connection_headers())
         return response
 
-    def get_run_metadata(self, run_acc, filter_runs=True):
-        data = get_default_params()
-        data['query'] = "run_accession=\"{}\"".format(run_acc)
-        response = self.post_request(data)
-        if str(response.status_code)[0] != '2':
-            raise ValueError('Could not retrieve run %s.', run_acc)
-        run = json.loads(response.text)[0]
-        if filter_runs and not run_filter(run):
-            return None
-
-        return run
-
     def get_study_runs(self, study_sec_acc, filter_runs=True):
         data = get_default_params()
         data['query'] = "secondary_study_accession=\"{}\"".format(study_sec_acc)
@@ -89,25 +78,43 @@ def convert_file_locations(file_list):
 FNULL = open(os.devnull, 'w')
 
 
-def download_file(path):
-    p = subprocess.Popen(['wget', path], stdout=FNULL, stderr=subprocess.STDOUT)
-    p.wait()
+def fetch_url(entry):
+    uri, path = entry
+    if not os.path.exists(path):
+        r = requests.get(uri, stream=True)
+        if r.status_code == 200:
+            with open(path, 'wb') as f:
+                for chunk in r:
+                    f.write(chunk)
+    return path
 
 
 if __name__ == '__main__':
     api = EnaApiHandler()
-    runs = api.get_study_runs(sys.argv[1])
-    runs = list(filter(lambda r: r['run_accession'] in ['SRR6257420'], runs))
-    for d in runs[0:2]:
+    try:
+        logging.info('Fetching runs...')
+        runs = api.get_study_runs(sys.argv[1])
+    except IndexError:
+        print('No study accession specified')
+        sys.exit(1)
+
+    downloads = []
+
+    for d in runs:
         d['raw_reads'] = convert_file_locations(d['fastq_ftp'])
-        d['read_count'] = long(d['read_count'])
-        d['base_count'] = long(d['base_count'])
+        d['read_count'] = int(d['read_count'])
+        d['base_count'] = int(d['base_count'])
         del d['fastq_ftp']
-        # TODO remove section if needed
+        # TODO remove section if CWL support for ftp is fixed.
         for f in d['raw_reads']:
             url = f['location']
-            dest = f['location'].split('/')[-1]
-            download_file(f['location'])
-            f['location'] = 'file://' + os.path.join(os.getcwd(), dest)
+            dest = os.path.join(os.getcwd(), f['location'].split('/')[-1])
+            downloads.append((f['location'], dest))
+            f['location'] = 'file://' + dest
+
+    results = ThreadPool(8).imap_unordered(fetch_url, downloads)
+    for path in results:
+        print(path)
+
     with open('cwl.output.json', 'w') as f:
-        json.dump({"assembly_jobs": runs[0:2]}, f, indent=4)
+        json.dump({"assembly_jobs": runs}, f, indent=4)
