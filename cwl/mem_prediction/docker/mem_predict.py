@@ -117,14 +117,14 @@ class MemoryEstimator(object):
 if __name__ == '__main__':
     me = MemoryEstimator()
     parser = argparse.ArgumentParser()
-    parser.add_argument('--lineage', help='Lineage', required=True)
+    parser.add_argument('--lineage',  help='MGnify lineage eg: root:Host-Associated:Human',  required=True)
     parser.add_argument('--base-count', type=int, help='Base count', required=True)
     parser.add_argument('--read-count', type=int, help='Read count', required=True)
-    parser.add_argument('--size', type=int, help='Total compressed data size', required=True)
-    parser.add_argument('--layout', required=True)
-    parser.add_argument('--strategy', required=True)
-    parser.add_argument('--source', required=True)
-    parser.add_argument('--assembler', required=True)
+    parser.add_argument('--size', type=int, help='Total compressed data size (Bytes)', required=True)
+    parser.add_argument('--layout', required=True, help='ENA library layout (PAIRED | SINGLE)')
+    parser.add_argument('--strategy', required=True, help='ENA library strategy (typically WGS')
+    parser.add_argument('--source', required=True, help='ENA library source (typically METAGENOMIC)')
+    parser.add_argument('--assembler', required=True, help='metaspades|spades|megahit')
     args = parser.parse_args()
 
     lineage = args.lineage.split(':')
@@ -136,6 +136,7 @@ if __name__ == '__main__':
               'lineage5': [lineage[4]], 'base_count': [args.base_count], 'read_count': [args.read_count],
               'compressed_data_size': [args.size], 'library_layout': [args.layout], 'library_strategy': [args.strategy],
               'library_source': [args.source], 'name': [args.assembler]})
-    prediction = me.predict_from_raw(data)
+    prediction = {"memory": me.predict_from_raw(data)}
+    print(prediction)
     with open('cwl.output.json', 'w') as f:
-        json.dump({"memory": prediction}, f)
+        json.dump(prediction, f)
