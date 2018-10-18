@@ -52,7 +52,6 @@ def parse_args(args):
     parser = argparse.ArgumentParser(description='Remove contigs of length < min_contig_length from a fasta file.')
     parser.add_argument("sequences", help='Path to fasta file to trim')
     parser.add_argument("min_contig_length", help='Minimum contig length, set to 0 for no trimming', type=int)
-    parser.add_argument("contig_filename", help='Filename (without ANY extension) to give to contig files')
     parser.add_argument('assembler', choices=['metaspades', 'spades', 'megahit'],
                         help='Assembler used to generate sequence.')
     return parser.parse_args(args)
@@ -62,7 +61,7 @@ def main(args):
     if not os.path.exists(args.sequences):
         raise EnvironmentError('Fasta file does not exist: {}'.format(args.sequences))
 
-    final_contig_name = args.contig_filename
+    final_contig_name = 'contigs'
 
     if args.min_contig_length > 0:
         trim_fasta_file(args.sequences, args.min_contig_length, final_contig_name + '.fasta', args.assembler)

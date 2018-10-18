@@ -10,7 +10,6 @@ def parse_args(args):
     parser.add_argument('base_count', type=int, help='Sum of base count for all input files')
     parser.add_argument('sequences', type=argparse.FileType('r'), help='.fasta file')
     parser.add_argument('coverage_file', type=argparse.FileType('r'), help='Coverage.tab file')
-    parser.add_argument('output', help='JSON Output file')
     parser.add_argument('min_contig_length', type=int, help='Minimum contig length')
     parser.add_argument('assembler', choices=['metaspades', 'spades', 'megahit'],
                         help='Assembler used to generate sequence.')
@@ -128,7 +127,7 @@ def main(args):
     report = fstats.gen_report()
     report['Base count'] = args.base_count
     report['Coverage'] = coverage
-    with open(args.output, 'w+') as output:
+    with open('stats.json', 'w+') as output:
         output.write(json.dumps(report, indent=4, sort_keys=True))
     sys.exit(0)
 

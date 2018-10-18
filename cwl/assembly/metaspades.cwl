@@ -51,6 +51,10 @@ inputs:
     #     format: edam:format_1930  # FASTQ
     inputBinding:
       prefix: "--12"
+  assembly_memory:
+    type: int
+    inputBinding:
+      prefix: "-m"
 
 stdout: stdout.txt
 stderr: stderr.txt
@@ -59,24 +63,25 @@ outputs:
   stdout: stdout
   stderr: stderr
   contigs:
-    type: File
+    type: File?
     format: edam:format_1929  # FASTA
     outputBinding:
       glob: contigs.fasta
-      outputEval: |
-        ${var ret = self[0];
-          var base;
-          if (inputs.forward_reads){
-            base = inputs.forward_reads
-          } else {
-            base = inputs.interleaved_reads
-          }
-          ret.basename = base.nameroot;
-          return ret;
-         }
+#      outputEval: |
+#        ${var ret = self[0];
+#          var base;
+#          if (inputs.forward_reads){
+#            base = inputs.forward_reads
+#          } else {
+#            base = inputs.interleaved_reads
+#          }
+#          ret.basename = base.nameroot.nameroot;
+#          return ret;
+#         }
 
+  # Scaffolds can be missing if assembly produces no contigs
   scaffolds:
-    type: File
+    type: File?
     format: edam:format_1929  # FASTA
     outputBinding:
       glob: scaffolds.fasta
@@ -87,18 +92,20 @@ outputs:
   #    glob: .
 
   assembly_graph:
-    type: File
+    type: File?
     #format: edam:format_TBD  # FASTG
     outputBinding:
       glob: assembly_graph.fastg
 
+  # Contig paths can be missing if assembly produces no contigs
   contigs_assembly_graph:
-    type: File
+    type: File?
     outputBinding:
       glob: contigs.paths
 
+  # Scaffolds paths can be missing if assembly produces no contigs
   scaffolds_assembly_graph:
-    type: File
+    type: File?
     outputBinding:
       glob: scaffolds.paths
 

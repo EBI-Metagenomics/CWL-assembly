@@ -36,13 +36,13 @@ outputs:
     type: File
   assembly_scaffolds:
     outputSource: metaspades/scaffolds
-    type: File
+    type: File?
   samtools_index:
     outputSource: stats_report/samtools_index_output
-    type: File
+    type: File?
   coverage_tab:
     outputSource: stats_report/metabat_coverage_output
-    type: File
+    type: File?
   trimmed_sequences:
     outputSource: fasta_processing/trimmed_sequences
     type: File
@@ -54,7 +54,7 @@ outputs:
     type: File
   logfile:
     outputSource: stats_report/logfile
-    type: File
+    type: File?
 
 steps:
   metaspades:
@@ -63,11 +63,10 @@ steps:
       reverse_reads: reverse_reads
       interleaved_reads: interleaved_reads
       assembly_memory: assembly_memory
-
     out:
-      - assembly_graph
       - contigs
       - contigs_assembly_graph
+      - assembly_graph
       - contigs_before_rr
       - internal_config
       - internal_dataset
@@ -77,6 +76,7 @@ steps:
       - scaffolds_assembly_graph
     run: assembly/metaspades.cwl
     label: 'metaSPAdes: de novo metagenomics assembler'
+
   stats_report:
     in:
       assembler:

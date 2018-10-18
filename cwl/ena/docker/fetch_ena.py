@@ -7,6 +7,7 @@ import json
 import os
 import logging
 from multiprocessing.pool import ThreadPool
+import argparse
 
 ENA_API_URL = "https://www.ebi.ac.uk/ena/portal/api/search"
 
@@ -89,11 +90,22 @@ def fetch_url(entry):
     return path
 
 
-if __name__ == '__main__':
+def parse_args():
+    parser = argparse.ArgumentParser(description='Tool to retrieve metadata for runs in specified study')
+    parser.add_argument('study', help='Secondary study accession')
+    parser.add_argument('-r', '--runs', help='Comma-seperated list of runs to assemble (omit to assemble all runs)')
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
     api = EnaApiHandler()
     try:
         logging.info('Fetching runs...')
-        runs = api.get_study_runs(sys.argv[1])
+        runs = api.get_study_runs(args.study)
+        if args.runs:
+            filter_runs = args.runs.split(',')
+            runs = list(filter(lambda x: x['run_accession'] in filter_runs, runs))
     except IndexError:
         print('No study accession specified')
         sys.exit(1)
@@ -118,3 +130,7 @@ if __name__ == '__main__':
 
     with open('cwl.output.json', 'w') as f:
         json.dump({"assembly_jobs": runs}, f, indent=4)
+
+
+if __name__ == '__main__':
+    main()

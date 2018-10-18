@@ -1,7 +1,15 @@
 #!/usr/bin/env cwltool
 cwl:tool: study_metaspades_wrapper.cwl
 
-study_accession: "SRP074153"
-
+study_accession: "SRP055878"
 lineage: "root:Host-associated:Human:Digestive system"
+runs:
+  - SRR1917315
+  - SRR1917314
+##!/usr/bin/env cwltool
+#cwl:tool: study_metaspades_wrapper.cwl
+#
+#study_accession: "ERP020679"
+#
+#lineage: "root:Environmental:Air"
 

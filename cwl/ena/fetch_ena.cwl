@@ -4,9 +4,12 @@ class: CommandLineTool
 
 
 requirements:
+  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerPull: "migueldboland/cwl-assembly-fetch-ena"
-  InlineJavascriptRequirement: {}
+#    dockerImageId: "migueldboland/cwl-assembly-fetch-ena"
+#    dockerFile:
+#      $include docker/Dockerfile
 
 
 baseCommand: ['python', '/fetch_ena.py']
@@ -16,7 +19,12 @@ inputs:
     type: string
     inputBinding:
       position: 1
-
+  runs:
+    type: string[]
+    inputBinding:
+      position: 2
+      prefix: "-r"
+      itemSeparator: ","
 
 
 outputs:

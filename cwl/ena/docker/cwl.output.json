@@ -1,0 +1,40 @@
+{
+    "assembly_jobs": [
+        {
+            "run_accession": "SRR1917312",
+            "library_strategy": "WGS",
+            "library_source": "METAGENOMIC",
+            "library_layout": "PAIRED",
+            "read_count": 21385,
+            "base_count": 10722674,
+            "raw_reads": [
+                {
+                    "class": "File",
+                    "location": "file:///Users/mdb/work/CWL_assembly_pipeline/cwl/ena/docker/SRR1917312_1.fastq.gz"
+                },
+                {
+                    "class": "File",
+                    "location": "file:///Users/mdb/work/CWL_assembly_pipeline/cwl/ena/docker/SRR1917312_2.fastq.gz"
+                }
+            ]
+        },
+        {
+            "run_accession": "SRR1917313",
+            "library_strategy": "WGS",
+            "library_source": "METAGENOMIC",
+            "library_layout": "PAIRED",
+            "read_count": 23416,
+            "base_count": 11733949,
+            "raw_reads": [
+                {
+                    "class": "File",
+                    "location": "file:///Users/mdb/work/CWL_assembly_pipeline/cwl/ena/docker/SRR1917313_1.fastq.gz"
+                },
+                {
+                    "class": "File",
+                    "location": "file:///Users/mdb/work/CWL_assembly_pipeline/cwl/ena/docker/SRR1917313_2.fastq.gz"
+                }
+            ]
+        }
+    ]
+}

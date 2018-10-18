@@ -18,10 +18,6 @@ inputs:
     type: int
     inputBinding:
       position: 2
-  output_filename:
-    type: string
-    inputBinding:
-      position: 3
   assembler:
     type: string
     inputBinding:
@@ -31,15 +27,15 @@ outputs:
   trimmed_sequences:
     type: File
     outputBinding:
-      glob: $(inputs.output_filename+'.fasta')
+      glob: $('contigs.fasta')
   trimmed_sequences_gz:
     type: File
     outputBinding:
-      glob: $(inputs.output_filename+'.fasta.gz')
+      glob: $('contigs.fasta.gz')
   trimmed_sequences_gz_md5:
     type: File
     outputBinding:
-      glob: $(inputs.output_filename+'.fasta.gz.md5')
+      glob: $('contigs.fasta.gz.md5')
 
 doc: |
   usage: trim_fasta.py [-h] fasta min_contig_length contig_filename

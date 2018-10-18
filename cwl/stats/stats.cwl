@@ -7,8 +7,6 @@ inputs:
     type: File
   reads:
     type: File[]
-  output_dest:
-    type: string
   min_contig_length:
     type: int
   assembler:
@@ -113,7 +111,7 @@ steps:
       sequences:
         source: sequences
       output:
-        default: "output.json"
+        default: "stats.json"
       coverage_file:
         source: metabat_jgi/output
       base_count:
