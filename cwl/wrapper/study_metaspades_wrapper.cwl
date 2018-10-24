@@ -14,61 +14,29 @@ inputs:
   lineage:
     type: string
   runs:
-    type: string[]
+    type: string[]?
+    inputBinding:
+      prefix: --runs
+      itemSeparator: ","
+      separate: false
   min_contig_length:
-    type: int?
+    type: int
     default: 500
 
-steps:
-  fetch_ena:
-    in:
-      study_accession: study_accession
-      runs: runs
-    out:
-      - assembly_jobs
-    run: ../ena/fetch_ena.cwl
 
-  predict_mem:
-    scatter:
-      - read_count
-      - base_count
-      - lib_layout
-      - lib_strategy
-      - lib_source
-      - compressed_data_size
-    scatterMethod: dotproduct
+steps:
+  pre_assembly:
     in:
+      study_accession:
+        source: study_accession
       lineage:
         source: lineage
-      read_count:
-        source: fetch_ena/assembly_jobs
-        valueFrom: $(self.read_count)
-      base_count:
-        source: fetch_ena/assembly_jobs
-        valueFrom: $(self.base_count)
-      lib_layout:
-        source: fetch_ena/assembly_jobs
-        valueFrom: $(self.library_layout)
-      lib_strategy:
-        source: fetch_ena/assembly_jobs
-        valueFrom: $(self.library_strategy)
-      lib_source:
-        source: fetch_ena/assembly_jobs
-        valueFrom: $(self.library_source)
-      assembler:
-        default: 'metaspades'
-      compressed_data_size:
-        source: fetch_ena/assembly_jobs
-        valueFrom: |
-          ${var ret = 0;
-            self.raw_reads.forEach(function(f){
-              ret += f['size']
-            });
-            return ret;
-           }
+      runs:
+        source: runs
     out:
-      - memory
-    run: ../mem_prediction/mem_predict.cwl
+      - assembly_jobs
+      - memory_estimates
+    run: pre_assembly.cwl
 
   metaspades:
     scatter:
@@ -79,17 +47,17 @@ steps:
     scatterMethod: dotproduct
     in:
       assembly_memory:
-        source: predict_mem/memory
+        source: pre_assembly/memory_estimates
       forward_reads:
-        source: fetch_ena/assembly_jobs
+        source: pre_assembly/assembly_jobs
         valueFrom: |
           $(self.raw_reads.length==2 ? self.raw_reads[0] : null)
       reverse_reads:
-        source: fetch_ena/assembly_jobs
+        source: pre_assembly/assembly_jobs
         valueFrom: |
           $(self.raw_reads.length==2 ? self.raw_reads[1] : null)
       interleaved_reads:
-        source: fetch_ena/assembly_jobs
+        source: pre_assembly/assembly_jobs
         valueFrom: |
           $(self.raw_reads.length==1 ? self.raw_reads[0] : null)
     out:
@@ -108,9 +76,9 @@ steps:
 
   filter_failed_assemblies:
     in:
-      assemblies: metaspades/contigs
       assembly_logs: metaspades/log
-      jobs: fetch_ena/assembly_jobs
+      jobs: pre_assembly/assembly_jobs
+      assemblies: metaspades/contigs
     out:
       - assemblies
       - jobs
@@ -119,27 +87,27 @@ steps:
       class: ExpressionTool
       id: 'organise'
       inputs:
-        assemblies: File[]
-        jobs: Any
         assembly_logs: File[]
+        jobs: Any
+        assemblies: File[]
       outputs:
         assemblies: File[]
         jobs: File[]
         assembly_logs: File[]
       expression: |
         ${
-          var succ_assemblies = [];
+          var assemblies = [];
           var jobs = [];
           var logs = [];
           for (var i = 0; i < inputs.assemblies.length; i++){
               var assembly = inputs.assemblies[i];
               if (assembly.size>0){
-                succ_assemblies.append(assembly);
-                jobs.append(inputs.jobs[i]);
-                logs.append(inputs.assembly_logs[i]);
+                assemblies.push(assembly);
+                jobs.push(inputs.jobs[i]);
+                logs.push(inputs.assembly_logs[i]);
               }
           }
-          return {'assemblies': succ_assemblies, 'jobs': jobs, 'assembly_logs': logs};
+          return {'assemblies': assemblies, 'jobs': jobs, 'assembly_logs': logs};
         }
 
   stats_report:
@@ -183,32 +151,76 @@ steps:
       - trimmed_sequences_gz_md5
     run: ../fasta_trimming/fasta-trimming.cwl
 
+  write_metaspades_logs:
+    scatter:
+      - assembly_log
+      - assembly_job
+    scatterMethod: dotproduct
+    in:
+      assembly_log: metaspades/log
+      assembly_job: pre_assembly/assembly_jobs
+      study_accession: study_accession
+    out: [folders]
+    run:
+      class: ExpressionTool
+      id: 'metaspades_logs'
+      inputs:
+        assembly_log: File
+        assembly_job: Any
+        study_accession: string
+      outputs:
+        folders: Directory
+      expression: |
+        ${
+          var study_dir = inputs.study_accession.substring(0,7) + '/' + inputs.study_accession + '/' ;
+          var run_accession = inputs.assembly_job['run_accession'];
+          var assembly_dir = study_dir + run_accession.substring(0,7) + '/' + run_accession + '/metaspades/001/';
+          return {'folders': {
+              'class': 'Directory',
+              'basename': assembly_dir,
+              'listing': [
+                inputs.assembly_log
+              ]
+          }};
+        }
 
   organise:
     scatter:
       - assemblies
-      - assembly_logs
-      - logfiles
+      - stats_logs
       - run_accessions
+      - alignments
+      - coverage
+      - trimmed_sequences
+      - trimmed_sequences_gz
+      - trimmed_sequences_gz_md5
     scatterMethod: dotproduct
     in:
       assemblies: filter_failed_assemblies/assemblies
-      assembly_logs: filter_failed_assemblies/assembly_logs
-      logfiles: stats_report/logfile
+      stats_logs: stats_report/logfile
+      alignments: stats_report/samtools_index_output
+      coverage: stats_report/metabat_coverage_output
       study_accession: study_accession
       run_accessions:
         source: filter_failed_assemblies/jobs
         valueFrom: |
           ${return self['run_accession']}
+      trimmed_sequences: fasta_processing/trimmed_sequences
+      trimmed_sequences_gz: fasta_processing/trimmed_sequences_gz
+      trimmed_sequences_gz_md5: fasta_processing/trimmed_sequences_gz_md5
     out: [folders]
     run:
       class: ExpressionTool
       id: 'organise'
       inputs:
-        study_accession: string
         assemblies: File
-        assembly_logs: File
-        logfiles: File
+        stats_logs: File
+        alignments: File
+        coverage: File
+        trimmed_sequences: File
+        trimmed_sequences_gz: File
+        trimmed_sequences_gz_md5: File
+        study_accession: string
         run_accessions: string
       outputs:
         folders: Directory
@@ -221,16 +233,36 @@ steps:
               'basename': assembly_dir,
               'listing': [
                 inputs.assemblies,
-                inputs.assembly_logs,
-                inputs.logfiles
+                inputs.stats_logs,
+                inputs.alignments,
+                inputs.coverage,
+                inputs.trimmed_sequences,
+                inputs.trimmed_sequences_gz,
+                inputs.trimmed_sequences_gz_md5
               ]
           }};
         }
+
+#  success_check:
+#    in:
+#      assembly_jobs: pre_assembly/assembly_jobs
+#    out: success_file
+#    run:
+#      class: ExpressionTool
+#      id: 'success_check'
+#      inputs:
+#        assembly_jobs: Any
+
+
+
 
 outputs:
   assembly_dir:
     type: Directory[]
     outputSource: organise/folders
+  metaspades_logs:
+    type: Directory[]
+    outputSource: write_metaspades_logs/folders
 
 #outputs:
 #  assembly:
@@ -241,8 +273,13 @@ outputs:
 #    outputSource: metaspades_pipeline/assembly_log
 #  memory_estimations:
 #    type: int[]
-#    outputSource: predict_mem/memory
+#    outputSource: pre_assembly/memory_estimates
 #  logfile:
 #    type: File[]
 #    outputSource: metaspades_pipeline/logfile
+
+$namespaces:
+ edam: http://edamontology.org/
+ iana: https://www.iana.org/assignments/media-types/
+ s: http://schema.org/
 

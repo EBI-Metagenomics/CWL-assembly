@@ -1,15 +1,21 @@
 #!/usr/bin/env cwltool
 cwl:tool: study_metaspades_wrapper.cwl
 
-study_accession: "SRP055878"
+study_accession: "ERP010229"
 lineage: "root:Host-associated:Human:Digestive system"
 runs:
-  - SRR1917315
-  - SRR1917314
-##!/usr/bin/env cwltool
-#cwl:tool: study_metaspades_wrapper.cwl
-#
-#study_accession: "ERP020679"
-#
-#lineage: "root:Environmental:Air"
+  - ERR866603
 
+#study_accession: "SRP055878"
+#lineage: "root:Host-associated:Human:Digestive system"
+#runs:
+#  - SRR1917314
+#  - SRR1917315
+
+
+cwltool:overrides:
+  ../assembly/metaspades.cwl:
+    requirements:
+      ResourceRequirement:
+        ramMin: 5000
+        coresMin: 2
