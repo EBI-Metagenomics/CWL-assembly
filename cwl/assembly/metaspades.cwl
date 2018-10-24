@@ -25,7 +25,7 @@ arguments:
     prefix: -o
 #  - valueFrom: $(runtime.tmpdir)
 #    prefix: --tmp-dir
-  - valueFrom: $(runtime.ram)
+  - valueFrom: $(Math.round(runtime.ram/1024))
     prefix: --memory
   - valueFrom: $(runtime.cores)
     prefix: --threads
@@ -41,11 +41,6 @@ inputs:
 #     format: edam:format_1930  # FASTQ
     inputBinding:
       prefix: "-2"
-#  single_reads:
-#    type: File?
-#     format: edam:format_1930  # FASTQ
-#    inputBinding:
-#      prefix: "-s"
   interleaved_reads:
     type: File?
     #     format: edam:format_1930  # FASTQ
@@ -53,8 +48,7 @@ inputs:
       prefix: "--12"
   assembly_memory:
     type: int
-    inputBinding:
-      prefix: "-m"
+
 
 stdout: stdout.txt
 stderr: stderr.txt
@@ -67,17 +61,6 @@ outputs:
     format: edam:format_1929  # FASTA
     outputBinding:
       glob: contigs.fasta
-#      outputEval: |
-#        ${var ret = self[0];
-#          var base;
-#          if (inputs.forward_reads){
-#            base = inputs.forward_reads
-#          } else {
-#            base = inputs.interleaved_reads
-#          }
-#          ret.basename = base.nameroot.nameroot;
-#          return ret;
-#         }
 
   # Scaffolds can be missing if assembly produces no contigs
   scaffolds:
@@ -85,11 +68,6 @@ outputs:
     format: edam:format_1929  # FASTA
     outputBinding:
       glob: scaffolds.fasta
-
-  #everything:
-  #  type: Directory
-  #  outputBinding:
-  #    glob: .
 
   assembly_graph:
     type: File?
