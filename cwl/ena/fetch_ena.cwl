@@ -20,7 +20,7 @@ inputs:
     inputBinding:
       position: 1
   runs:
-    type: string[]
+    type: string[]?
     inputBinding:
       position: 2
       prefix: "-r"

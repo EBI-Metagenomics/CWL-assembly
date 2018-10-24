@@ -124,9 +124,7 @@ def main():
             downloads.append((f['location'], dest))
             f['location'] = 'file://' + dest
 
-    results = ThreadPool(8).imap_unordered(fetch_url, downloads)
-    for path in results:
-        print(path)
+    ThreadPool(8).imap_unordered(fetch_url, downloads)
 
     with open('cwl.output.json', 'w') as f:
         json.dump({"assembly_jobs": runs}, f, indent=4)
