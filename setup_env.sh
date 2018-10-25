@@ -11,9 +11,9 @@ INSTALL_DIR="$(dirname $(dirname $(which python)))";
 CURL_VERSION="7.61.0";
 
 echo "Checking docker installation..."
-if ! [ -x "$(command -v docker)" ]; then
+if ! [ -x "$(command -v docker)" ] && ! [ -x "$(command -v udocker)" ] ; then
     echo "Docker not found, installing udocker in ${INSTALL_DIR}";
-    wget -O ${INSTALL_DIR}/bin/udocker.py https://raw.githubusercontent.com/indigo-dc/udocker/devel/udocker.py;
+    wget -O ${INSTALL_DIR}/bin/udocker https://raw.githubusercontent.com/indigo-dc/udocker/devel/udocker.py;
     chmod 775 ${INSTALL_DIR}/bin/udocker;
      ${INSTALL_DIR}/bin/udocker install;
     echo "Installed udocker in venv";
@@ -33,8 +33,8 @@ fi
 echo "Checking for node installation...";
 if ! [ -x "$(command -v node)" ]; then
     echo "Node not found, installing in ${INSTALL_DIR}";
-    curl https://nodejs.org/dist/v8.11.1/node-v8.11.1-linux-x64.tar.xz > ${INSTALL_DIR}/node-v8.11.1-linux-x64.tar.xz;
-    tar -xzf ${INSTALL_DIR}/node-v8.11.1-linux-x64.tar.xz -C ${INSTALL_DIR};
+    curl https://nodejs.org/dist/v8.11.1/node-v8.11.1-linux-x64.tar.gz > ${INSTALL_DIR}/node-v8.11.1-linux-x64.tar.gz;
+    tar -xzf ${INSTALL_DIR}/node-v8.11.1-linux-x64.tar.gz -C ${INSTALL_DIR};
     export PATH="${INSTALL_DIR}/node-v8.11.1-linux-x64/bin/:$PATH";
     echo "PATH=${INSTALL_DIR}/node-v8.11.1-linux-x64/bin/:\$PATH" >> ${INSTALL_DIR}/bin/activate
     echo "Installed node in venv"
