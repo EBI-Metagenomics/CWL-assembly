@@ -11,6 +11,8 @@ import argparse
 
 ENA_API_URL = "https://www.ebi.ac.uk/ena/portal/api/search"
 
+logging.basicConfig(level=logging.INFO)
+
 
 def get_default_connection_headers():
     return {
@@ -119,12 +121,14 @@ def main():
         del d['fastq_ftp']
         # TODO remove section if CWL support for ftp is fixed.
         for f in d['raw_reads']:
-            url = f['location']
             dest = os.path.join(os.getcwd(), f['location'].split('/')[-1])
             downloads.append((f['location'], dest))
             f['location'] = 'file://' + dest
 
-    ThreadPool(8).imap_unordered(fetch_url, downloads)
+    results = ThreadPool(8).imap_unordered(fetch_url, downloads)
+
+    for path in results:
+        logging.info('Downloaded file: {}'.format(path))
 
     with open('cwl.output.json', 'w') as f:
         json.dump({"assembly_jobs": runs}, f, indent=4)
