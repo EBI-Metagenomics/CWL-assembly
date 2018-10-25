@@ -4,7 +4,7 @@ class: CommandLineTool
 
 requirements:
   DockerRequirement:
-    dockerPull: "migueldboland/cwl-assembly-stats-report:latest"
+    dockerPull: "migueldboland/cwl-assembly-stats-report"
   InlineJavascriptRequirement: {}
 
 baseCommand: ['python', '/gen_stats_report.py']
@@ -22,10 +22,6 @@ inputs:
     type: File
     inputBinding:
       position: 4
-  output:
-    type: string
-    inputBinding:
-      position: 5
   min_contig_length:
     type: int
     inputBinding:
@@ -39,7 +35,7 @@ outputs:
   logfile:
     type: File
     outputBinding:
-      glob: $(inputs.output)
+      glob: $('stats.json')
 
 doc: |
   usage: gen_coverage_report.py [-h] output coverage_file base_count
