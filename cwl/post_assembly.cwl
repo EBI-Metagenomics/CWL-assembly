@@ -24,12 +24,12 @@ inputs:
     type: string
 
 outputs:
-  assembly_dirs:
+  assembly_outputs:
     type: Directory[]
-    outputSource: write_metaspades_logs/folders
-  assembly_logfiles:
+    outputSource: write_assemblies/folders
+  stats_outputs:
     type: Directory[]
-    outputSource: organise/folders
+    outputSource: write_stats_output/folders
 
 steps:
   filter_failed_assemblies:
@@ -75,7 +75,7 @@ steps:
     scatterMethod: dotproduct
     in:
       assembler:
-        default: metaspades
+        source: assembler
       sequences:
         source: filter_failed_assemblies/assemblies
       reads:
@@ -109,14 +109,16 @@ steps:
       - trimmed_sequences_gz_md5
     run: ../fasta_trimming/fasta-trimming.cwl
 
-  write_metaspades_logs:
+  write_assemblies:
     scatter:
       - assembly_log
       - assembly_job
+      - assembly
     scatterMethod: dotproduct
     in:
       assembly_log: assembly_logs
       assembly_job: assembly_jobs
+      assembly: assemblies
       study_accession: study_accession
     out: [folders]
     run:
@@ -125,6 +127,7 @@ steps:
       inputs:
         assembly_log: File
         assembly_job: Any
+        assembly: File
         study_accession: string
       outputs:
         folders: Directory
@@ -137,66 +140,63 @@ steps:
               'class': 'Directory',
               'basename': assembly_dir,
               'listing': [
-                inputs.assembly_log
+                inputs.assembly_log,
+                inputs.assembly
               ]
           }};
         }
 
-  organise:
+  write_stats_output:
     scatter:
-      - assemblies
-      - stats_logs
-      - run_accessions
-      - alignments
+      - stats_log
+      - run_accession
+      - alignment
       - coverage
-      - trimmed_sequences
-      - trimmed_sequences_gz
-      - trimmed_sequences_gz_md5
+      - trimmed_sequence
+      - trimmed_sequence_gz
+      - trimmed_sequence_gz_md5
     scatterMethod: dotproduct
     in:
-      assemblies: filter_failed_assemblies/assemblies
-      stats_logs: stats_report/logfile
-      alignments: stats_report/samtools_index_output
+      stats_log: stats_report/logfile
+      alignment: stats_report/samtools_index_output
       coverage: stats_report/metabat_coverage_output
       study_accession: study_accession
-      run_accessions:
+      run_accession:
         source: filter_failed_assemblies/jobs
         valueFrom: |
           ${return self['run_accession']}
-      trimmed_sequences: fasta_processing/trimmed_sequences
-      trimmed_sequences_gz: fasta_processing/trimmed_sequences_gz
-      trimmed_sequences_gz_md5: fasta_processing/trimmed_sequences_gz_md5
+      trimmed_sequence: fasta_processing/trimmed_sequences
+      trimmed_sequence_gz: fasta_processing/trimmed_sequences_gz
+      trimmed_sequence_gz_md5: fasta_processing/trimmed_sequences_gz_md5
     out: [folders]
     run:
       class: ExpressionTool
       id: 'organise'
       inputs:
-        assemblies: File
-        stats_logs: File
-        alignments: File
+        stats_log: File
+        alignment: File
         coverage: File
-        trimmed_sequences: File
-        trimmed_sequences_gz: File
-        trimmed_sequences_gz_md5: File
+        trimmed_sequence: File
+        trimmed_sequence_gz: File
+        trimmed_sequence_gz_md5: File
         study_accession: string
-        run_accessions: string
+        run_accession: string
       outputs:
         folders: Directory
       expression: |
         ${
           var study_dir = inputs.study_accession.substring(0,7) + '/' + inputs.study_accession + '/' ;
-          var assembly_dir = study_dir + inputs.run_accessions.substring(0,7) + '/' + inputs.run_accessions + '/metaspades/001/';
+          var assembly_dir = study_dir + inputs.run_accession.substring(0,7) + '/' + inputs.run_accession + '/metaspades/001/';
           return {'folders': {
               'class': 'Directory',
               'basename': assembly_dir,
               'listing': [
-                inputs.assemblies,
-                inputs.stats_logs,
-                inputs.alignments,
+                inputs.stats_log,
+                inputs.alignment,
                 inputs.coverage,
-                inputs.trimmed_sequences,
-                inputs.trimmed_sequences_gz,
-                inputs.trimmed_sequences_gz_md5
+                inputs.trimmed_sequence,
+                inputs.trimmed_sequence_gz,
+                inputs.trimmed_sequence_gz_md5
               ]
           }};
         }
