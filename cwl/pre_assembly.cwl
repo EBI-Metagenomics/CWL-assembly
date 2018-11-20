@@ -10,7 +10,7 @@ requirements:
 
 inputs:
   study_accession:
-    type: string
+    type: string?
   lineage:
     type: string
   runs:
@@ -37,7 +37,7 @@ steps:
       runs: runs
     out:
       - assembly_jobs
-    run: ../ena/fetch_ena.cwl
+    run: ./ena/fetch_ena.cwl
 
   predict_mem:
     scatter:
@@ -79,7 +79,7 @@ steps:
            }
     out:
       - memory
-    run: ../mem_prediction/mem_predict.cwl
+    run: ./mem_prediction/mem_predict.cwl
 
 $namespaces:
  edam: http://edamontology.org/

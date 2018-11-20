@@ -16,7 +16,7 @@ baseCommand: ['python', '/pre_assembly.py']
 
 inputs:
   study_accession:
-    type: string
+    type: string?
     inputBinding:
       position: 1
       prefix: -s

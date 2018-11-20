@@ -11,7 +11,7 @@ LABEL maintainer="Miguel Boland <mdb@ebi.ac.uk>"
 COPY ./*.py /
 
 RUN apt-get update && apt-get install -y git default-libmysqlclient-dev gcc
-RUN pip install -U git+https://github.com/EBI-Metagenomics/ebi-metagenomics-libs.git --process-dependency-links
+RUN pip install -U git+https://github.com/EBI-Metagenomics/ebi-metagenomics-libs.git@analysis-request-cli --process-dependency-links
 
 CMD ["python", "/pre_assembly.py"]
 

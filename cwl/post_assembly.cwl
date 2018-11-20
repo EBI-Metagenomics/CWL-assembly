@@ -20,8 +20,6 @@ inputs:
   min_contig_length:
     type: int
     default: 500
-  study_accession:
-    type: string
 
 outputs:
   assembly_outputs:
@@ -34,9 +32,9 @@ outputs:
 steps:
   filter_failed_assemblies:
     in:
-      assembly_logs: assembly_logs
-      jobs: assembly_jobs
-      assemblies: assemblies
+      assembly_logs_in: assembly_logs
+      jobs_in: assembly_jobs
+      assemblies_in: assemblies
     out:
       - assemblies
       - jobs
@@ -45,9 +43,9 @@ steps:
       class: ExpressionTool
       id: 'organise'
       inputs:
-        assembly_logs: File[]
-        jobs: Any
-        assemblies: File[]
+        assembly_logs_in: File[]
+        jobs_in: Any
+        assemblies_in: File[]
       outputs:
         assemblies: File[]
         jobs: File[]
@@ -57,12 +55,12 @@ steps:
           var assemblies = [];
           var jobs = [];
           var logs = [];
-          for (var i = 0; i < inputs.assemblies.length; i++){
-              var assembly = inputs.assemblies[i];
+          for (var i = 0; i < inputs.assemblies_in.length; i++){
+              var assembly = inputs.assemblies_in[i];
               if (assembly.size>0){
                 assemblies.push(assembly);
-                jobs.push(inputs.jobs[i]);
-                logs.push(inputs.assembly_logs[i]);
+                jobs.push(inputs.jobs_in[i]);
+                logs.push(inputs.assembly_logs_in[i]);
               }
           }
           return {'assemblies': assemblies, 'jobs': jobs, 'assembly_logs': logs};
@@ -91,7 +89,7 @@ steps:
       - samtools_index_output
       - metabat_coverage_output
       - logfile
-    run: ../stats/stats.cwl
+    run: ./stats/stats.cwl
 
   fasta_processing:
     scatter:
@@ -102,12 +100,12 @@ steps:
       min_contig_length:
         source: min_contig_length
       assembler:
-        default: metaspades
+        source: assembler
     out:
       - trimmed_sequences
       - trimmed_sequences_gz
       - trimmed_sequences_gz_md5
-    run: ../fasta_trimming/fasta-trimming.cwl
+    run: ./fasta_trimming/fasta-trimming.cwl
 
   write_assemblies:
     scatter:
@@ -119,7 +117,7 @@ steps:
       assembly_log: assembly_logs
       assembly_job: assembly_jobs
       assembly: assemblies
-      study_accession: study_accession
+      assembler: assembler
     out: [folders]
     run:
       class: ExpressionTool
@@ -128,14 +126,15 @@ steps:
         assembly_log: File
         assembly_job: Any
         assembly: File
-        study_accession: string
+        assembler: string
       outputs:
         folders: Directory
       expression: |
         ${
-          var study_dir = inputs.study_accession.substring(0,7) + '/' + inputs.study_accession + '/' ;
+          var study_accession = inputs.assembly_job['secondary_study_accession'];
+          var study_dir = study_accession.substring(0,7) + '/' + study_accession + '/' ;
           var run_accession = inputs.assembly_job['run_accession'];
-          var assembly_dir = study_dir + run_accession.substring(0,7) + '/' + run_accession + '/metaspades/001/';
+          var assembly_dir = study_dir + run_accession.substring(0,7) + '/' + run_accession + '/' + inputs.assembler + '/001/';
           return {'folders': {
               'class': 'Directory',
               'basename': assembly_dir,
@@ -149,6 +148,7 @@ steps:
   write_stats_output:
     scatter:
       - stats_log
+      - study_accession
       - run_accession
       - alignment
       - coverage
@@ -160,7 +160,10 @@ steps:
       stats_log: stats_report/logfile
       alignment: stats_report/samtools_index_output
       coverage: stats_report/metabat_coverage_output
-      study_accession: study_accession
+      study_accession:
+        source: filter_failed_assemblies/jobs
+        valueFrom: |
+          ${return self['secondary_study_accession']}
       run_accession:
         source: filter_failed_assemblies/jobs
         valueFrom: |
@@ -168,6 +171,7 @@ steps:
       trimmed_sequence: fasta_processing/trimmed_sequences
       trimmed_sequence_gz: fasta_processing/trimmed_sequences_gz
       trimmed_sequence_gz_md5: fasta_processing/trimmed_sequences_gz_md5
+      assembler: assembler
     out: [folders]
     run:
       class: ExpressionTool
@@ -181,12 +185,13 @@ steps:
         trimmed_sequence_gz_md5: File
         study_accession: string
         run_accession: string
+        assembler: string
       outputs:
         folders: Directory
       expression: |
         ${
           var study_dir = inputs.study_accession.substring(0,7) + '/' + inputs.study_accession + '/' ;
-          var assembly_dir = study_dir + inputs.run_accession.substring(0,7) + '/' + inputs.run_accession + '/metaspades/001/';
+          var assembly_dir = study_dir + inputs.run_accession.substring(0,7) + '/' + inputs.run_accession + '/' + inputs.assembler + '/001/';
           return {'folders': {
               'class': 'Directory',
               'basename': assembly_dir,

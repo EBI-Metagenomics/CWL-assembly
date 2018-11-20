@@ -3,9 +3,13 @@ import logging
 
 import dill
 from sklearn import neighbors
+from sklearn import linear_model
+
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
+from sklearn.neural_network import MLPRegressor
+
 import pandas as pd
 import numpy as np
 import argparse
@@ -18,6 +22,7 @@ MODEL_DATA = os.path.join(os.path.dirname(__file__), 'data.csv')
 input_format = ['lineage1', 'lineage2', 'lineage3', 'lineage4', 'lineage5', 'base_count', 'read_count',
                 'compressed_data_size', 'library_layout', 'library_strategy', 'library_source', 'name']
 
+MIN_MEMORY = 10
 
 class MemoryEstimator(object):
     input_numerical_columns = ['base_count', 'read_count', 'compressed_data_size']
@@ -28,7 +33,7 @@ class MemoryEstimator(object):
         self.input_scaler = None
         self.output_scaler = None
         self.columns = None
-        self.linear_bias = (1.5, 0)
+        self.linear_bias = (1.75, 0)
         try:
             self.load_model()
         except (dill.UnpicklingError, OSError) as e:
@@ -62,8 +67,8 @@ class MemoryEstimator(object):
         x_train = self.pre_process_input(x_train)
         y_train = self.pre_process_output(y_train)
 
-        model = neighbors.KNeighborsRegressor(5, weights='distance', algorithm='kd_tree').fit(x_train, y_train)
-
+        model = MLPRegressor(verbose=True, learning_rate='adaptive')
+        model = model.fit(x_train, y_train)
         self.evaluate_model(model, x_test, y_test)
         return model
 
@@ -74,11 +79,14 @@ class MemoryEstimator(object):
 
         pred_real = self.apply_bias(pred_real)
 
+        pred_real = clip_low_mem(pred_real)
+
         mse = mean_squared_error(req_real, pred_real)
         passed = sum([1 for p, y in zip(pred_real, req_real) if p >= y])
         failed = sum([1 for p, y in zip(pred_real, req_real) if p < y])
         waste = np.mean([(p - y if p >= y else p) / (p + 1) for p, y in zip(pred_real, req_real)])
-
+        for x in range(0, 5):
+            print(pred_real[x], '=>', req_real[x])
         print('MSE: ', mse)
         print('Passed: ', passed)
         print('Failed: ', failed)
@@ -105,7 +113,7 @@ class MemoryEstimator(object):
     # library_layout, library_strategy, library_source, name (of assembler)
     def predict_from_raw(self, obj):
         df = pd.DataFrame(data=obj)
-        return int(round(self.apply_bias(self.predict(self.pre_process_input(df))[0][0])))
+        return int(round(clip_low_mem(self.apply_bias(self.predict(self.pre_process_input(df))[0][0]))))
 
     def predict(self, df, model=None):
         if not model:
@@ -114,10 +122,13 @@ class MemoryEstimator(object):
         return self.output_scaler.inverse_transform(raw_prediction)
 
 
+def clip_low_mem(df):
+    return np.clip(df, a_min=MIN_MEMORY, a_max=None)
+
 if __name__ == '__main__':
     me = MemoryEstimator()
     parser = argparse.ArgumentParser()
-    parser.add_argument('--lineage',  help='MGnify lineage eg: root:Host-Associated:Human',  required=True)
+    parser.add_argument('--lineage', help='MGnify lineage eg: root:Host-Associated:Human', required=True)
     parser.add_argument('--base-count', type=int, help='Base count', required=True)
     parser.add_argument('--read-count', type=int, help='Read count', required=True)
     parser.add_argument('--size', type=int, help='Total compressed data size (Bytes)', required=True)

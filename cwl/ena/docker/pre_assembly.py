@@ -2,10 +2,11 @@ import argparse
 import logging
 import json
 import os
+import sys
 
 # Fix to allow developing using shared library, and also importing directly when using Docker container
 from ena_portal_api import ena_handler
-from mgnify_backlog import mgnify_handler as mh
+# from mgnify_backlog import mgnify_handler as mh
 
 logging.basicConfig(level=logging.INFO)
 
@@ -28,15 +29,22 @@ def parse_args():
 
 
 def convert_file_locations(file_list):
-    return list(map(lambda f: {"class": "File", "location": "file://" + os.path.join(os.getcwd(), os.path.basename(f))}, file_list))
+    return list(map(lambda f: {"class": "File", "location": "file://" + os.path.join(os.getcwd(), os.path.basename(f))},
+                    file_list))
+
 
 def main():
     args = parse_args()
+    if not args.study and not args.runs:
+        logging.error('No studies or runs specified, exiting.')
+        sys.exit(1)
 
     ena = ena_handler.EnaApiHandler()
-    runs = ena.get_study_runs(args.study, False)
-    if args.runs:
-        runs = list(filter(lambda r: r['run_accession'] in args.runs, runs))
+
+    if not args.study:
+        runs = [ena.get_run(run) for run in args.runs]
+    else:
+        runs = ena.get_study_runs(args.study, False, filter_accessions=args.runs)
 
     ena_handler.download_runs(runs)
     for run in runs:

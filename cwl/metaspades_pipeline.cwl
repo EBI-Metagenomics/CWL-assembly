@@ -10,7 +10,7 @@ requirements:
 
 inputs:
   study_accession:
-    type: string
+    type: string?
   lineage:
     type: string
   runs:
@@ -39,7 +39,7 @@ steps:
     out:
       - assembly_jobs
       - memory_estimates
-    run: pre_assembly.cwl
+    run: ./pre_assembly.cwl
 
   metaspades:
     scatter:
@@ -74,7 +74,7 @@ steps:
       - params
       - scaffolds
       - scaffolds_assembly_graph
-    run: ../assembly/metaspades.cwl
+    run: assembly/metaspades.cwl
     label: 'metaSPAdes: de novo metagenomics assembler'
 
   post_assembly:
