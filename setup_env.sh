@@ -2,7 +2,7 @@
 #virtualenv venv
 #source venv/bin/activate
 #pip install -U pip setuptools
-#pip install -r requirements.txt
+pip install -r requirements.txt
 #pip install -r requirements-test.txt
 #
 set -eux;
@@ -20,9 +20,10 @@ if ! [ -x "$(command -v docker)" ] && ! [ -x "$(command -v udocker)" ] ; then
 
     echo "Installing latest curl to bypass HTTP 400 error in udocker pull";
     wget -O ${INSTALL_DIR}/curl-${CURL_VERSION}.tar.gz https://curl.haxx.se/download/curl-${CURL_VERSION}.tar.gz;
-    tar -xzf ${INSTALL_DIR}/curl-${CURL_VERSION}.tar.gz;
+    tar -C ${INSTALL_DIR} -xzf ${INSTALL_DIR}/curl-${CURL_VERSION}.tar.gz;
     cd ${INSTALL_DIR}/curl-${CURL_VERSION};
     make;
+    cd -;
     mv ${INSTALL_DIR}/curl-${CURL_VERSION}/src/curl ${INSTALL_DIR}/bin/;
     cd ${INSTALL_DIR};
     echo "Installed curl v7.61 in venv";
