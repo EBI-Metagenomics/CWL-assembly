@@ -14,29 +14,21 @@ inputs:
       - File?
       - type: array
         items: File
-    inputBinding:
-      itemSeparator: ","
   reverse_reads:
     type:
       - File?
       - type: array
         items: File
-    inputBinding:
-      itemSeparator: ","
   interleaved_reads:
     type:
       - File?
       - type: array
         items: File
-    inputBinding:
-      itemSeparator: ","
   single_reads:
     type:
       - File?
       - type: array
         items: File
-    inputBinding:
-      itemSeparator: ","
   min_contig_length:
     type: int
   output_dest:
@@ -49,18 +41,46 @@ outputs:
   assembly:
     outputSource: megahit/contigs
     type: File
+    format: edam:format_1929       # FASTA
+    edam:function: edam:data_0925  # Sequence assembly
+    cwlprov:relationships:
+      prov:wasDerivedFrom:
+        - '#inputs.forward_reads'
+        - '#inputs.reverse_reads'
+        - '#inputs.interleaved_reads'
+        - '#inputs.single_reads'
   assembly_log:
     outputSource: megahit/log
     type: File
+    format: iana:text/plain
+    edam:function: edam:data_3181   # Sequence assembly report
+    cwlprov:relationships:
+       s:mainEntity: '#output.assembly'
   samtools_index:
     outputSource: stats_report/samtools_index_output
     type: File
+    format: edam:format_2572  # BAM
+    label: alignment of reads to assembled contigs
+    cwlprov:relationships:
+      prov:wasDerivedFrom:
+        - '#outputs.assembly'
+        - '#inputs.forward_reads'
+        - '#inputs.reverse_reads'
+        - '#inputs.interleaved_reads'
+        - '#inputs.single_reads'
   coverage_tab:
     outputSource: stats_report/metabat_coverage_output
     type: File
+    format: iana:text/tab-separated-values
+    cwlprov:relationships:
+      prov:wasDerivedFrom: [ '#outputs.samtools_index' ]
   trimmed_sequences:
     outputSource: fasta_processing/trimmed_sequences
     type: File
+    format: edam:format_1929  # FASTA
+    cwlprov:relationships:
+      prov:wasDerivedFrom: [ '#outputs.assembly' ]
+      prov:wasInfluencedBy: [ '#inputs.min_contig_length' ]
   trimmed_sequences_gz:
     outputSource: fasta_processing/trimmed_sequences_gz
     type: File
@@ -129,8 +149,11 @@ steps:
 $schemas:
   - 'http://edamontology.org/EDAM_1.16.owl'
   - 'https://schema.org/docs/schema_org_rdfa.html'
+  - http://www.w3.org/ns/prov.owl
 
 $namespaces:
+  prov: http://www.w3.org/ns/prov#
+  cwlprov: https://w3id.org/cwl/prov#
   edam: 'http://edamontology.org/'
   iana: 'https://www.iana.org/assignments/media-types/'
   s: 'http://schema.org/'
