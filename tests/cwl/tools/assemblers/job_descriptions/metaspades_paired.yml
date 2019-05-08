@@ -8,6 +8,7 @@ reverse_reads:
   path: ../../../../fixtures/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz
   class: File
 
+assembly_memory: 2
 cwltool:overrides:
   metaspades.cwl:
     requirements:
