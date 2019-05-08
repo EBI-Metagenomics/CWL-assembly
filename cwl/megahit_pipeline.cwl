@@ -17,9 +17,6 @@ inputs:
     type: File?
   single_reads:
     type: File?
-  assembly_memory:
-    type: int
-    default: 128
   min_contig_length:
     type: int
     default: 500
@@ -35,7 +32,6 @@ steps:
       reverse_reads: reverse_reads
       interleaved_reads: interleaved_reads
       single_reads: single_reads
-      assembly_memory: assembly_memory
     out:
       - contigs
       - log

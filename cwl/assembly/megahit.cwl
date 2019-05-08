@@ -14,13 +14,12 @@ hints:
       spades:
         specs: [ "https://identifiers.org/rrid/RRID:SCR_000131" ]
         version: [ "3.12.0" ]
-
+  DockerRequirement:
+    dockerPull: "quay.io/biocontainers/megahit:1.1.3--py36_0"
+    
 requirements:
   InlineJavascriptRequirement: {}
 
-hints:
-  DockerRequirement:
-    dockerPull: "quay.io/biocontainers/megahit:1.1.3--py36_0"
 
 baseCommand: megahit
 
