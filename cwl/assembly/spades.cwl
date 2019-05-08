@@ -6,11 +6,11 @@ class: CommandLineTool
 label: "spades: de novo genomic assembler"
 
 requirements:
-  DockerRequirement:
-    dockerPull: "quay.io/biocontainers/spades:3.12.0--1"
   InlineJavascriptRequirement: {}
 
 hints:
+  DockerRequirement:
+    dockerPull: "quay.io/biocontainers/spades:3.12.0--1"
   SoftwareRequirement:
     packages:
       spades:

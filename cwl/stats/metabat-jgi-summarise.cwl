@@ -3,9 +3,10 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-requirements:
+hints:
   DockerRequirement:
     dockerPull: metabat/metabat:latest
+requirements:
   InlineJavascriptRequirement: {}
 
 baseCommand:

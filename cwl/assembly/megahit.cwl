@@ -16,9 +16,11 @@ hints:
         version: [ "3.12.0" ]
 
 requirements:
+  InlineJavascriptRequirement: {}
+
+hints:
   DockerRequirement:
     dockerPull: "quay.io/biocontainers/megahit:1.1.3--py36_0"
-  InlineJavascriptRequirement: {}
 
 baseCommand: megahit
 

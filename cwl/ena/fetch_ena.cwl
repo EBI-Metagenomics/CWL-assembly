@@ -5,6 +5,7 @@ class: CommandLineTool
 
 requirements:
   InlineJavascriptRequirement: {}
+hints:
   DockerRequirement:
 #    dockerPull: "migueldboland/cwl-assembly-fetch-ena"
     dockerImageId: "migueldboland/cwl-assembly-fetch-ena"

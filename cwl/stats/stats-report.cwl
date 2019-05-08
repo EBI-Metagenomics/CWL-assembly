@@ -2,9 +2,10 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-requirements:
+hints:
   DockerRequirement:
     dockerPull: "migueldboland/cwl-assembly-stats-report"
+requirements:
   InlineJavascriptRequirement: {}
 
 baseCommand: ['python', '/gen_stats_report.py']

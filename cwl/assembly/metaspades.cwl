@@ -12,10 +12,10 @@ hints:
         version: [ "3.12.0" ]
   ResourceRequirement:
     ramMin: $(inputs.assembly_memory*1024)
-
-requirements:
   DockerRequirement:
     dockerPull: "quay.io/biocontainers/spades:3.12.0--1"
+
+requirements:
   InlineJavascriptRequirement: {}
 
 baseCommand: [ metaspades.py ]

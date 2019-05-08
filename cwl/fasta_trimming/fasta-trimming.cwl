@@ -2,9 +2,10 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-requirements:
+hints:
   DockerRequirement:
     dockerPull: "migueldboland/cwl-assembly-fasta-trimming"
+requirements:
   InlineJavascriptRequirement: {}
 
 baseCommand: ['python', '/trim_fasta.py']

@@ -2,14 +2,12 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-requirements:
+hints:
   DockerRequirement:
     dockerPull: quay.io/biocontainers/bwa:0.7.17--ha92aebf_3
+requirements:
   InitialWorkDirRequirement:
     listing: [ $(inputs.sequences) ]
-#TODO: Enable after this issue is fixed: https://github.com/common-workflow-language/cwltool/issues/80
-#hints:
-#  - $import: bwa-docker.yml
 
 baseCommand:
 - bwa

@@ -2,9 +2,10 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-requirements:
+hints:
   DockerRequirement:
     dockerPull: "migueldboland/cwl-assembly-readfq"
+requirements:
   InlineJavascriptRequirement: {}
 
 baseCommand:

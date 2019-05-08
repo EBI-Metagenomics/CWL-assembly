@@ -2,9 +2,10 @@
 cwlVersion: v1.0
 class: CommandLineTool
 
-requirements:
+hints:
   DockerRequirement:
     dockerPull: quay.io/biocontainers/samtools:1.9--h46bd0b3_0
+requirements:
   InlineJavascriptRequirement: {}
 
 baseCommand: [samtools, sort]
