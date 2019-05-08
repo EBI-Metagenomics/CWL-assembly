@@ -2,3 +2,9 @@ interleaved_reads:
   class: File
   path: ../tests/fixtures/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
 
+cwltool:overrides:
+  assembly/megahit.cwl:
+    requirements:
+    - class: ResourceRequirement
+      ramMin: 2000 # in MB
+      coresMin: 2
