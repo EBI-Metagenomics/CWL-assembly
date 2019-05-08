@@ -24,7 +24,6 @@ inputs:
 outputs:
   alignments_with_index:
     type: File
-    secondaryFiles: .bai
     outputBinding:
       glob: $(inputs.alignments.basename)
 
