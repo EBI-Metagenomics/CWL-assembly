@@ -4,7 +4,7 @@ class: CommandLineTool
 
 hints:
   DockerRequirement:
-    dockerPull: "migueldboland/cwl-assembly-readfq"
+    dockerPull: "mgnify/cwl-assembly-readfq"
 requirements:
   InlineJavascriptRequirement: {}
 

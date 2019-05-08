@@ -18,9 +18,9 @@ before_install:
   - mkdir "$TRAVIS_BUILD_DIR/coverage"
 
 install:
-  - docker build -t "migueldboland/cwl-assembly-readfq" $TRAVIS_BUILD_DIR/cwl/stats/readfq/
-  - docker build -t "migueldboland/cwl-assembly-stats-report" $TRAVIS_BUILD_DIR/cwl/stats/stats_report/
-  - docker build -t "migueldboland/cwl-assembly-fasta-trimming" $TRAVIS_BUILD_DIR/cwl/stats/fasta_trimming/
+  - docker build -t "mgnify/cwl-assembly-readfq:latest" $TRAVIS_BUILD_DIR/cwl/stats/readfq/
+  - docker build -t "mgnify/cwl-assembly-stats-report:latest" $TRAVIS_BUILD_DIR/cwl/stats/stats_report/
+  - docker build -t "mgnify/cwl-assembly-fasta-trimming:latest" $TRAVIS_BUILD_DIR/cwl/stats/fasta_trimming/
 
   - source ./setup_env.sh
 
@@ -29,21 +29,27 @@ script:
   - pip install -r requirements.txt
   - pip install -r requirements-test.txt
 
-  - pytest --cov=src --cov-report xml:$COVERAGE_FILE tests/
+#  - pytest --cov=src --cov-report xml:$COVERAGE_FILE tests/
 
-#  CWL Tests
-#  Assemblers
-  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/assemblers/test_megahit.yml --tool cwltool --verbose 
-  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/assemblers/test_metaspades.yml --tool cwltool --verbose 
-  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/assemblers/test_spades.yml --tool cwltool --verbose 
-
-# Stats tools
-  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/stats/test_readfq.yml --tool cwltool --verbose 
-  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/stats/test_trim_fasta.yml --tool cwltool --verbose 
-  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/stats/test_stats_report.yml --tool cwltool --verbose 
-
-# Stats workflows
-  - cwltest --basedir cwl_test_dir --test tests/cwl/workflows/test_stats.yml --tool cwltool --verbose
+##  CWL Tests
+##  Assemblers
+#  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/assemblers/test_megahit.yml --tool cwltool --verbose
+#  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/assemblers/test_metaspades.yml --tool cwltool --verbose
+#  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/assemblers/test_spades.yml --tool cwltool --verbose
+#
+## Stats tools
+#  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/stats/test_readfq.yml --tool cwltool --verbose
+#  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/stats/test_trim_fasta.yml --tool cwltool --verbose
+#  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/stats/test_stats_report.yml --tool cwltool --verbose
+#
+## Stats workflows
+#  - cwltest --basedir cwl_test_dir --test tests/cwl/workflows/test_stats.yml --tool cwltool --verbose
 
 after_script:
   - python-codacy-coverage -r $COVERAGE_FILE
+
+deploy:
+  provider: script
+  script: bash docker_push.sh
+  on:
+    branch: develop

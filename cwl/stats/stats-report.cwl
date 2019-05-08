@@ -4,7 +4,7 @@ class: CommandLineTool
 
 hints:
   DockerRequirement:
-    dockerPull: "migueldboland/cwl-assembly-stats-report"
+    dockerPull: "mgnify/cwl-assembly-stats-report"
 requirements:
   InlineJavascriptRequirement: {}
 

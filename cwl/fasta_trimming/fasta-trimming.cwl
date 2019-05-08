@@ -4,7 +4,7 @@ class: CommandLineTool
 
 hints:
   DockerRequirement:
-    dockerPull: "migueldboland/cwl-assembly-fasta-trimming"
+    dockerPull: "mgnify/cwl-assembly-fasta-trimming"
 requirements:
   InlineJavascriptRequirement: {}
 

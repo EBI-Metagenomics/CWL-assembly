@@ -7,8 +7,8 @@ requirements:
   InlineJavascriptRequirement: {}
 hints:
   DockerRequirement:
-#    dockerPull: "migueldboland/cwl-assembly-fetch-ena"
-    dockerImageId: "migueldboland/cwl-assembly-fetch-ena"
+#    dockerPull: "mgnify/cwl-assembly-fetch-ena"
+    dockerImageId: "mgnify/cwl-assembly-fetch-ena"
     dockerFile:
       $include docker/Dockerfile
 

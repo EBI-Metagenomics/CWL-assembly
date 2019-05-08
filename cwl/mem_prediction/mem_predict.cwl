@@ -4,7 +4,7 @@ class: CommandLineTool
 
 hints:
   DockerRequirement:
-    dockerPull: "migueldboland/cwl-assembly-mem-prediction"
+    dockerPull: "mgnify/cwl-assembly-mem-prediction"
   InlineJavascriptRequirement: {}
 
 baseCommand: ['python', '/mem_predict.py']
