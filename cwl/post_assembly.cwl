@@ -22,9 +22,6 @@ inputs:
     type: File[]
 
 outputs:
-  assembly_output:
-    type: Directory
-    outputSource: write_assemblies/folders
   stats_output:
     type: Directory
     outputSource: write_stats_output/folders
@@ -63,33 +60,6 @@ steps:
       - trimmed_sequences_gz
       - trimmed_sequences_gz_md5
     run: ./fasta_trimming/fasta-trimming.cwl
-
-  write_assemblies:
-    in:
-      assembly_log: assembly_log
-      assembly: assembly
-      assembler: assembler
-    out: [folders]
-    run:
-      class: ExpressionTool
-      id: 'metaspades_logs'
-      inputs:
-        assembly_log: File
-        assembly: File
-        assembler: string
-      outputs:
-        folders: Directory
-      expression: |
-        ${
-          return {'folders': {
-              'class': 'Directory',
-              'basename': '.',
-              'listing': [
-                inputs.assembly_log,
-                inputs.assembly
-              ]
-          }};
-        }
 
   write_stats_output:
     in:
