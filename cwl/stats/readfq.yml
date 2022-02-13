@@ -1,9 +1,0 @@
-#!/usr/bin/env cwltool
-cwl:tool: readfq.cwl
-raw_reads:
-  - class: File
-    path: >-
-      /Users/mdb/work/CWL_assembly_pipeline/tests/fixtures/ERP0102/ERP010229/raw/ERR866589_1.fastq.gz
-  - class: File
-    path: >-
-      /Users/mdb/work/CWL_assembly_pipeline/tests/fixtures/ERP0102/ERP010229/raw/ERR866589_2.fastq.gz

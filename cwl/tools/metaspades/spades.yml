@@ -1,0 +1,5 @@
+memory: 150
+reads:
+  class: File
+  path: ERR4918619_clean.fastq.gz
+  format: http://edamontology.org/format_1930

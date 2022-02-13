@@ -1,0 +1,3 @@
+sequences:
+  path: contigs.fasta #this is after post assembly qc i.e. not contigs.fasta.bak original file
+  class: File

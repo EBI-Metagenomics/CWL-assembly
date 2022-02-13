@@ -1,7 +1,0 @@
-#!/usr/bin/env cwltool
-cwl:tool: metabat-jgi-summarise.cwl
-input:
-  path: ../../tools/stats/out/sorted.bam
-  class: File
-
-outputDepth: coverage.tab

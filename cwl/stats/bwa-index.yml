@@ -1,5 +1,0 @@
-#!/usr/bin/env cwltool
-cwl:tool: bwa-index.yml
-sequences:
-  path: ../../cwl-megahit-final/final.contigs.fa
-  class: File

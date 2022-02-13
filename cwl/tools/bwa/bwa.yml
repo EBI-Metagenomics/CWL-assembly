@@ -1,0 +1,12 @@
+name: 'ERR4918619'
+ref:
+  class: File
+  path: hg38.fa
+reads1:
+  class: File
+  path: ERR4918619_fastp_1.fastq.gz
+  format: http://edamontology.org/format_1930
+reads2:
+  class: File
+  path: ERR4918619_fastp_2.fastq.gz
+  format: http://edamontology.org/format_1930
