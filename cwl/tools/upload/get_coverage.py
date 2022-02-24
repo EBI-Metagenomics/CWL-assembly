@@ -8,7 +8,7 @@ import argparse
 import glob
 
 reg = 'Num reads:(\d+).*Num.*Bases: (\d+)'
-script_path = '/hps/nobackup/rdf/metagenomics/service-team/pauls_assemblies/custom_scripts/kseq_fastq_base'
+script_path = 'kseq_fastq_base'
 
 SAM_TOOLS = 'samtools'
 BWA = 'bwa'
