@@ -8,18 +8,20 @@ requirements:
   InitialWorkDirRequirement:
     listing: [ $(inputs.ref) ]
   ResourceRequirement:
-    coresMin: 8
+    coresMin: 4
     ramMin: 2000
+  InlineJavascriptRequirement: {}
 hints:
   DockerRequirement:
-    dockerPull: quay.io/microbiome-informatics/bwamem2:2.2.1
-#check if container has bedtools
+    dockerPull: quay.io/microbiome-informatics/bwamem2:2.2.1 quay.io/microbiome-informatics/assembly-pipeline.python3_scripts:3.7.9
 
-baseCommand: [ 'sh', 'map_host.sh' ]
+baseCommand: [ 'map_host.sh' ]
 
 arguments:
 - -t
 - $(runtime.cores)
+- -o
+- $(runtime.outdir)
 
 inputs:
   name:
@@ -28,16 +30,18 @@ inputs:
   ref:
     type: File?
     secondaryFiles:
-        - .amb
-        - .ann
-        - .bwt
-        - .pac
-        - .sa
+        - '.amb'
+        - '.ann'
+        - '.bwt'
+        - '.pac'
+        - '.sa'
+        - '.0123'
+        - '.bwt.2bit.64'
     format: edam:format_1929
     label: host genome fasta file
     inputBinding:
         prefix: -c
-        position 1
+        position: 1
   reads1:
     type: File
     format: edam:format_1930  # FASTQ

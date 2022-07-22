@@ -18,8 +18,6 @@ baseCommand: [ metaspades.py ]
 arguments:
   - valueFrom: $(runtime.outdir)
     prefix: -o
-  - valueFrom: $(runtime.tmpdir)
-    prefix: --tmp-dir
   - valueFrom: $(runtime.cores)
     prefix: -t
   - --only-assembler

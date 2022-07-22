@@ -14,15 +14,17 @@ OPTIONS:
    -r	     Reverse fastq file (.fastq or .fastq.gz) [OPTIONAL]
    -x      Output forward file (.fastq.gz) [REQUIRED]
    -y      Output reverse file (.fastq.gz) [OPTIONAL]
+   -o      Output directory
 EOF
 }
 
-while getopts :t:c:f:r: option; do
+while getopts :t:c:f:r:o: option; do
     case "${option}" in
         t) THREADS=${OPTARG};;
         c) REF=${OPTARG};;
         f) FASTQ_R1=${OPTARG};;
         r) FASTQ_R2=${OPTARG};;
+        o) OUTPUTDIR=${OPTARG};;
         *) echo "invalid option"; exit;;
     esac
 done
@@ -48,27 +50,22 @@ else
 fi
 
 name=${FASTQ_R1%_*}
+mkdir $OUTPUTDIR
 
 if [[ ! -z ${FASTQ_R2} ]]
 then
   echo "mapping files to host genome"
-  bwa mem -M -t $THREADS $REF $FASTQ_R1 $FASTQ_R2 | samtools view -@ $THREADS_SAM -f 12 -F 256 -uS - -o ${name}_both_unmapped.bam
-	samtools sort -@ $THREADS_SAM -n ${name}_both_unmapped.bam -o ${name}_both_unmapped_sorted.bam
-	bedtools bamtofastq -i ${name}_both_unmapped_sorted.bam -fq ${name}_clean_1.fastq -fq2 ${name}_clean_2.fastq
+  bwa-mem2 mem -M -t $THREADS $REF $FASTQ_R1 $FASTQ_R2 | samtools view -@ $THREADS_SAM -f 12 -F 256 -uS - -o $OUTPUTDIR/${name}_both_unmapped.bam
+	samtools sort -@ $THREADS_SAM -n $OUTPUTDIR/${name}_both_unmapped.bam -o $OUTPUTDIR/${name}_both_unmapped_sorted.bam
+	samtools fastq -1 $OUTPUTDIR/${name}_clean_1.fastq -2 $OUTPUTDIR/${name}_clean_2.fastq -0 /dev/null -s /dev/null -n $OUTPUTDIR/${name}_both_unmapped_sorted.bam
 	echo "compressing output files"
-	gzip ${name}_clean_1.fastq
-	gzip ${name}_clean_2.fastq
-  echo "cleaning tmp files"
-  rm -rf ${name}_both_unmapped.bam ${name}_both_unmapped_sorted.bam
-  #remove ${FASTQ_R1} ${FASTQ_R2}
+	gzip $OUTPUTDIR/${name}_clean_1.fastq
+	gzip $OUTPUTDIR/${name}_clean_2.fastq
 else
   echo mapping files to host genome""
-  bwa mem -M -t $THREADS $REF $FASTQ_R1 | samtools view -@ $THREADS_SAM -f 4 -F 256 -uS - -o ${name}_unmapped.bam
-  samtools sort -@ $THREADS_SAM -n ${name}_unmapped.bam -o ${name}_unmapped_sorted.bam
-  bedtools bamtofastq -i ${name}_unmapped_sorted.bam -fq ${name}_clean.fastq
+  bwa-mem2 mem -M -t $THREADS $REF $FASTQ_R1 | samtools view -@ $THREADS_SAM -f 4 -F 256 -uS - -o $OUTPUTDIR/${name}_unmapped.bam
+  samtools sort -@ $THREADS_SAM -n $OUTPUTDIR/${name}_unmapped.bam -o $OUTPUTDIR/${name}_unmapped_sorted.bam
+  samtools $OUTPUTDIR/${name}_unmapped_sorted.bam > $OUTPUTDIR/${name}_clean.fastq
 	echo "compressing output file"
-	gzip ${name}_clean.fastq
-  echo "cleaning tmp files"
-  rm -rf ${name}_unmapped.bam ${name}_unmapped_sorted.bam
-  #remove $FASTQ_R1
+	gzip $OUTPUTDIR/${name}_clean.fastq
 fi

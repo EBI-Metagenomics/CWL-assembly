@@ -22,7 +22,6 @@ requirements:
 hints:
   DockerRequirement:
     dockerPull: quay.io/microbiome-informatics/bwamem2:2.2.1
-#check bwa index works in container
 
 baseCommand: [ 'bwa', 'index' ]
 
@@ -30,7 +29,7 @@ baseCommand: [ 'bwa', 'index' ]
 inputs:
   algorithm:
     type: string?
-    label: BWT construction algorithm: bwtsw or is (Default: auto)
+    label: BWT construction algorithm
     inputBinding:
       prefix: -a
   sequences:
@@ -41,7 +40,7 @@ inputs:
       position: 4
   block_size:
     type: int?
-    label: Block size for the bwtsw algorithm (effective with -a bwtsw) (Default: 10000000)
+    label: Block size for the bwtsw algorithm (effective with -a bwtsw) (Default 10000000)
     inputBinding:
       prefix: -b
 

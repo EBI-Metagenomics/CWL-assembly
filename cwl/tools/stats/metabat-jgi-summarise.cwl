@@ -3,7 +3,7 @@ class: CommandLineTool
 
 hints:
   DockerRequirement:
-    dockerPull: metabat/metabat:latest
+    dockerPull: "quay.io/microbiome-informatics/metawrap:latest"
 requirements:
   InlineJavascriptRequirement: {}
 

@@ -11,10 +11,9 @@ requirements:
     ramMin: 8000
 hints:
   DockerRequirement:
-    dockerPull: "mgnify/cwl-assembly-fasta-trimming"
-#container needs updating: python 3 biopython and blastn
+    dockerPull: "quay.io/microbiome-informatics/assembly-pipeline.python3_scripts:3.7.9"
 
-baseCommand: ['python', 'trim_fasta.py']
+baseCommand: ['python', '/data/trim_fasta.py']
 
 inputs:
   name:
@@ -43,22 +42,15 @@ inputs:
     inputBinding:
        position: 4
        prefix: --assembler
-  ref_dbs:
-    type: string
-    default: 'human phiX'
-    label: space separated list of host blastdbs for contamination
+  blastn:
+    type: File
+    label: concatenated blastn output against contaminant dbs
     inputBinding:
         position: 5
-        prefix: '--filter_dbs'
+        prefix: '--blast'
 
 outputs:
-  original_sequences:
-    type: File
-    glob: $('contigs.fasta.bak')
-  trimmed_sequences:
-    type: File
-    outputBinding:
-      glob: $('contigs.fasta')
+  #two other optional outputs fasta with <500bp removed & fasta with contaminants removed
   trimmed_sequences_gz:
     type: File
     outputBinding:
@@ -67,6 +59,17 @@ outputs:
     type: File
     outputBinding:
       glob: $(inputs.name).fasta.gz.md5
+  filtered_contigs_unzipped:
+    type: File
+    outputBinding:
+       glob: filtered_contigs.fasta
 
+$namespaces:
+ edam: http://edamontology.org/
+ iana: https://www.iana.org/assignments/media-types/
+ s: http://schema.org/
+$schemas:
+ - http://edamontology.org/EDAM_1.16.owl
+ - https://schema.org/docs/schema_org_rdfa.html
 
 

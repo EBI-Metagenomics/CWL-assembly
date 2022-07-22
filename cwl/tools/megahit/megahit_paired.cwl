@@ -1,5 +1,5 @@
 #!/usr/bin/env cwl-runner
-cwlVersion: v1.0
+cwlVersion: v1.2
 class: CommandLineTool
 
 # For Megahit version 1.2.9
@@ -7,33 +7,46 @@ label: "megahit: metagenomics assembler"
 
 hints:
   DockerRequirement:
-    dockerPull: "quay.io/biocontainers/megahit:1.2.9--h2e03b76_1"
+    dockerPull: "quay.io/microbiome-informatics/megahit:1.2.9"
     
 requirements:
   InlineJavascriptRequirement: {}
+ResourceRequirement:
+    coresMin: 8
+    ramMin: $(inputs.memory)
 
-baseCommand: [ megahit ]
+baseCommand: [ 'megahit' ]
 
 arguments:
-  - valueFrom: $(runtime.tmpdir)
-    prefix: --tmp-dir
-  - valueFrom: $(runtime.cores)
+  - valueFrom: 8
     prefix: --num-cpu-threads
-  - valueFrom: $(runtime.outdir)
-    prefix: -o
 
 inputs:
   #arrays allow for co-assembly
   memory:
     type: int?
-    label: memory to run assembly
+    default: 143051
+    label: memory to run assembly. When 0 < -m < 1, fraction of all available memory of the machine is used, otherwise it specifies the memory in BYTE.
     inputBinding:
-        prefix: -m
+      prefix: --memory
+      position: 4
+      valueFrom: |
+        ${
+            if (self == null) {
+                return runtime.cores;
+            } else {
+                return self * 954 ;
+            }
+        }
+    doc: |
+      count of threads for parallel execution [default : 4]
+
   min-contig-len:
     type: int?
     default: 500
     inputBinding:
       prefix: "--min-contig-len"
+      position: 3
   forward_reads:
     type:
       - File?
@@ -41,6 +54,7 @@ inputs:
         items: File
     inputBinding:
       prefix: "-1"
+      position: 1
       itemSeparator: ","
   reverse_reads:
     type:
@@ -49,6 +63,7 @@ inputs:
         items: File
     inputBinding:
       prefix: "-2"
+      position: 2
       itemSeparator: ","
 #  keep-tmp-files:
 #    type: boolean?

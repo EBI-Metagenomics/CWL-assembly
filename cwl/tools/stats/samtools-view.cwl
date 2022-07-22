@@ -84,6 +84,7 @@ inputs:
       prefix: '-1'
     doc: |
       use fast BAM compression (implies -b)
+    default: false
   input:
     type: File
     inputBinding:
@@ -106,6 +107,7 @@ inputs:
       prefix: '-C'
     doc: |
       output in CRAM format
+    default: false
   output_name:
     type: string
     inputBinding:
@@ -188,6 +190,7 @@ inputs:
       prefix: '-h'
     doc: |
       include header in SAM output
+    default: false
   threads:
     type: int?
     inputBinding:

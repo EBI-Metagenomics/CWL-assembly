@@ -44,7 +44,7 @@ outputs:
 
 steps:
   fasta_processing:
-    run: tools/assembly-qc/fasta_trimming/fasta-trimming.cwl
+    run: post_assembly_qc.cwl
     label: remove short contigs, host and phix sequences
     in:
       name: prefix

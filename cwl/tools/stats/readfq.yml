@@ -1,7 +1,0 @@
-raw_reads:
-  - class: File
-    path: >-
-      ERR4918619_1.fastq.gz
-  - class: File
-    path: >-
-      ERR4918619_2.fastq.gz

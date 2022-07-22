@@ -106,20 +106,21 @@ def calc_coverage(coverage_file, base_count):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description="Script to calculate coverage from coverage.tab file and output report")
-    parser.add_argument('base_count', type=int, help='Sum of base count for all input files')
+    parser.add_argument('base_count', type=int, help='Sum of base count for all input files', nargs='+')
     parser.add_argument('sequences', type=argparse.FileType('r'), help='.fasta file')
     parser.add_argument('coverage_file', type=argparse.FileType('r'), help='Coverage.tab file')
     parser.add_argument('assembler', choices=['metaspades', 'spades', 'megahit'],
                         help='Assembler used to generate sequence.')
     args = parser.parse_args()
 
-    if args.base_count <= 0:
-        raise ValueError('Base count ({}) cannot be <= 0.'.format(args.base_count))
-    coverage = calc_coverage(args.coverage_file, args.base_count)
+    base_count = sum(args.base_count)
+    if base_count <= 0:
+        raise ValueError('Base count ({}) cannot be <= 0.'.format(base_count))
+    coverage = calc_coverage(args.coverage_file, base_count)
     fstats = FastaStats(args.sequences, args.assembler)
     args.sequences.close()
     report = fstats.gen_report()
-    report['Base count'] = args.base_count
+    report['Base count'] = base_count
     # add new coverage_depth field
     report['Coverage'] = coverage
     with open('assembly_stats.json', 'w+') as output:

@@ -23,11 +23,11 @@ hints:
   DockerRequirement:
     dockerPull: "mgnify/cwl-assembly-stats-report"
 
-baseCommand: ['python', 'gen_stats_report.py']
+baseCommand: ['python', '/data/gen_stats_report.py']
 
 inputs:
   base_count:
-    type: int
+    type: array
     label: raw reads base count output of readfq
     inputBinding:
       position: 2

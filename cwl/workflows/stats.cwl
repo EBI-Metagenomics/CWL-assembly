@@ -1,16 +1,16 @@
 cwlVersion: v1.2
 class: Workflow
-label: preprocessing for metagenomic short reads
+label: calculate assembly statistics e.g. coverage and contig lengths
 
 requirements:
   SubworkflowFeatureRequirement: {}
+  ScatterFeatureRequirement: {}
   MultipleInputFeatureRequirement: {}
   InlineJavascriptRequirement: {}
   ResourceRequirement:
     coresMin: 8
     ramMin: 8000
 
-reads, sequences, assembler
 inputs:
   sequences:
     type: File
@@ -22,21 +22,21 @@ inputs:
     type: string
     label: assembler used metaspades spades or megahit
 
-# don't keep large bam and sam file outputs - only stats json file required
 outputs:
   logfile:
     type: File
     outputSource: stats_report/logfile
 
 steps:
-  readfq:
+  base_count:
+    run: ../tools/stats/base_count.cwl
     label: get raw read base count
-    run: ../tools/stats/readfq.cwl
+    scatter: reads
     in:
       raw_reads: reads
-    out: [ base_count ]
+    out: [ base_counts ] #two counts if paired end
   bwa_index:
-    run: ./bwa-index.cwl
+    run: ../tools/stats/bwa-index.cwl
     label: index cleaned contigs file
     in:
       sequences: sequences
@@ -87,7 +87,7 @@ steps:
       output:
         default: "assembly_stats.json"
       coverage_file: metabat_jgi/cov_depth
-      base_count: readfq/base_count
+      base_count: base_count/base_counts
     out: [ logfile ]
 
 $namespaces:

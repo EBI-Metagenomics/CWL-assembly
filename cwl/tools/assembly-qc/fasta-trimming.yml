@@ -1,9 +1,11 @@
-name: 'ERR4918619'
+name: 'test'
 contigs:
   class: File
   path: contigs.fasta
   format: http://edamontology.org/format_1929
 min_length: 500
 assembler: 'metaspades'
-ref_dbs: 'human phiX'
+blastn:
+  class: File
+  path: blastn.out
 
