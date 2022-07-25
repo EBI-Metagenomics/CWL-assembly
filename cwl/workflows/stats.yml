@@ -9,3 +9,7 @@ reads:
     path: ../tools/stats/test_fastp_2.fastq.gz
 
 assembler: 'metaspades'
+
+assembly_log:
+  class: File
+  path: ../tools/stats/spades.log

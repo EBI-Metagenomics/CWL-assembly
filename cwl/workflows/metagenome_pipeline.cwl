@@ -21,11 +21,13 @@ inputs:
   host_genome:
     type: File?
     secondaryFiles:
-        - .amb
-        - .ann
-        - .bwt
-        - .pac
-        - .sa
+        - '.amb'
+        - '.ann'
+        - '.bwt'
+        - '.pac'
+        - '.sa'
+        - '.0123'
+        - '.bwt.2bit.64'
     format: edam:format_1929
     label: host genome fasta file
     default: 'hg38.fa'
@@ -41,56 +43,73 @@ inputs:
     type: string
     label: assembler metaspades - spades used a defualt for single or megahit
     default: 'metaspades'
+  assembly_version:
+    type: string
+    label: directory name for output e.g. 001 for first assembly of run 002 for second etc
+  blastdb_dir:
+    type: Directory
+  database_flag:
+    type: string[]
+  raw_dir_name:
+    type: string?
+    default: 'raw'
+  assembly_dir_name:
+    type: string?
+    default: $(inputs.assembler)/$(inputs.assembly_version)
 
 outputs:
-  cleaned_reads1:
-    type: File
-    label: cleaned reads forward or single
-    outputSource: quality_control/qc_reads1
-  cleaned_reads2:
-    type: File?
-    label: cleaned reads reverse
-    outputSource: quality_control/qc_reads2
-  qc_summary:
-    type: File
-    label: read qc summary
-    outputSource: quality_control/qc_summary
-  assembly_log:
-    type: File
-    label: log file from assembler
-    outputSource: assembly/assembly_log
-  assembly_params:
-    type: File
-    label: params from assembler
-    outputSource: assembly/params_used
-  assembly_graph:
-    type: File?
-    label: assembly graph if metaspades used
-    outputSource: assembly/assembly_graph
-  assembly_contigs:
-    type: File
-    label: original contig file from assembler
-    outputSource: post_assembly/contig_backup
-  cleaned_contigs:
-    type: File
-    label: contig file after qc
-    outputSource: post_assembly/final_contigs
-  cleaned_contigs:
-    type: File
-    label: contig file after qc
-    outputSource: post_assembly/final_contigs
-  compressed_contigs:
-    type: File
-    label: compressed contig file after qc renamed with prefix
-    outputSource: post_assembly/compressed_contigs
-  compressed_contigs_md5:
-    type: File
-    label: md5 for compressed contig file after qc renamed with prefix
-    outputSource: post_assembly/compressed_contigs_md5
-  assembly_stats:
-    type: File
-    label: coverage and general statistics of assembly required for ENA upload
-    outputSource: post_assembly/stats_output
+#  cleaned_reads1:
+#    type: File
+#    label: cleaned reads forward or single
+#    outputSource: quality_control/qc_reads1
+#  cleaned_reads2:
+#    type: File?
+#    label: cleaned reads reverse
+#    outputSource: quality_control/qc_reads2
+#  qc_summary:
+#    type: File
+#    label: read qc summary
+#    outputSource: quality_control/qc_summary
+#  assembly_log:
+#    type: File
+#    label: log file from assembler
+#    outputSource: assembly/assembly_log
+#  assembly_params:
+#    type: File
+#    label: params from assembler
+#    outputSource: assembly/params_used
+#  assembly_graph:
+#    type: File?
+#    label: assembly graph if metaspades used
+#    outputSource: assembly/assembly_graph
+#  assembly_contigs:
+#    type: File
+#    label: original contig file from assembler
+#    outputSource: post_assembly/contig_backup
+#  cleaned_contigs:
+#    type: File
+#    label: contig file after qc
+#    outputSource: post_assembly/final_contigs
+#  compressed_contigs:
+#    type: File
+#    label: compressed contig file after qc renamed with prefix
+#    outputSource: post_assembly/compressed_contigs
+#  compressed_contigs_md5:
+#    type: File
+#    label: md5 for compressed contig file after qc renamed with prefix
+#    outputSource: post_assembly/compressed_contigs_md5
+#  assembly_stats:
+#    type: File
+#    label: coverage and general statistics of assembly required for ENA upload
+#    outputSource: post_assembly/stats_output
+   reads_folder:
+     type: Directory
+     label: folder with cleaned reads and qc summary
+     outputSource: reads_folder/out
+   assembly_folder:
+     type: Directory
+     label: folder with assembly and stats data
+     outputSource: assembly_folder/out
 
 steps:
   quality_control:
@@ -122,11 +141,39 @@ steps:
     in:
       prefix: prefix
       assembly: assembly/contigs
+      assembler: assembler
       min_contig_length: min_contig_length
       reads:
         source: [reads1, reads2]
         valueFrom: $(self.filter(Boolean))
-    out: [ contig_backup, final_contigs, compressed_contigs, compressed_contigs_md5, stats_output ]
+      assembly_log: assembly/assembly_log
+      blastdb_dir: blastdb_dir
+      database_flag: database_flag
+    out: [ final_contigs, compressed_contigs, compressed_contigs_md5, stats_output, coverage_tab]
+
+  reads_folder:
+    run: ../utils/return_directory.cwl
+    in:
+      file_list:
+        - quality_control/qc_reads1
+        - quality_control/qc_reads2
+        - quality_control/qc_summary
+      dir_name: raw_dir_name
+    out: [ out ]
+
+  assembly_folder:
+    run: ../utils/return_directory.cwl
+    in:
+      file_list:
+        - post_assembly/compressed_contigs
+        - post_assembly/compressed_contigs_md5
+        - post_assembly/stats_output
+        - post_assembly/coverage_tab
+        - assembly/assembly_log
+        - assembly/params_used
+        - assembly/assembly_graph
+      dir_name: assembly_dir_name
+    out: [ out ]
 
 $schemas:
   - 'http://edamontology.org/EDAM_1.16.owl'
@@ -139,5 +186,3 @@ $namespaces:
 
 's:copyrightHolder': EMBL - European Bioinformatics Institute
 's:license': 'https://www.apache.org/licenses/LICENSE-2.0'
-
-# export TMP=$PWD/tmp; cwltoil --user-space-docker-cmd=docker --debug --outdir $PWD/out --logFile $PWD/log  --workDir $PWD/tmp_toil --retryCount 0 cwl/spades_pipeline.cwl cwl/spades_pipeline.yml

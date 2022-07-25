@@ -21,17 +21,23 @@ inputs:
   assembler:
     type: string
     label: assembler used metaspades spades or megahit
+  assembly_log:
+    type: File
+    label: logfile from assembly
 
 outputs:
   logfile:
     type: File
     outputSource: stats_report/logfile
+  coverage_tab:
+    type: File
+    outputSource: metabat_jgi/cov_depth
 
 steps:
   base_count:
     run: ../tools/stats/base_count.cwl
     label: get raw read base count
-    scatter: reads
+    scatter: raw_reads
     in:
       raw_reads: reads
     out: [ base_counts ] #two counts if paired end
@@ -88,6 +94,7 @@ steps:
         default: "assembly_stats.json"
       coverage_file: metabat_jgi/cov_depth
       base_count: base_count/base_counts
+      assembly_log: assembly_log
     out: [ logfile ]
 
 $namespaces:

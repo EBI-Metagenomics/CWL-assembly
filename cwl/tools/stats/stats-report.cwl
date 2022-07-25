@@ -21,31 +21,41 @@ requirements:
   InlineJavascriptRequirement: {}
 hints:
   DockerRequirement:
-    dockerPull: "mgnify/cwl-assembly-stats-report"
+    dockerPull: "quay.io/microbiome-informatics/assembly-pipeline.python3_scripts:3.7.9"
 
 baseCommand: ['python', '/data/gen_stats_report.py']
 
 inputs:
-  base_count:
-    type: array
-    label: raw reads base count output of readfq
-    inputBinding:
-      position: 2
   sequences:
     type: File
     label: cleaned contig file
     inputBinding:
-      position: 3
+      position: 2
+      prefix: --sequences
   coverage_file:
     type: File
     label: coverage depth file
     inputBinding:
-      position: 4
+      position: 3
+      prefix: --coverage_file
   assembler:
     type: string
     label: assembler used metaspades, spades or megahit
     inputBinding:
-      position: 7
+      position: 4
+      prefix: --assembler
+  assembly_log:
+    type: File
+    label: logfile from assembly
+    inputBinding:
+       position: 5
+       prefix: --logfile
+  base_count:
+    type: File[]
+    label: raw reads base count output of readfq
+    inputBinding:
+      position: 6
+      prefix: --base_count
 
 outputs:
   logfile:

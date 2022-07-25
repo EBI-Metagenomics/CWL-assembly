@@ -23,7 +23,7 @@ hints:
   DockerRequirement:
     dockerPull: quay.io/microbiome-informatics/bwamem2:2.2.1
 
-baseCommand: [ 'bwa', 'index' ]
+baseCommand: [ 'bwa-mem2', 'index' ]
 
 
 inputs:
@@ -50,11 +50,13 @@ outputs:
     type: File
     label: indexed contig fasta file
     secondaryFiles:
-      - .amb
-      - .ann
-      - .bwt
-      - .pac
-      - .sa
+      - '.amb'
+      - '.ann'
+      - '.bwt'
+      - '.pac'
+      - '.sa'
+      - '.0123'
+      - '.bwt.2bit.64'
     outputBinding:
       glob: $(inputs.sequences.basename)
 

@@ -57,22 +57,21 @@ inputs:
       position: 3
       prefix: -r
 
-#edit if outreads1 there should be outreads2
 outputs:
   outreads1:
-    type: File?
+    type: File
     format: edam:format_1930
     outputBinding:
       glob: |
         ${ var ext = "";
-        if (inputs.reads2) { ext = inputs.name + "_clean_1.fastq.gz"; }
-        else { ext = inputs.name + "_clean.fastq.gz"; }
+        if (inputs.reads2) { ext = inputs.name + "_fastp_clean_1.fastq.gz"; }
+        else { ext = inputs.name + "_fastp_clean.fastq.gz"; }
         return ext; }
   outreads2:
     type: File?
     format: edam:format_1930
     outputBinding:
-      glob: $(inputs.name)_clean_2.fastq.gz
+      glob: $(inputs.name)_fastp_clean_2.fastq.gz
 
 
 stdout: bwa_host.log

@@ -8,10 +8,6 @@ requirements:
   InlineJavascriptRequirement: {}
   StepInputExpressionRequirement: {}
   ScatterFeatureRequirement: {}
-  ResourceRequirement:
-    coresMin: 8
-    ramMin: 8000
-#set ram to requested memory
 
 inputs:
   memory:
@@ -35,7 +31,6 @@ inputs:
     doc: metaspades is the first choice unless megahit specified. Defaults to megahit for single or interleaved reads.
     default: 'metaspades'
 
-
 outputs:
   contigs:
     outputSource:
@@ -45,9 +40,12 @@ outputs:
     pickValue: first_non_null
     type: File
   assembly_log:
+    outputSource:
       - metaspades_paired/log
       - megahit_paired/log
       - megahit_single/log
+    pickValue: first_non_null
+    type: File
   params_used:
     outputSource:
       - metaspades_paired/params

@@ -33,7 +33,7 @@ arguments:
   - valueFrom: 'awk'
     shellQuote: false
     position: 4
-  - valueFrom : 'NR%4==2{c++; l+=length($0)} END { print l }'
+  - valueFrom : 'NR%4==2{c++; l+=length($0)} END { print c; print l }'
     shellQuote: true
     position: 5
 
@@ -41,7 +41,8 @@ outputs:
   base_counts:
     type: stdout
 
-stdout: $(inputs.raw_reads).base_counts
+
+stdout: base_counts
 
 
 

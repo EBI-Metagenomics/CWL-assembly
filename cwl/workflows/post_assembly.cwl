@@ -21,86 +21,52 @@ inputs:
     default: 500
   reads:
     type: File[]
+  assembly_log:
+    type: File
+    label: logfile from assembly
+  blastdb_dir:
+    type: Directory
+  database_flag:
+    type: string[]
 
 outputs:
-  contig_backup:
-    type: File
-    label: original contigs before qc
-    outputSource: fasta_processing/original_sequences
   final_contigs:
     type: File
     label: new contigs.fasta file after qc
-    outputSource: fasta_processing/trimmed_sequences
+    outputSource: fasta_processing/final_contigs
   compressed_contigs:
     type: File
-    outputSource: fasta_processing/trimmed_sequences_gz
+    outputSource: fasta_processing/compressed_contigs
   compressed_contigs_md5:
     type: File
-    outputSource: fasta_processing/trimmed_sequences_gz_md5
+    outputSource: fasta_processing/compressed_contigs_md5
   stats_output:
-    type: Directory
+    type: File
     outputSource: stats_report/logfile
-
+  coverage_tab:
+    type: File
+    outputSource: stats_report/coverage_tab
 
 steps:
   fasta_processing:
     run: post_assembly_qc.cwl
     label: remove short contigs, host and phix sequences
     in:
-      name: prefix
-      contigs: assembly
+      query_seq: assembly
+      blastdb_dir: blastdb_dir
+      database_flag: database_flag
+      prefix: prefix
       min_contig_length: min_contig_length
       assembler: assembler
-      ref_dbs:
-        default: 'human phiX'
-    out: [ original_sequences, trimmed_sequences, trimmed_sequences_gz, trimmed_sequences_gz_md5 ]
+    out: [ final_contigs, compressed_contigs, compressed_contigs_md5 ]
 
   stats_report:
-    run: tools/stats/stats.cwl
+    run: stats.cwl
     label: calculate coverage and output statistics
     in:
-      sequences: fasta_processing/trimmed_sequences
+      sequences: fasta_processing/final_contigs
       reads: reads
       assembler: assembler
-    out: [ logfile ]
+      assembly_log: assembly_log
+    out: [ logfile , coverage_tab]
 
-# remove this to keep everything in metaspades/001 directory structure
-# replace with final structure?
-#  write_stats_output:
-#    in:
-#      stats_log: stats_report/logfile
-#      alignment: stats_report/samtools_index_output
-#      coverage: stats_report/metabat_coverage_output
-#      trimmed_sequence: fasta_processing/trimmed_sequences
-#      trimmed_sequence_gz: fasta_processing/trimmed_sequences_gz
-#      trimmed_sequence_gz_md5: fasta_processing/trimmed_sequences_gz_md5
-#      assembler: assembler
-#    out: [folders]
-#    run:
-#      class: ExpressionTool
-#      id: 'organise'
-#      inputs:
-#        stats_log: File
-#        alignment: File
-#        coverage: File
-#        trimmed_sequence: File
-#        trimmed_sequence_gz: File
-#        trimmed_sequence_gz_md5: File
-#        assembler: string
-#      outputs:
-#        folders: Directory
-#      expression: |
-#        ${
-#          return {'folders': {
-#              'class': 'Directory',
-#              'basename': '.',
-#              'listing': [
-#                inputs.stats_log,
-#                inputs.alignment,
-#                inputs.coverage,
-#                inputs.trimmed_sequence,
-#                inputs.trimmed_sequence_gz,
-#                inputs.trimmed_sequence_gz_md5
-#              ]
-#          }};
-#        }

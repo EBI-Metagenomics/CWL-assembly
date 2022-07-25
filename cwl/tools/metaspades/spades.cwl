@@ -5,13 +5,13 @@ label: "metaSPAdes: de novo metagenomics assembler"
 requirements:
   ResourceRequirement:
     coresMin: 8
-    ramMin: 420000
+    ramMin: $(inputs.memory)
+  InlineJavascriptRequirement: {}
+
 hints:
   DockerRequirement:
     dockerPull: quay.io/microbiome-informatics/spades:3.15.3
 
-requirements:
-  InlineJavascriptRequirement: {}
 
 baseCommand: [ spades.py ]
 
@@ -20,16 +20,26 @@ arguments:
     prefix: -o
   - valueFrom: $(runtime.tmpdir)
     prefix: --tmp-dir
-  - valueFrom: $(runtime.cores)
+  - valueFrom: '8'
     prefix: -t
   - --only-assembler
 
 inputs:
   memory:
     type: int?
-    label: memory to run assembly
+    default: 143051
+    label: memory to run assembly converted to mebibytes for cwl. Default is 150GB
     inputBinding:
-        prefix: -m
+      prefix: -m
+      position: 4
+      valueFrom: |
+        ${
+            if (self == null) {
+                return runtime.cores;
+            } else {
+                return self * 954 ;
+            }
+        }
   reads:
     type: File
     format: edam:format_1930  # FASTQ

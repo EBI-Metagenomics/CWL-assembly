@@ -65,7 +65,7 @@ hints:
   DockerRequirement:
     dockerPull: quay.io/microbiome-informatics/bwamem2:2.2.1
 
-baseCommand: [ 'bwa', 'mem' ]
+baseCommand: [ 'bwa-mem2', 'mem' ]
 
 inputs:
   min_std_max_min:
@@ -92,11 +92,13 @@ inputs:
     inputBinding:
       position: 2
     secondaryFiles:
-      - .amb
-      - .ann
-      - .bwt
-      - .pac
-      - .sa
+      - '.amb'
+      - '.ann'
+      - '.bwt'
+      - '.pac'
+      - '.sa'
+      - '.0123'
+      - '.bwt.2bit.64'
   threads:
     type: int?
     inputBinding:

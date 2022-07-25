@@ -12,41 +12,32 @@ hints:
 requirements:
   InlineJavascriptRequirement: {}
   ResourceRequirement:
-    coresMin: $(inputs.threads)
-    ramMin: $(inputs.memory_mebibyte)
+    coresMin: 8
+    ramMin: $(inputs.memory)
 
 baseCommand: [ 'megahit' ]
+
+arguments:
+  - valueFrom: '8'
+    prefix: --num-cpu-threads
 
 inputs:
   #arrays allow for co-assembly
   memory:
     type: int?
-    default: 150
-    label: memory to run assembly. When 0 < -m < 1, fraction of all available memory of the machine is used, otherwise it specifies the memory in BYTE.
+    default: 143051
+    label: memory to run assembly converted to mebibytes for cwl. Default is 150GB
     inputBinding:
       prefix: --memory
       position: 4
-  memory_mebibyte:
-    type: int
-    default: 143051
-    label: memory for cwl in mebibytes
-    inputBinding:
       valueFrom: |
         ${
             if (self == null) {
-                return 143051;
+                return runtime.cores;
             } else {
-                return self * 954;
+                return self * 954 ;
             }
         }
-    doc: |
-      memory required for assembly in mebibytes
-  threads:
-    type: int?
-    default: 8
-    inputBinding:
-      position: 5
-      prefix: "--num-cpu-threads"
   min-contig-len:
     type: int?
     default: 500

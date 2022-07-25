@@ -182,7 +182,6 @@ inputs:
       position: 5
     doc: |
       [region ...]
-    default: false
   samheader:
     type: boolean
     inputBinding:

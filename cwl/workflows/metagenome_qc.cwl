@@ -31,11 +31,13 @@ inputs:
   host_genome:
     type: File?
     secondaryFiles:
-        - .amb
-        - .ann
-        - .bwt
-        - .pac
-        - .sa
+        - '.amb'
+        - '.ann'
+        - '.bwt'
+        - '.pac'
+        - '.sa'
+        - '.0123'
+        - '.bwt.2bit.64'
     format: edam:format_1929
     label: host genome fasta file
     default: hg38.fa

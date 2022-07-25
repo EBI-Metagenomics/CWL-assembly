@@ -11,14 +11,14 @@ hints:
     
 requirements:
   InlineJavascriptRequirement: {}
-ResourceRequirement:
+  ResourceRequirement:
     coresMin: 8
     ramMin: $(inputs.memory)
 
 baseCommand: [ 'megahit' ]
 
 arguments:
-  - valueFrom: 8
+  - valueFrom: '8'
     prefix: --num-cpu-threads
 
 inputs:
@@ -26,7 +26,7 @@ inputs:
   memory:
     type: int?
     default: 143051
-    label: memory to run assembly. When 0 < -m < 1, fraction of all available memory of the machine is used, otherwise it specifies the memory in BYTE.
+    label: memory to run assembly converted to mebibytes for cwl. Default is 150GB
     inputBinding:
       prefix: --memory
       position: 4
@@ -38,8 +38,6 @@ inputs:
                 return self * 954 ;
             }
         }
-    doc: |
-      count of threads for parallel execution [default : 4]
 
   min-contig-len:
     type: int?

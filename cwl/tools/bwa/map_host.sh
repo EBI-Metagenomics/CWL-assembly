@@ -49,23 +49,26 @@ else
     THREADS_SAM=$((${THREADS}-1))
 fi
 
-name=${FASTQ_R1%_*}
+NAME=$(basename $FASTQ_R1)
+# Remove _1/2 suffix
+NAME=${NAME%_*}
+
 mkdir $OUTPUTDIR
 
 if [[ ! -z ${FASTQ_R2} ]]
 then
   echo "mapping files to host genome"
-  bwa-mem2 mem -M -t $THREADS $REF $FASTQ_R1 $FASTQ_R2 | samtools view -@ $THREADS_SAM -f 12 -F 256 -uS - -o $OUTPUTDIR/${name}_both_unmapped.bam
-	samtools sort -@ $THREADS_SAM -n $OUTPUTDIR/${name}_both_unmapped.bam -o $OUTPUTDIR/${name}_both_unmapped_sorted.bam
-	samtools fastq -1 $OUTPUTDIR/${name}_clean_1.fastq -2 $OUTPUTDIR/${name}_clean_2.fastq -0 /dev/null -s /dev/null -n $OUTPUTDIR/${name}_both_unmapped_sorted.bam
+  bwa-mem2 mem -M -t $THREADS $REF $FASTQ_R1 $FASTQ_R2 | samtools view -@ $THREADS_SAM -f 12 -F 256 -uS - -o $OUTPUTDIR/${NAME}_both_unmapped.bam
+	samtools sort -@ $THREADS_SAM -n $OUTPUTDIR/${NAME}_both_unmapped.bam -o $OUTPUTDIR/${NAME}_both_unmapped_sorted.bam
+	samtools fastq -1 $OUTPUTDIR/${NAME}_clean_1.fastq -2 $OUTPUTDIR/${NAME}_clean_2.fastq -0 /dev/null -s /dev/null -n $OUTPUTDIR/${NAME}_both_unmapped_sorted.bam
 	echo "compressing output files"
-	gzip $OUTPUTDIR/${name}_clean_1.fastq
-	gzip $OUTPUTDIR/${name}_clean_2.fastq
+	gzip -c $OUTPUTDIR/${NAME}_clean_1.fastq > ${NAME}_clean_1.fastq.gz
+	gzip -c $OUTPUTDIR/${NAME}_clean_2.fastq > ${NAME}_clean_2.fastq.gz
 else
   echo mapping files to host genome""
-  bwa-mem2 mem -M -t $THREADS $REF $FASTQ_R1 | samtools view -@ $THREADS_SAM -f 4 -F 256 -uS - -o $OUTPUTDIR/${name}_unmapped.bam
-  samtools sort -@ $THREADS_SAM -n $OUTPUTDIR/${name}_unmapped.bam -o $OUTPUTDIR/${name}_unmapped_sorted.bam
-  samtools $OUTPUTDIR/${name}_unmapped_sorted.bam > $OUTPUTDIR/${name}_clean.fastq
+  bwa-mem2 mem -M -t $THREADS $REF $FASTQ_R1 | samtools view -@ $THREADS_SAM -f 4 -F 256 -uS - -o $OUTPUTDIR/${NAME}_unmapped.bam
+  samtools sort -@ $THREADS_SAM -n $OUTPUTDIR/${NAME}_unmapped.bam -o $OUTPUTDIR/${NAME}_unmapped_sorted.bam
+  samtools $OUTPUTDIR/${NAME}_unmapped_sorted.bam > $OUTPUTDIR/${NAME}_clean.fastq
 	echo "compressing output file"
-	gzip $OUTPUTDIR/${name}_clean.fastq
+	gzip -c $OUTPUTDIR/${NAME}_clean.fastq > ${NAME}_clean.fastq.gz
 fi
