@@ -1,9 +1,0 @@
-base_count: 400
-coverage_file:
-  class: File
-  path: coverage.tsb
-sequences:
-  class: File
-  path: contigs.fasta
-assembler: "metaspades"
-

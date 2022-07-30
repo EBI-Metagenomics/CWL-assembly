@@ -1,3 +1,0 @@
-raw_reads:
-  class: File
-  path: test_fastp_1.fastq.gz

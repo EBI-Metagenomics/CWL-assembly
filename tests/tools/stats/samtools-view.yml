@@ -1,0 +1,6 @@
+input:
+  class: File
+  path: ../../in/aln-se.sam
+uncompressed: true
+unselected_output_reads: true
+output_name: 'unsorted.bam'

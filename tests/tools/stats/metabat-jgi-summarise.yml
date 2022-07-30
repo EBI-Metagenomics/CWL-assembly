@@ -1,0 +1,5 @@
+input:
+  path: ../../in/sorted.bam
+  class: File
+
+outputDepth: coverage.tab

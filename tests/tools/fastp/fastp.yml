@@ -1,0 +1,10 @@
+name: 'mgtest'
+reads1:
+  class: File
+  path: ../../in/mgtest_1.fastq.gz
+  format: http://edamontology.org/format_1930
+reads2:
+  class: File
+  path: ../../in/mgtest_2.fastq.gz
+  format: http://edamontology.org/format_1930
+minLength: 50

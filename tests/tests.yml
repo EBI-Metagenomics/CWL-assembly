@@ -1,0 +1,339 @@
+# workflow metaspades
+- job: workflows/metagenome_pipeline.yml
+  tool: ../src/workflows/metagenome_pipeline.cwl
+  short_name: metagenome metaspades workflow
+  doc: run paired end assembly with metaspades
+  output:
+    assembly_folder:
+      basename: 'metaspades/001'
+      class: Directory
+      listing:
+        - compressed_contigs:
+            basename: mgtest.fasta.gz
+            class: File
+            checksum: sha1$cf9268e22450c0fcdfb70d985fee99014966c822
+            size: 436
+        - compressed_contigs_md5:
+            basename: mgtest.fasta.gz.md5
+            class: File
+            checksum: sha1$ff2c9c1eae826f6ea9b5d1e62a57c5bc1e139990
+            size: 32
+        - stats_output:
+            basename: assembly_stats.json
+            class: File
+            checksum: sha1$83321e2bb9ac38dbb99448ec7bd0e886d07c190d
+            size: 508
+        - coverage_tab:
+            basename: coverage.tab
+            class: File
+            checksum: sha1$347a22811df3b170cc4b0c16c3ffabc19f159543
+            size: 179
+        - assembly_log:
+            basename: spades.log
+            class: File
+            checksum: sha1$0b8d1cbb9e89f0cafa35d25d33692d20cbf1b75f
+            size: 93710
+        - params_used:
+            basename: params.txt
+            class: File
+            checksum: sha1$9820fcab042149ee9997882fd4d0ae4f70ac3df5
+            size: 1184
+        - assembly_graph:
+            basename: assembly_graph.fastg
+            class: File
+            checksum: sha1$40f8b9b63d663b6858251d126ee6cf8046f2af7b
+            size: 98428
+    reads_folder:
+      basename: 'raw'
+      class: Directory
+      listing:
+        - qc_reads1:
+            basename: mgtest_fastp_clean_1.fastq.gz
+            class: File
+            size: 38455
+        - qc_reads1:
+            basename: mgtest_fastp_clean_2.fastq.gz
+            class: File
+            size: 44605
+        - qc_summary:
+            basename: qc_stats.tsv
+            class: File
+            checksum: sha1$cac9814a9699f9c9ce1629e935ce2c73db8359e0
+            size: 55
+
+# workflow megahit
+- job: workflows/metagenome_pipeline_megahit.yml
+  tool: ../src/workflows/metagenome_pipeline.cwl
+  short_name: metagenome megahit workflow
+  doc: run paired end assembly with megahit
+  output:
+    assembly_folder:
+      basename: 'megahit/001'
+      class: Directory
+      listing:
+        - compressed_contigs:
+            basename: mgtest.fasta.gz
+            class: File
+            checksum: sha1$4a1c8f14faf9e151b0321a628305dd57b5904c3b
+            size: 461
+        - compressed_contigs_md5:
+            basename: mgtest.fasta.gz.md5
+            class: File
+            checksum: sha1$3942b512a435e152fb59e9e666debea8ed7bb7be
+            size: 32
+        - stats_output:
+            basename: assembly_stats.json
+            class: File
+            checksum: sha1$58c48a26857f12d19eb7f36f5b4d9b2638179832
+            size: 504
+        - coverage_tab:
+            basename: coverage.tab
+            class: File
+            checksum: sha1$c4b73807da7161fec5e8b64eac296bc0e3f3dea7
+            size: 169
+        - assembly_log:
+            basename: log
+            class: File
+            checksum: sha1$9132ee7f476ee28440762882b4a26e9021ae2c1c
+            size: 113531
+        - params_used:
+            basename: options.json
+            class: File
+            checksum: sha1$13183ca27d4ded1df3d338267f4cbbf37ca09eaa
+            size: 951
+    reads_folder:
+      basename: 'raw'
+      class: Directory
+      listing:
+        - qc_reads1:
+            basename: mgtest_fastp_clean_1.fastq.gz
+            class: File
+            size: 38455
+        - qc_reads1:
+            basename: mgtest_fastp_clean_2.fastq.gz
+            class: File
+            size: 44605
+        - qc_summary:
+            basename: qc_stats.tsv
+            class: File
+            checksum: sha1$cac9814a9699f9c9ce1629e935ce2c73db8359e0
+            size: 55
+
+# tools
+- job: tools/assembly-qc/blast.yml
+  tool: ../src/tools/assembly-qc/blast.cwl
+  short_name: blast.cwl
+  doc: run blast against phiX genome
+  output:
+    alignment:
+      basename: phiX.blast.out
+      checksum: sha1$dec745a2908d00a6dd5a989e50cbbe2d78a6c4d9
+      class: File
+      size: 38
+- job: tools/assembly-qc/fasta-trimming.yml
+  tool: ../src/tools/assembly-qc/fasta-trimming.cwl
+  short_name: fasta-trimming.cwl
+  doc: filter short sequences and compress contigs
+  output:
+    filtered_contigs_unzipped:
+      basename: filtered_contigs.fasta
+      checksum: sha1$128cc3df0be439d87959a56178eb03defc446300
+      class: File
+      size: 1255
+    trimmed_sequences_gz:
+      basename: test.fasta.gz
+      checksum: sha1$2c5b72b7012bb3639b9c1a428ff791b804887980
+      size: 434
+    trimmed_sequences_gz_md5:
+      basename: test.fasta.gz.md5
+      checksum: sha1$fb77b67b90b5ba464a9816353eaf30b3798c3863
+      size: 32
+
+- job: tools/bwa/bwa.yml
+  tool: ../src/tools/bwa/bwa.cwl
+  short_name: bwa.cwl
+  doc: map fastp trimmed sequences to host genomes
+  output:
+    outreads1:
+      basename: mgtest_fastp_clean_1.fastq.gz
+      checksum: sha1$a5f9adf82ed5b429acb55a70139540bc40fd32ca
+      class: File
+      size: 39806
+    outreads2:
+      basename: mgtest_fastp_clean_2.fastq.gz
+      checksum: sha1$d0c6b74bed42839b02e22355e5968b9eabe6128
+      class: File
+      size: 39806
+
+- job: tools/fastp/fastp.yml
+  tool: ../src/tools/fastp/fastp.cwl
+  short_name: fastp.cwl
+  doc: quality control of raw sequence reads
+  output:
+    outreads1:
+      basename: mgtest_fastp_1.fastq.gz
+      checksum: sha1$b9503af265556f893d20b41b9de71933327354b4
+      class: File
+      size: 52085
+    outreads2:
+      basename: mgtest_fastp_2.fastq.gz
+      checksum: sha1$9154d20af0a077b3cedc386e608c388ebdc56c54
+      class: File
+      size: 58452
+    qchtml:
+      basename: mgtest_fastp.qc.html
+      checksum: sha1$074691031da90c363537e1b586477175a0540d9f
+      class: File
+      size: 466073
+    qcjson:
+      basename: mgtest_fastp.qc.json
+      checksum: sha1$d15f1916fd976e9f6e92aa6d365d9e911bb17bd5
+      class: File
+      size: 114042
+
+- job: tools/megahit/megahit_paired.yml
+  tool: ../src/tools/megahit/megahit_paired.cwl
+  short_name: megahit_paired.cwl
+  doc: paired assembly using megahit
+  output:
+    contigs:
+      basename: final.contigs.fa
+      checksum: sha1$11c61db3456932970fbd8e6639d4ae2c4101ea94
+      class: File
+      size: 1133
+    log:
+      basename: log
+      checksum: sha1$c6c83a5796978c538aa6a09a84cfbee4fbcf773a
+      class: File
+      size: 113531
+    options:
+      basename: options.json
+      checksum: sha1$20c21f51d5ce94bf240a1aa6e5164c43f37e26e6
+      class: File
+      size: 951
+
+- job: tools/megahit/megahit_single.yml
+  tool: ../src/tools/megahit/megahit_single.cwl
+  short_name: megahit_single.cwl
+  doc: single end assembly using megahit
+  output:
+    contigs:
+      basename: final.contigs.fa
+      checksum: sha1$e881d9160f9c6a7062a22647f6dcdeed823998a5
+      class: File
+      size: 1466
+    log:
+      basename: log
+      checksum: sha1$7281ce421dde6fe0eddd2ca05ab605cb2c14727a
+      class: File
+      size: 46329
+    options:
+      basename: options.json
+      checksum: sha1$20c55c616e2bc98e5d813c9942e5ca90dfdfd6b7
+      class: File
+      size: 857
+
+- job: tools/metaspades/metaspades.yml
+  tool: ../src/tools/metaspades/metaspades.cwl
+  short_name: metaspades.cwl
+  doc: assembly using metaSPAdes
+  output:
+    assembly_graph:
+      basename: assembly_graph
+      checksum: sha1$40f8b9b63d663b6858251d126ee6cf8046f2af7b
+      class: File
+      size: 98428
+    contigs:
+      basename: contigs.fasta
+      checksum: sha1$f32a02a7cea3be5ed3cfadbf8af2be46d786f54a
+      class: File
+      size: 48723
+    log:
+      basename: spades.log
+      checksum: sha1$77c52d8ec48c81536d5befad2ada939cfe3abcce
+      class: File
+      size: 93709
+    params:
+      basename: params.txt
+      checksum: sha1$e0d4d4eeb494d2bc2dc99fefc22924b492787f49
+      class: File
+      size: 1182
+
+- job: tools/stats/base_count.yml
+  tool: ../src/tools/stats/base_count.cwl
+  short_name: base_count.cwl
+  doc: count number of bases and number of sequences in fastq file
+  output:
+    base_counts:
+      basename: base_counts
+      checksum: sha1$71532c5ec16a0edb8a4d947b1a00e5fb6bd02f3e
+      class: File
+      size: 10
+
+- job: tools/stats/bwa-index.yml
+  tool: ../src/tools/stats/bwa-index.yml
+  short_name: bwa-index.cwl
+  doc: index fasta file using bwa
+  output:
+    indexed_contigs:
+      basename: filtered_contigs.fasta
+      checksum: sha1$62a2360ba37727b7d1a02c1bfb9ea70e4c26092c
+      class: File
+      size: 1255
+      secondaryFiles: [ "filtered_contigs.fasta.amb", "filtered_contigs.fasta.ann", "filtered_contigs.fasta.pac",
+                          "filtered_contigs.fasta.0123", "filtered_contigs.fasta.bwt.2bit.64" ]
+
+- job: tools/stats/bwa-mem.yml
+  tool: ../src/tools/stats/bwa-mem.yml
+  short_name: bwa-mem.cwl
+  doc: map cleaned reads used for assembly to contig file
+  output:
+    alignment:
+      basename: aln-se.sam
+      checksum: sha1$10d22ab4a9143e34f1f830f5578bba68e952a224
+      class: File
+      size: 346450
+
+- job: tools/stats/samtools-view.yml
+  tool: ../src/tools/stats/samtools-view.cwl
+  short_name: samtools-view.cwl
+  doc: convert to bam
+  output:
+    unsorted_bam:
+      basename: unsorted.bam
+      checksum: sha1$5ffe2074cc77026afad499c587cbff7b5cf85317
+      class: File
+      size: 281346
+
+- job: tools/stats/samtools-sort.yml
+  tool: ../src/tools/stats/samtools-sort.cwl
+  short_name: samtools-sort.cwl
+  doc: sort bam file
+  output:
+    sorted_bam:
+      basename: sorted.bam
+      checksum: sha1$17ed317a19004b828f1ac3d38813fa0e397cad11
+      class: File
+      size: 90402
+
+- job: tools/stats/metabat-jgi-summarise.yml
+  tool: ../src/tools/stats/metabat-jgi-summarise.cwl
+  short_name: metabat-jgi-summarise.cwl
+  doc: calculate coverage depth
+  output:
+    cov_depth:
+      basename: coverage.tab
+      checksum: sha1$04de21a5368d3a3f5ce583059e997e2cd2135bf8
+      class: File
+      size: 179
+
+- job: tools/stats/stats-report.yml
+  tool: ../src/tools/stats/stats-report.yml
+  short_name: stats-report.yml
+  doc: output statistics of assembly job
+  output:
+    logfile:
+      basename: assembly_stats.json
+      checksum: sha1$a11fc33bfa4e58b1d4418da43263ec695d5e21b7
+      class: File
+      size: 506

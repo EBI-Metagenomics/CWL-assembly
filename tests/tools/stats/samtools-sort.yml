@@ -1,0 +1,4 @@
+input:
+  class: File
+  path: ../../in/unsorted.bam
+output_name: 'sorted.bam'

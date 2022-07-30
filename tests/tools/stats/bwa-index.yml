@@ -1,0 +1,4 @@
+sequences:
+  path: ../../in/filtered_contigs.fasta
+  format: http://edamontology.org/format_1929
+  class: File

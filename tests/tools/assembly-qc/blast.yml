@@ -1,0 +1,8 @@
+query_seq:
+  class: File
+  path: ../../in/contigs_phixcont.fasta
+  format: http://edamontology.org/format_1929
+blastdb_dir:
+  class: Directory
+  path: ../../in/blastdb/
+database_flag: phiX

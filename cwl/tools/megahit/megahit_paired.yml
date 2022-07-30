@@ -1,9 +1,0 @@
-memory: 150
-forward_reads:
-  class: File
-  path: ERR4918619_clean_1.fastq.gz
-  format: http://edamontology.org/format_1930
-reverse_reads:
-  class: File
-  path: ERR4918619_clean_2.fastq.gz
-  format: http://edamontology.org/format_1930

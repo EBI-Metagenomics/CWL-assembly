@@ -1,0 +1,5 @@
+memory: '5000000000'
+reads:
+  class: File
+  path: ../../in/testsingle.fastq.gz
+  format: http://edamontology.org/format_1930

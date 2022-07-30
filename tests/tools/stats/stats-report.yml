@@ -1,0 +1,15 @@
+base_count:
+  - class: File
+    path: ../../in/base_counts
+  - class: File
+    path: ../../in/base_counts
+coverage_file:
+  class: File
+  path: ../../in/coverage.tab
+sequences:
+  class: File
+  path: ../../in/filtered_contigs.fasta
+assembler: "metaspades"
+assembly_log:
+  class: File
+  path: ../../in/spades.log

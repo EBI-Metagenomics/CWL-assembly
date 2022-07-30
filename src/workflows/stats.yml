@@ -1,0 +1,15 @@
+sequences:
+  path: ../test/filtered_contigs.fasta
+  class: File
+
+reads:
+  - class: File
+    path: ../test/test_fastp_1.fastq.gz
+  - class: File
+    path: ../test/test_fastp_2.fastq.gz
+
+assembler: 'metaspades'
+
+assembly_log:
+  class: File
+  path: ../test/spades.log

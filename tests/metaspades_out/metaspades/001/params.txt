@@ -1,0 +1,32 @@
+Command line: /usr/local/bin/metaspades.py	-o	/vzAONx	-t	8	--only-assembler	-1	/var/lib/cwl/stg7509c0c1-bb89-4d40-8c9a-3bcb76afa6c2/mgtest_fastp_clean_1.fastq.gz	-2	/var/lib/cwl/stg5287b14c-d6fe-4021-a74e-a4ce5d6a7916/mgtest_fastp_clean_2.fastq.gz	-m	10	
+
+System information:
+  SPAdes version: 3.15.3
+  Python version: 3.7.9
+  OS: Linux-4.9.184-linuxkit-x86_64-with-debian-10.12
+
+Output dir: /vzAONx
+Mode: ONLY assembling (without read error correction)
+Debug mode is turned OFF
+
+Dataset parameters:
+  Metagenomic mode
+  Reads:
+    Library number: 1, library type: paired-end
+      orientation: fr
+      left reads: ['/var/lib/cwl/stg7509c0c1-bb89-4d40-8c9a-3bcb76afa6c2/mgtest_fastp_clean_1.fastq.gz']
+      right reads: ['/var/lib/cwl/stg5287b14c-d6fe-4021-a74e-a4ce5d6a7916/mgtest_fastp_clean_2.fastq.gz']
+      interlaced reads: not specified
+      single reads: not specified
+      merged reads: not specified
+Assembly parameters:
+  k: [21, 33, 55]
+  Repeat resolution is enabled
+  Mismatch careful mode is turned OFF
+  MismatchCorrector will be SKIPPED
+  Coverage cutoff is turned OFF
+Other parameters:
+  Dir for temp files: /vzAONx/tmp
+  Threads: 8
+  Memory limit (in Gb): 10
+
