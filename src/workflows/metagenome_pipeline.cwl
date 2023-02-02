@@ -98,7 +98,8 @@ steps:
       assembly_log: assembly/assembly_log
       blastdb_dir: blastdb_dir
       database_flag: database_flag
-    out: [ final_contigs, compressed_contigs, compressed_contigs_md5, stats_output, coverage_tab]
+    out: [ final_contigs, compressed_contigs, compressed_contigs_md5, stats_output, metabat_coverage, maxbins_coverage,
+    maxbins_run_depth, concoct_depth, concoct_bed, concoct_10k_fasta]
 
   reads_folder:
     run: ../utils/return_directory.cwl
@@ -117,7 +118,12 @@ steps:
         - post_assembly/compressed_contigs
         - post_assembly/compressed_contigs_md5
         - post_assembly/stats_output
-        - post_assembly/coverage_tab
+        - post_assembly/metabat_coverage
+        - post_assembly/maxbins_coverage
+        - post_assembly/maxbins_run_depth
+        - post_assembly/concoct_depth
+        - post_assembly/concoct_bed
+        - post_assembly/concoct_10k_fasta
         - assembly/assembly_log
         - assembly/params_used
         - assembly/assembly_graph

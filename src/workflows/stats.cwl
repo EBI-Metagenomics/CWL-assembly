@@ -24,14 +24,33 @@ inputs:
   assembly_log:
     type: File
     label: logfile from assembly
+  run_accession:
+    type: string
+    label: run accession (ERR/SRR/DRR)
 
 outputs:
   logfile:
     type: File
     outputSource: stats_report/logfile
-  coverage_tab:
+  # The files below are specific to binners required for the following MAG generation workflow.
+  metabat_coverage:
     type: File
     outputSource: metabat_jgi/cov_depth
+  maxbins_coverage:
+    type: File
+    outputSource: maxbins_depth/master_depth
+  maxbins_run_depth:
+    type: File
+    outputSource: maxbins_depth/run_depth
+  concoct_depth:
+    type: File
+    outputSource: concoct_depth/concoct_depth
+  concoct_bed:
+    type: File
+    outputSource: concoct_depth/assembly_bed
+  concoct_10k_fasta:
+    type: File
+    outputSource: concoct_depth/assembly_10k_fasta
 
 steps:
   base_count:
@@ -74,12 +93,24 @@ steps:
         default: "sorted.bam"
     out: [ sorted_bam ]
   metabat_jgi:
-    run: ../tools/stats/metabat-jgi-summarise.cwl
+    run: ../tools/stats/jgi-summarise.cwl
     in:
       input: samtools_sort/sorted_bam
       outputDepth:
-        default: "coverage.tab"
+        default: "metabat_depth.txt"
     out: [ cov_depth ]
+  maxbins_depth:
+    run: ../tools/stats/maxbins-depth.cwl
+    in:
+      metabat_depth: metabat_jgi/cov_depth
+      run_accession: run_accession
+    out: [ master_depth, run_depth ]
+  concoct_depth:
+    run: ../tools/stats/concoct-depth.cwl
+    in:
+      bam: samtools_sort/sorted_bam
+      contigs: sequences
+    out: [ concoct_depth, assembly_bed, assembly_10k_fasta ]
   stats_report:
     run: ../tools/stats/stats-report.cwl
     in:

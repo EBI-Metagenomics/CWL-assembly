@@ -123,7 +123,7 @@ steps:
 
   post_assembly:
     run: post_assembly.cwl
-    label: run contig filtering, host removel and stats generation
+    label: run contig filtering, host removal and stats generation
     in:
       prefix: prefix
       assembly: assembly/contigs
@@ -144,5 +144,3 @@ $namespaces:
 
 's:copyrightHolder': EMBL - European Bioinformatics Institute
 's:license': 'https://www.apache.org/licenses/LICENSE-2.0'
-
-# export TMP=$PWD/tmp; cwltoil --user-space-docker-cmd=docker --debug --outdir $PWD/out --logFile $PWD/log  --workDir $PWD/tmp_toil --retryCount 0 cwl/spades_pipeline.cwl cwl/spades_pipeline.yml

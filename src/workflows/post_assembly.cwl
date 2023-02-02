@@ -43,9 +43,24 @@ outputs:
   stats_output:
     type: File
     outputSource: stats_report/logfile
-  coverage_tab:
+  metabat_coverage:
     type: File
-    outputSource: stats_report/coverage_tab
+    outputSource: stats_report/metabat_coverage
+  maxbins_coverage:
+    type: File
+    outputSource: stats_report/maxbins_coverage
+  maxbins_run_depth:
+    type: File
+    outputSource: stats_report/maxbins_run_depth
+  concoct_depth:
+    type: File
+    outputSource: stats_report/concoct_depth
+  concoct_bed:
+    type: File
+    outputSource: stats_report/concoct_bed
+  concoct_10k_fasta:
+    type: File
+    outputSource: stats_report/concoct_10k_fasta
 
 steps:
   fasta_processing:
@@ -68,5 +83,6 @@ steps:
       reads: reads
       assembler: assembler
       assembly_log: assembly_log
-    out: [ logfile , coverage_tab]
+      run_accession: prefix
+    out: [ logfile , metabat_coverage, maxbins_coverage, maxbins_run_depth, concoct_depth, concoct_bed, concoct_10k_fasta ]
 
