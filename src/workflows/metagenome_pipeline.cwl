@@ -50,6 +50,9 @@ inputs:
   raw_dir_name:
     type: string?
     default: 'raw'
+  metatranscriptome:
+    type: boolean
+    default: false
 
 outputs:
    reads_folder:
@@ -86,7 +89,7 @@ steps:
 
   post_assembly:
     run: post_assembly.cwl
-    label: run contig filtering, host removel and stats generation
+    label: run contig filtering, host removal and stats generation
     in:
       prefix: prefix
       assembly: assembly/contigs
@@ -98,6 +101,7 @@ steps:
       assembly_log: assembly/assembly_log
       blastdb_dir: blastdb_dir
       database_flag: database_flag
+      metatranscriptome: metatranscriptome
     out: [ final_contigs, compressed_contigs, compressed_contigs_md5, stats_output, metabat_coverage, maxbins_coverage,
     maxbins_run_depth, concoct_depth, concoct_bed, concoct_10k_fasta]
 

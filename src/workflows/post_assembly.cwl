@@ -28,6 +28,10 @@ inputs:
     type: Directory
   database_flag:
     type: string[]
+  metatranscriptome:
+    type: boolean
+    label : is the run metatranscriptomic?
+    default: true
 
 outputs:
   final_contigs:
@@ -47,19 +51,19 @@ outputs:
     type: File
     outputSource: stats_report/metabat_coverage
   maxbins_coverage:
-    type: File
+    type: File?
     outputSource: stats_report/maxbins_coverage
   maxbins_run_depth:
-    type: File
+    type: File?
     outputSource: stats_report/maxbins_run_depth
   concoct_depth:
-    type: File
+    type: File?
     outputSource: stats_report/concoct_depth
   concoct_bed:
-    type: File
+    type: File?
     outputSource: stats_report/concoct_bed
   concoct_10k_fasta:
-    type: File
+    type: File?
     outputSource: stats_report/concoct_10k_fasta
 
 steps:
@@ -84,5 +88,7 @@ steps:
       assembler: assembler
       assembly_log: assembly_log
       run_accession: prefix
-    out: [ logfile , metabat_coverage, maxbins_coverage, maxbins_run_depth, concoct_depth, concoct_bed, concoct_10k_fasta ]
+      metatranscriptome: metatranscriptome
+    out: [ logfile , metabat_coverage, maxbins_coverage, maxbins_run_depth, concoct_depth, concoct_bed,
+    concoct_10k_fasta ]
 

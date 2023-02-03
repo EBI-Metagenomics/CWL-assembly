@@ -27,6 +27,10 @@ inputs:
   run_accession:
     type: string
     label: run accession (ERR/SRR/DRR)
+  metatranscriptome:
+    type: boolean
+    label : is the run metatranscriptomic?
+    default: true
 
 outputs:
   logfile:
@@ -37,19 +41,19 @@ outputs:
     type: File
     outputSource: metabat_jgi/cov_depth
   maxbins_coverage:
-    type: File
+    type: File?
     outputSource: maxbins_depth/master_depth
   maxbins_run_depth:
-    type: File
+    type: File?
     outputSource: maxbins_depth/run_depth
   concoct_depth:
-    type: File
+    type: File?
     outputSource: concoct_depth/concoct_depth
   concoct_bed:
-    type: File
+    type: File?
     outputSource: concoct_depth/assembly_bed
   concoct_10k_fasta:
-    type: File
+    type: File?
     outputSource: concoct_depth/assembly_10k_fasta
 
 steps:
@@ -101,12 +105,14 @@ steps:
     out: [ cov_depth ]
   maxbins_depth:
     run: ../tools/stats/maxbins-depth.cwl
+    when: $(!Boolean(inputs.metatranscriptome))
     in:
       metabat_depth: metabat_jgi/cov_depth
       run_accession: run_accession
     out: [ master_depth, run_depth ]
   concoct_depth:
     run: ../tools/stats/concoct-depth.cwl
+    when: $(!Boolean(inputs.metatranscriptome))
     in:
       bam: samtools_sort/sorted_bam
       contigs: sequences
