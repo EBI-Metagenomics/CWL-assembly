@@ -18,6 +18,12 @@ inputs:
   reads2:
     type: File?
     label: zipped fastq reverse reads
+  multiple_reads_1:
+    type: File[]?
+    label: list of zipped fastq file forward or single reads
+  multiple_reads_2:
+    type: File[]?
+    label: list of zipped fastq reverse reads
   host_genome:
     type: File?
     secondaryFiles:
@@ -67,11 +73,25 @@ outputs:
 steps:
   quality_control:
     run: metagenome_qc.cwl
+    when: $(inputs.coassembly == 'no')
     label: quality control of raw reads
     in:
       prefix: prefix
       reads1: reads1
       reads2: reads2
+      minLength:
+        default: 50
+      host_genome: host_genome
+    out: [ reads_qc_html, reads_qc_json, qc_reads1, qc_reads2, qc_summary ]
+
+  multiple_reads_quality_control:
+    run: metagenome_multiplereads_qc.cwl
+    when: $(inputs.coassembly == 'yes')
+    label: quality control of raw reads
+    in:
+      prefix: prefix
+      reads1: multiple_reads_1
+      reads2: multiple_reads_2
       minLength:
         default: 50
       host_genome: host_genome
@@ -94,8 +114,8 @@ steps:
     label: assembly with metaspades or megahit. Single always defaults to megahit
     in:
       memory: memory
-      reads1: quality_control/qc_reads1
-      reads2: quality_control/qc_reads2
+      reads1: multiple_reads_quality_control/qc_reads1
+      reads2: multiple_reads_quality_control/qc_reads2
       assembler: assembler
     out: [ contigs, assembly_log, params_used, assembly_graph ]
 
@@ -122,7 +142,7 @@ steps:
       file_list:
         - quality_control/qc_reads1
         - quality_control/qc_reads2
-        - quality_control/qc_summary
+        - quality_control/qc_summary ### THIS IS GOING TO BE A LIST
       dir_name: raw_dir_name
     out: [ out ]
 

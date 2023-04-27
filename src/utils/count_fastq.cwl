@@ -40,7 +40,7 @@ outputs:
     type: File
     format: edam:format_3475
     outputBinding:
-      glob: qc_stats.tsv
+      glob: $(inputs.rawreads.nameroot)_qc_stats.tsv
 
 $namespaces:
  edam: http://edamontology.org/

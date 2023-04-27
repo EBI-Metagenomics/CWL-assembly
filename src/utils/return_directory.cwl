@@ -13,7 +13,7 @@ inputs:
     type:
     - "null"
     - type: array
-      items: ["null", "File"]
+      items: ["null", "File", "File[]"] ###CHECK WHAT TO DO HERE
   dir_list:
     type:
     - "null"
