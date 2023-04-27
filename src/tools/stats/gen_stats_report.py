@@ -142,7 +142,9 @@ if __name__ == '__main__':
     total_read_count = sum(read_counts)
     if total_base_count <= 0:
         raise ValueError('Base count ({}) cannot be <= 0.'.format(total_base_count))
-    coverage, coverage_depth, assembly_length = calc_coverage(args.coverage_file, total_base_count)
+    coverage, coverage_depth, assembly_length = None, None, None
+    if args.coverage_file:
+        coverage, coverage_depth, assembly_length = calc_coverage(args.coverage_file, total_base_count)
     fstats = FastaStats(args.sequences, args.assembler)
     args.sequences.close()
     report = fstats.gen_report()
@@ -151,9 +153,10 @@ if __name__ == '__main__':
     report['input_read_count'] = total_read_count
     report['input_base_count'] = total_base_count
     # coverage stats
-    report['coverage'] = coverage
-    report['coverage_depth'] = coverage_depth
-    report['assembly_length'] = assembly_length
+    if args.coverage_file:
+        report['coverage'] = coverage
+        report['coverage_depth'] = coverage_depth
+        report['assembly_length'] = assembly_length
 
     #assembler info
     report['assembler_name'] = args.assembler

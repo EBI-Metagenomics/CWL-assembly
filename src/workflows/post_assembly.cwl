@@ -28,6 +28,8 @@ inputs:
     type: Directory
   database_flag:
     type: string[]
+  coassembly:
+    type: string
 
 outputs:
   final_contigs:
@@ -68,5 +70,6 @@ steps:
       reads: reads
       assembler: assembler
       assembly_log: assembly_log
+      coassembly: coassembly
     out: [ logfile , coverage_tab]
 

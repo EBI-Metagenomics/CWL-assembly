@@ -24,6 +24,8 @@ inputs:
   assembly_log:
     type: File
     label: logfile from assembly
+  coassembly:
+    type: string
 
 outputs:
   logfile:
@@ -43,12 +45,14 @@ steps:
     out: [ base_counts ] #two counts if paired end
   bwa_index:
     run: ../tools/stats/bwa-index.cwl
+    when: $(inputs.coassembly == 'no')
     label: index cleaned contigs file
     in:
       sequences: sequences
     out: [ indexed_contigs ]
   bwa_mem:
     run: ../tools/stats/bwa-mem.cwl
+    when: $(inputs.coassembly == 'no')
     label: map raw reads to indexed contigs
     in:
       reads: reads
@@ -57,6 +61,7 @@ steps:
     out: [ alignment ]
   samtools_view:
     run: ../tools/stats/samtools-view.cwl
+    when: $(inputs.coassembly == 'no')
     in:
       input: bwa_mem/alignment
       uncompressed:
@@ -68,6 +73,7 @@ steps:
     out: [ unsorted_bam ]
   samtools_sort:
     run: ../tools/stats/samtools-sort.cwl
+    when: $(inputs.coassembly == 'no')
     in:
       input: samtools_view/unsorted_bam
       output_name:
@@ -75,6 +81,7 @@ steps:
     out: [ sorted_bam ]
   metabat_jgi:
     run: ../tools/stats/metabat-jgi-summarise.cwl
+    when: $(inputs.coassembly == 'no')
     in:
       input: samtools_sort/sorted_bam
       outputDepth:

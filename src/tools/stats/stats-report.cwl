@@ -21,7 +21,7 @@ inputs:
       position: 2
       prefix: --sequences
   coverage_file:
-    type: File
+    type: File?
     label: coverage depth file
     inputBinding:
       position: 3
