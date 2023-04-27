@@ -29,7 +29,7 @@ inputs:
 
   forward_reads:
     type:
-      - File?
+      - File[]
       - type: array
         items: File
     inputBinding:
@@ -38,7 +38,7 @@ inputs:
 
   reverse_reads:
     type:
-      - File?
+      - File[]
       - type: array
         items: File
     inputBinding:

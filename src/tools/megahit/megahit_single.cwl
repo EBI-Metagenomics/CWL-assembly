@@ -29,7 +29,7 @@ inputs:
 
   reads:
     type:
-      - File
+      - File[]
       - type: array
         items: File
     inputBinding:
@@ -38,7 +38,7 @@ inputs:
       position: 4
 
   reads2:
-    type: File?
+    type: File[]?
     label: reads in place for assembly.cwl conditional to check reverse reads don't exist. Should always be null
 
   assembler:

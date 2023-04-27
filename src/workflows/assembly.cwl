@@ -57,7 +57,7 @@ outputs:
 steps:
   metaspades_paired:
     label: paired assembly with metaspades
-    when: $(inputs.assembler == 'metaspades' && inputs.reverse_reads != undefined)
+    when: $(inputs.assembler == 'metaspades' && inputs.reads2 !== undefined)
     run: ../tools/metaspades/metaspades.cwl
     in:
       assembler: assembler
@@ -66,35 +66,31 @@ steps:
       reverse_reads: reads2
     out: [ contigs, assembly_graph, params, log ]
 
-# suggested default to megahit for single or interleaved
-#  spades_single:
-#    label: single assembly defaults to spades
-#    when: $(inputs.assembler == 'metaspades' && inputs.reads2 == undefined)
-#    run: ../tools/metaspades/spades.cwl
-#    in:
-#      memory: memory
-#      reads: reads1
-#    out: [ contigs, assembly_graph, params, log ]
-
   megahit_paired:
-    label: paired assembly with megahit
-    when: $(inputs.assembler == 'megahit' && inputs.reverse_reads != undefined)
+    label: paired-end assembly with megahit
+    when: $(inputs.assembler == 'megahit' && inputs.reads2 !== null)
     run: ../tools/megahit/megahit_paired.cwl
     in:
       assembler: assembler
       memory: memory
-      forward_reads: reads1
-      reverse_reads: reads2
+      forward_reads: 
+        source: [ reads1 ]
+        linkMerge: merge_nested
+      reverse_reads: 
+        source: [ reads2 ]
+        linkMerge: merge_nested
     out: [ contigs, log, options ]
 
   megahit_single:
-    label: paired assembly with megahit
+    label: single-end assembly with megahit
     when: $(inputs.reads2 == undefined)
-    run: ../tools/megahit/megahit_paired.cwl
+    run: ../tools/megahit/megahit_single.cwl
     in:
       assembler: assembler
       memory: memory
-      reads: reads1
+      reads:
+        source: [ reads1 ]
+        linkMerge: merge_nested
       reads2: reads2
     out: [ contigs, log, options ]
 
