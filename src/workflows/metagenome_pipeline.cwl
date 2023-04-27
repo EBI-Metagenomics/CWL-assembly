@@ -13,7 +13,7 @@ inputs:
     type: string
     label: run id to use as prefix for output contigs
   reads1:
-    type: File
+    type: File?
     label: zipped fastq file forward or single reads
   reads2:
     type: File?
@@ -50,6 +50,9 @@ inputs:
   raw_dir_name:
     type: string?
     default: 'raw'
+  coassembly: 
+    type: string
+    default: 'no'
 
 outputs:
    reads_folder:
@@ -76,6 +79,18 @@ steps:
 
   assembly:
     run: assembly.cwl
+    when: $(inputs.coassembly == 'no')
+    label: assembly with metaspades or megahit. Single always defaults to megahit
+    in:
+      memory: memory
+      reads1: quality_control/qc_reads1
+      reads2: quality_control/qc_reads2
+      assembler: assembler
+    out: [ contigs, assembly_log, params_used, assembly_graph ]
+
+  coassembly:
+    run: coassembly.cwl
+    when: $(inputs.coassembly == 'yes')
     label: assembly with metaspades or megahit. Single always defaults to megahit
     in:
       memory: memory
@@ -98,6 +113,7 @@ steps:
       assembly_log: assembly/assembly_log
       blastdb_dir: blastdb_dir
       database_flag: database_flag
+      coassembly: coassembly
     out: [ final_contigs, compressed_contigs, compressed_contigs_md5, stats_output, coverage_tab]
 
   reads_folder:
