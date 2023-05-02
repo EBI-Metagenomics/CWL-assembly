@@ -13,9 +13,6 @@ requirements:
     ramMin: 8000
 
 inputs:
-  prefix:
-    type: string
-    label: run id to use for processed files
   reads1:
     type: File[]
     format: edam:format_1930
@@ -44,21 +41,21 @@ inputs:
 
 outputs:
   reads_qc_html:
-    type: File
+    type: File[]
     outputSource: trim_reads/qchtml
   reads_qc_json:
-    type: File
+    type: File[]
     outputSource: trim_reads/qcjson
   qc_reads1:
-    type: File
+    type: File[]
     format: edam:format_1930
     outputSource: host_removal/outreads1
   qc_reads2:
-    type: File?
+    type: File[]?
     format: edam:format_1930
     outputSource: host_removal/outreads2
   qc_summary:
-    type: File
+    type: File[]
     format: edam:format_3475
     outputSource: qc_stats/qc_counts
 
@@ -66,26 +63,30 @@ steps:
   trim_reads:
     label: filter short reads and adapter sequences
     run: ../tools/fastp/fastp.cwl
-    scatter: [reads1, reads2]
+    scatter: [reads1, reads2, name] ## when reads2 is empty there's nothing to scatter about - new wf?
     scatterMethod: dotproduct
     in:
       reads1: reads1
       reads2: reads2
       minLength: min_length
-      name: prefix
+      name: 
+        source: reads1
+        valueFrom: "$(self.basename)"
     out: [ outreads1, outreads2, qcjson, qchtml ]
 
 #add ability to filter by more than one host genome
-  host_removal:
+  host_removal_reads:
     label: filter single host genome reads
     run: ../tools/bwa/bwa.cwl
-    scatter: [reads1, reads2]
+    scatter: [reads1, reads2, name] ### same as above
     scatterMethod: dotproduct
     in:
-      name: prefix
       ref: host_genome
       reads1: trim_reads/outreads1
       reads2 : trim_reads/outreads2
+      name: 
+        source: reads1
+        valueFrom: "$(self.basename)"
     out: [ outreads1, outreads2 ]
 
   qc_stats:

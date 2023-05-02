@@ -10,7 +10,7 @@ requirements:
 
 inputs:
   prefix:
-    type: string
+    type: string?
     label: run id to use as prefix for output contigs
   reads1:
     type: File?
@@ -73,9 +73,10 @@ outputs:
 steps:
   quality_control:
     run: metagenome_qc.cwl
-    when: $(inputs.coassembly == 'no')
+    when: $(inputs.coassembly === 'no')
     label: quality control of raw reads
     in:
+      coassembly: coassembly
       prefix: prefix
       reads1: reads1
       reads2: reads2
@@ -86,10 +87,10 @@ steps:
 
   multiple_reads_quality_control:
     run: metagenome_multiplereads_qc.cwl
-    when: $(inputs.coassembly == 'yes')
+    when: $(inputs.coassembly === 'yes')
     label: quality control of raw reads
     in:
-      prefix: prefix
+      coassembly: coassembly
       reads1: multiple_reads_1
       reads2: multiple_reads_2
       minLength:
@@ -99,9 +100,10 @@ steps:
 
   assembly:
     run: assembly.cwl
-    when: $(inputs.coassembly == 'no')
+    when: $(inputs.coassembly === 'no')
     label: assembly with metaspades or megahit. Single always defaults to megahit
     in:
+      coassembly: coassembly
       memory: memory
       reads1: quality_control/qc_reads1
       reads2: quality_control/qc_reads2
@@ -110,18 +112,20 @@ steps:
 
   coassembly:
     run: coassembly.cwl
-    when: $(inputs.coassembly == 'yes')
+    when: $(inputs.coassembly === 'yes')
     label: assembly with metaspades or megahit. Single always defaults to megahit
     in:
+      coassembly: coassembly
       memory: memory
-      reads1: multiple_reads_quality_control/qc_reads1
-      reads2: multiple_reads_quality_control/qc_reads2
+      multiple_reads_1: multiple_reads_quality_control/qc_reads1
+      multiple_reads_2: multiple_reads_quality_control/qc_reads2
       assembler: assembler
-    out: [ contigs, assembly_log, params_used, assembly_graph ]
+    out: [ contigs, assembly_log, params_used ]
 
   post_assembly:
     run: post_assembly.cwl
-    label: run contig filtering, host removel and stats generation
+    when: $(inputs.coassembly === 'no')
+    label: run contig filtering, host removal and stats generation
     in:
       prefix: prefix
       assembly: assembly/contigs
@@ -135,6 +139,24 @@ steps:
       database_flag: database_flag
       coassembly: coassembly
     out: [ final_contigs, compressed_contigs, compressed_contigs_md5, stats_output, coverage_tab]
+
+  post_coassembly:
+    run: post_assembly.cwl
+    when: $(inputs.coassembly === 'yes')
+    label: run contig filtering, host removal and stats generation
+    in:
+      prefix: prefix 
+      assembly: coassembly/contigs      
+      assembler: assembler
+      min_contig_length: min_contig_length
+      reads: 
+        source: multiple_reads_1, multiple_reads_2
+        linkMerge: merge_flattened
+      assembly_log: coassembly/assembly_log
+      blastdb_dir: blastdb_dir
+      database_flag: database_flag
+      coassembly: coassembly
+    out: [ final_contigs, compressed_contigs, compressed_contigs_md5, stats_output]
 
   reads_folder:
     run: ../utils/return_directory.cwl
@@ -154,6 +176,8 @@ steps:
         - post_assembly/compressed_contigs_md5
         - post_assembly/stats_output
         - post_assembly/coverage_tab
+        - coassembly/assembly_log
+        - coassembly/params_used
         - assembly/assembly_log
         - assembly/params_used
         - assembly/assembly_graph

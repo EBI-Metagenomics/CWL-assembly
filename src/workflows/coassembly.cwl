@@ -45,7 +45,7 @@ outputs:
 steps:
   megahit_multiple_paired:
     label: multiple paired assembly with megahit
-    when: $(inputs.multiple_reads_2 !== undefined)
+    when: $(inputs.reverse_reads !== undefined)
     run: ../tools/megahit/megahit_paired.cwl
     in:
       memory: memory
@@ -55,7 +55,7 @@ steps:
 
   megahit_multiple_single:
     label: multiple paired assembly with megahit
-    when: $(inputs.multiple_reads_2 == null)
+    when: $(inputs.reads2 == null)
     run: ../tools/megahit/megahit_single.cwl
     in:
       memory: memory

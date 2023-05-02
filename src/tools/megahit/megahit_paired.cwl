@@ -33,6 +33,7 @@ inputs:
       - type: array
         items: File
     inputBinding:
+      itemSeparator: ","
       position: 1
       prefix: "-1"
 
@@ -42,6 +43,7 @@ inputs:
       - type: array
         items: File
     inputBinding:
+      itemSeparator: ","
       position: 2
       prefix: "-2"
 

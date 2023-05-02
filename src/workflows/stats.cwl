@@ -41,13 +41,16 @@ steps:
     label: get raw read base count
     scatter: raw_reads
     in:
-      raw_reads: reads
+      raw_reads: 
+        source: reads
+        valueFrom: $(self.filter(Boolean))
     out: [ base_counts ] #two counts if paired end
   bwa_index:
     run: ../tools/stats/bwa-index.cwl
     when: $(inputs.coassembly == 'no')
     label: index cleaned contigs file
     in:
+      coassembly: coassembly
       sequences: sequences
     out: [ indexed_contigs ]
   bwa_mem:
@@ -55,6 +58,7 @@ steps:
     when: $(inputs.coassembly == 'no')
     label: map raw reads to indexed contigs
     in:
+      coassembly: coassembly
       reads: reads
       reference:
         source: bwa_index/indexed_contigs
@@ -63,6 +67,7 @@ steps:
     run: ../tools/stats/samtools-view.cwl
     when: $(inputs.coassembly == 'no')
     in:
+      coassembly: coassembly
       input: bwa_mem/alignment
       uncompressed:
         default: true
@@ -75,6 +80,7 @@ steps:
     run: ../tools/stats/samtools-sort.cwl
     when: $(inputs.coassembly == 'no')
     in:
+      coassembly: coassembly
       input: samtools_view/unsorted_bam
       output_name:
         default: "sorted.bam"
@@ -83,6 +89,7 @@ steps:
     run: ../tools/stats/metabat-jgi-summarise.cwl
     when: $(inputs.coassembly == 'no')
     in:
+      coassembly: coassembly
       input: samtools_sort/sorted_bam
       outputDepth:
         default: "coverage.tab"
