@@ -54,11 +54,6 @@ inputs:
       position: 5
       prefix: "--num-cpu-threads"
 
-  assembler:
-    type: string?
-    default: 'megahit'
-    label: defined here for assembly.cwl conditional
-
 outputs:
   contigs:
     type: File

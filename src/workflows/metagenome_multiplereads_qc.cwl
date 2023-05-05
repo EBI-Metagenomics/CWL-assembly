@@ -60,6 +60,13 @@ outputs:
     outputSource: qc_stats/qc_counts
 
 steps:
+  reads2_assessment:
+    label: input adjustement depending on single- or paired-end reads
+    run: ../utils/fill_reads2.cwl
+    in:
+      reads2: reads2
+    out: [ reads2_filled ]
+
   trim_reads:
     label: filter short reads and adapter sequences
     run: ../tools/fastp/fastp.cwl
@@ -67,7 +74,7 @@ steps:
     scatterMethod: dotproduct
     in:
       reads1: reads1
-      reads2: reads2
+      reads2: reads2_assessment/reads2_filled
       minLength: min_length
       name: 
         source: reads1
@@ -75,10 +82,10 @@ steps:
     out: [ outreads1, outreads2, qcjson, qchtml ]
 
 #add ability to filter by more than one host genome
-  host_removal_reads:
+  host_removal:
     label: filter single host genome reads
     run: ../tools/bwa/bwa.cwl
-    scatter: [reads1, reads2, name] ### same as above
+    scatter: [reads1, reads2, name] ### need adjustment here too?
     scatterMethod: dotproduct
     in:
       ref: host_genome

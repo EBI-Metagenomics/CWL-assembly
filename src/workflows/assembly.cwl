@@ -22,10 +22,9 @@ inputs:
     format: edam:format_1930
     label: filtered reverse fastq file for assembly
   assembler:
-    type: string
+    type: string?
     label: megahit or metaspades.
-    doc: metaspades is the first choice unless megahit specified. Defaults to megahit for single or interleaved reads.
-    default: 'metaspades'
+    doc: defaults to megahit for single or interleaved reads.
 
 outputs:
   contigs:
@@ -57,7 +56,7 @@ outputs:
 steps:
   metaspades_paired:
     label: paired assembly with metaspades
-    when: $(inputs.assembler == 'metaspades' && inputs.reads2 !== undefined)
+    when: $(inputs.assembler == 'metaspades' && inputs.reverse_reads !== null)
     run: ../tools/metaspades/metaspades.cwl
     in:
       assembler: assembler
@@ -68,7 +67,7 @@ steps:
 
   megahit_paired:
     label: paired-end assembly with megahit
-    when: $(inputs.assembler == 'megahit' && inputs.reads2 !== null)
+    when: $(inputs.assembler == 'megahit' && inputs.reverse_reads !== null)
     run: ../tools/megahit/megahit_paired.cwl
     in:
       assembler: assembler
@@ -83,10 +82,9 @@ steps:
 
   megahit_single:
     label: single-end assembly with megahit
-    when: $(inputs.reads2 == undefined)
+    when: $(inputs.reads2 == null)
     run: ../tools/megahit/megahit_single.cwl
     in:
-      assembler: assembler
       memory: memory
       reads:
         source: [ reads1 ]

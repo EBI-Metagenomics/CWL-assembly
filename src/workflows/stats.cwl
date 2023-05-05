@@ -41,9 +41,7 @@ steps:
     label: get raw read base count
     scatter: raw_reads
     in:
-      raw_reads: 
-        source: reads
-        valueFrom: $(self.filter(Boolean))
+      raw_reads: reads
     out: [ base_counts ] #two counts if paired end
   bwa_index:
     run: ../tools/stats/bwa-index.cwl
