@@ -38,6 +38,8 @@ inputs:
     format: edam:format_1929
     label: host genome fasta file
     default: hg38.fa
+  coassembly:
+    type: string
 
 outputs:
   reads_qc_html:
@@ -53,7 +55,7 @@ outputs:
   qc_reads2:
     type: File[]?
     format: edam:format_1930
-    outputSource: host_removal/outreads2
+    outputSource: reads2_reset/outreads2_final
   qc_summary:
     type: File[]
     format: edam:format_3475
@@ -70,7 +72,7 @@ steps:
   trim_reads:
     label: filter short reads and adapter sequences
     run: ../tools/fastp/fastp.cwl
-    scatter: [reads1, reads2, name] ## when reads2 is empty there's nothing to scatter about - new wf?
+    scatter: [reads1, reads2, name]
     scatterMethod: dotproduct
     in:
       reads1: reads1
@@ -85,9 +87,10 @@ steps:
   host_removal:
     label: filter single host genome reads
     run: ../tools/bwa/bwa.cwl
-    scatter: [reads1, reads2, name] ### need adjustment here too?
+    scatter: [reads1, reads2, name]
     scatterMethod: dotproduct
     in:
+      coassembly: coassembly
       ref: host_genome
       reads1: trim_reads/outreads1
       reads2 : trim_reads/outreads2
@@ -95,6 +98,13 @@ steps:
         source: reads1
         valueFrom: "$(self.basename)"
     out: [ outreads1, outreads2 ]
+
+  reads2_reset:
+    label: restore original value for reads2 if empty
+    run: ../utils/restore_reads2.cwl
+    in:
+      reads2: host_removal/outreads2
+    out: [ outreads2_final ]
 
   qc_stats:
     label: get counts pre and post filtering
@@ -106,7 +116,6 @@ steps:
       trimmedreads: trim_reads/outreads1
       cleanedreads: host_removal/outreads1
     out: [ qc_counts ]
-
 
 $namespaces:
  edam: http://edamontology.org/

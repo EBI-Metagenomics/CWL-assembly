@@ -41,6 +41,8 @@ inputs:
     format: edam:format_1929
     label: host genome fasta file
     default: hg38.fa
+  coassembly:
+    type: string
 
 outputs:
   reads_qc_html:
@@ -82,6 +84,7 @@ steps:
       ref: host_genome
       reads1: trim_reads/outreads1
       reads2 : trim_reads/outreads2
+      coassembly: coassembly
     out: [ outreads1, outreads2 ]
 
   qc_stats:

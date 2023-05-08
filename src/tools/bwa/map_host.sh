@@ -58,17 +58,17 @@ then
   NAME=${NAME%_*}
   echo "mapping files to host genome"
   bwa-mem2 mem -M -t $THREADS $REF $FASTQ_R1 $FASTQ_R2 | samtools view -@ $THREADS_SAM -f 12 -F 256 -uS - -o $OUTPUTDIR/${NAME}_both_unmapped.bam
-	samtools sort -@ $THREADS_SAM -n $OUTPUTDIR/${NAME}_both_unmapped.bam -o $OUTPUTDIR/${NAME}_both_unmapped_sorted.bam
-	samtools fastq -1 $OUTPUTDIR/${NAME}_clean_1.fastq -2 $OUTPUTDIR/${NAME}_clean_2.fastq -0 /dev/null -s /dev/null -n $OUTPUTDIR/${NAME}_both_unmapped_sorted.bam
-	echo "compressing output files"
-	gzip -c $OUTPUTDIR/${NAME}_clean_1.fastq > ${NAME}_clean_1.fastq.gz
-	gzip -c $OUTPUTDIR/${NAME}_clean_2.fastq > ${NAME}_clean_2.fastq.gz
+  samtools sort -@ $THREADS_SAM -n $OUTPUTDIR/${NAME}_both_unmapped.bam -o $OUTPUTDIR/${NAME}_both_unmapped_sorted.bam
+  samtools fastq -1 $OUTPUTDIR/${NAME}_clean_1.fastq -2 $OUTPUTDIR/${NAME}_clean_2.fastq -0 /dev/null -s /dev/null -n $OUTPUTDIR/${NAME}_both_unmapped_sorted.bam
+  echo "compressing output files"
+  gzip -c $OUTPUTDIR/${NAME}_clean_1.fastq > ${NAME}_clean_1.fastq.gz
+  gzip -c $OUTPUTDIR/${NAME}_clean_2.fastq > ${NAME}_clean_2.fastq.gz
 else
   NAME=${NAME%%.*}
   echo mapping files to host genome""
   bwa-mem2 mem -M -t $THREADS $REF $FASTQ_R1 | samtools view -@ $THREADS_SAM -f 4 -F 256 -uS - -o $OUTPUTDIR/${NAME}_unmapped.bam
   samtools sort -@ $THREADS_SAM -n $OUTPUTDIR/${NAME}_unmapped.bam -o $OUTPUTDIR/${NAME}_unmapped_sorted.bam
-  samtools $OUTPUTDIR/${NAME}_unmapped_sorted.bam > $OUTPUTDIR/${NAME}_clean.fastq
-	echo "compressing output file"
-	gzip -c $OUTPUTDIR/${NAME}_clean.fastq > ${NAME}_clean.fastq.gz
+  samtools fastq -s /dev/null -n $OUTPUTDIR/${NAME}_unmapped_sorted.bam > $OUTPUTDIR/${NAME}_clean.fastq
+  echo "compressing output file"
+  gzip -c $OUTPUTDIR/${NAME}_clean.fastq > $OUTPUTDIR/${NAME}_clean.fastq.gz
 fi

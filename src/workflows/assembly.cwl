@@ -52,8 +52,18 @@ outputs:
     outputSource:
       - metaspades_paired/assembly_graph
     type: File?
+  assembler_final: 
+    outputSource: return_assembler/assembler_out
+    type: string
 
 steps:
+  return_assembler:
+    label: return assembler
+    run: ../utils/detect_assembler.cwl
+    in:
+      assembler: assembler
+    out: [ assembler_out ]
+
   metaspades_paired:
     label: paired assembly with metaspades
     when: $(inputs.assembler == 'metaspades' && inputs.reverse_reads !== null)

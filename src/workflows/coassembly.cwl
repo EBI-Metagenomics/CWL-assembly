@@ -10,6 +10,9 @@ requirements:
   ScatterFeatureRequirement: {}
 
 inputs:
+  assembler:
+    type: string?
+    label: preferred assembler
   memory:
     type: [ int?, string? ]
     label: memory requested for assembly
@@ -41,11 +44,21 @@ outputs:
       - megahit_multiple_single/options
     pickValue: first_non_null
     type: File
+  assembler_final: 
+    outputSource: return_assembler/assembler_out
+    type: string
 
 steps:
+  return_assembler:
+    label: return assembler
+    run: ../utils/detect_assembler.cwl
+    in:
+      assembler: assembler
+    out: [ assembler_out ]
+
   megahit_multiple_paired:
     label: multiple paired assembly with megahit
-    when: $(inputs.reverse_reads !== undefined)
+    when: $(inputs.reverse_reads !== null)
     run: ../tools/megahit/megahit_paired.cwl
     in:
       memory: memory
