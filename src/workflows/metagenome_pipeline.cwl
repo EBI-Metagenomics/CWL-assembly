@@ -107,7 +107,7 @@ steps:
       reads1: quality_control/qc_reads1
       reads2: quality_control/qc_reads2
       assembler: assembler
-    out: [ contigs, assembly_log, params_used, assembly_graph ]
+    out: [ contigs, assembly_log, params_used, assembly_graph, assembler_final ]
 
   coassembly:
     run: coassembly.cwl
@@ -119,7 +119,7 @@ steps:
       multiple_reads_1: multiple_reads_quality_control/qc_reads1
       multiple_reads_2: multiple_reads_quality_control/qc_reads2
       assembler: assembler
-    out: [ contigs, assembly_log, params_used ]
+    out: [ contigs, assembly_log, params_used, assembler_final ]
 
   post_assembly:
     run: post_assembly.cwl
@@ -128,7 +128,7 @@ steps:
     in:
       prefix: prefix
       assembly: assembly/contigs
-      assembler: assembler
+      assembler: assembly/assembler_final
       min_contig_length: min_contig_length
       reads:
         source: [reads1, reads2]
@@ -146,11 +146,12 @@ steps:
     in:
       prefix: prefix 
       assembly: coassembly/contigs      
-      assembler: assembler
+      assembler: coassembly/assembler_final
       min_contig_length: min_contig_length
       reads: 
         source: [ multiple_reads_1, multiple_reads_2 ]
         linkMerge: merge_flattened
+        valueFrom: $(self.filter(Boolean))
       assembly_log: coassembly/assembly_log
       blastdb_dir: blastdb_dir
       database_flag: database_flag
@@ -165,7 +166,10 @@ steps:
       file_list:
         - quality_control/qc_reads1
         - quality_control/qc_reads2
-        - quality_control/qc_summary ### THIS IS GOING TO BE A LIST
+        - quality_control/qc_summary
+#        - multiple_reads_quality_control/qc_reads1
+#        - multiple_reads_quality_control/qc_reads2
+#        - multiple_reads_quality_control/qc_summary
       dir_name: raw_dir_name
     out: [ out ]
 
@@ -186,10 +190,14 @@ steps:
         - assembly/params_used
         - assembly/assembly_graph
       dir_name:
-        source: [assembler, assembly_version]
+        source: [assembly/assembler_final, coassembly/assembler_final, assembly_version]
         valueFrom: |
                   ${
-                      return self[0] + '/' + self[1];
+                      if ( self[0] === null ) {
+                        return self[1] + '/' + self[2];
+                      } else {
+                        return self[0] + '/' + self[2];
+                      };
                   }
     out: [ out ]
 
