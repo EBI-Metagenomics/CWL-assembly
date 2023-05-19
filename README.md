@@ -2,70 +2,33 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/684724bbc0134960ab41748f4a4b732f)](https://www.codacy.com/app/mb1069/CWL-assembly?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=EBI-Metagenomics/CWL-assembly&amp;utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.org/EBI-Metagenomics/CWL-assembly.svg?branch=develop)](https://travis-ci.org/EBI-Metagenomics/CWL-assembly)
 
+## Description
 
-# Installation
-## Create local environment named venv using Miniconda (eg below) or virtualenv
-```bash
-wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
-bash Miniconda2-latest-Linux-x86_64.sh -b -p $PWD/venv
-source venv/bin/activate
+This repository contains two workflows for metagenome and metatranscriptome assembly of short read data. MetaSPAdes is used as default for paired end data, and MEGAHIT for single end data. MEGAHIT can be specified as the default assembler in the yaml file if preferred. Steps include:
 
-OR using a python 2.7 virtualenv
+QC - removal of short reads, low quality regions, adapters and host decontamination
+Assembly - with metaSPADES or MEGAHIT
+Post-assembly - Host and PhiX decontamination, contig length filter (500bp), stats generation.
 
-python -m virtualenv venv
-pip install setuptools -U
-source venv/bin/activate
+Multiple input read files can also be specified for co-assembly.
 
+## Requirements
 
-pip install -U git+https://github.com/EBI-Metagenomics/CWL-assembly.git@develop
+This pipeline requires and environment with cwltool, blastn, metaspades and megahit.
 
-# Temporary requirement until fixes for cwltool in toil are released.
-pip install git+https://github.com/DataBiosphere/toil.git
-```
+## Databases
 
-##
-```bash
-# If running on a multi-volume cluster, the following is required to avoid cross-volume symlinks / mounts
-mkdir $PWD/tmp
-export TMP=$PWD/tmp 
-```
-# Running full pipeline from CLI
-```bash
-assembly_cli metaspades -s ERP010229 -r ERR866589  -d output
-```
-
-## Working pipeline examples
-### MEGAHIT
-```bash
-Interleaved: assembly_cli megahit -s SRP074153 -r SRR6257420 -d tmp
-Single:      assembly_cli megahit -s ERP012806 -r ERR1078287 -d tmp
-```
-### Metaspades
-```bash
-Paired:      assembly_cli metaspades -s ERP010229 -r ERR866589  -d tmp
-Interleaved: assembly_cli metaspades -s SRP074153 -r SRR6257420 -d tmp
-```
-
-### Spades
-```bash
-Paired:      assembly_cli spades -s SRP040765 -r SRR1567464  -d tmp
-Interleaved: assembly_cli spades -s SRP074153 -r SRR6257420 -d tmp
-Single:      assembly_cli spades -s ERP012806 -r ERR1078287 -d tmp
-```
-
-# Running cwl pipelines on cluster
-
-## MegaHit
-```bash
-cwltoil --user-space-docker-cmd=udocker --cleanWorkDir onSuccess --debug --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf megahit_pipeline.cwl megahit_pipeline.yml
-```
-
-## MetaSpades
-```bash
-cwltoil --user-space-docker-cmd=udocker --debug --outdir out --tmpdir tmp --workDir toil_work --batchSystem lsf  metaspades_pipeline.cwl metaspades_pipeline.yml
-```
+Predownload fasta files for host decontamination and generate:
+    - bwa index folder
+    - blast index folder
+    
+Specify the locations in the yaml file when running the pipeline.
 
 
+## Main pipeline executables
+
+src/workflows/metagenome_pipeline.cwl
+src/workflows/metatranscriptome_pipeline.cwl
 
 # Example output directory structure
 ```
