@@ -1,0 +1,55 @@
+language: python
+python:
+  - "2.7"
+#  - "3.4"
+#  - "3.5"
+#  - "3.6"
+#  - "3.7-dev"
+sudo: required
+
+services:
+  - docker
+
+env:
+  - COVERAGE_FILE="$TRAVIS_BUILD_DIR/coverage/coverage.xml"
+
+before_install:
+  - bash travis/setup_creds.sh
+  - mkdir "$TRAVIS_BUILD_DIR/coverage"
+
+install:
+  - docker build -t "mgnify/cwl-assembly-readfq:latest" $TRAVIS_BUILD_DIR/cwl/stats/readfq/
+  - docker build -t "mgnify/cwl-assembly-stats-report:latest" $TRAVIS_BUILD_DIR/cwl/stats/stats_report/
+  - docker build -t "mgnify/cwl-assembly-fasta-trimming:latest" $TRAVIS_BUILD_DIR/cwl/stats/fasta_trimming/
+
+  - source ./setup_env.sh
+
+script:
+# Package installation
+  - pip install -r requirements.txt
+  - pip install -r requirements-test.txt
+
+#  - pytest --cov=src --cov-report xml:$COVERAGE_FILE tests/
+
+##  CWL Tests
+##  Assemblers
+#  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/assemblers/test_megahit.yml --tool cwltool --verbose
+#  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/assemblers/test_metaspades.yml --tool cwltool --verbose
+#  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/assemblers/test_spades.yml --tool cwltool --verbose
+#
+## Stats tools
+#  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/stats/test_readfq.yml --tool cwltool --verbose
+#  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/stats/test_trim_fasta.yml --tool cwltool --verbose
+#  - cwltest --basedir cwl_test_dir --test tests/cwl/tools/stats/test_stats_report.yml --tool cwltool --verbose
+#
+## Stats workflows
+#  - cwltest --basedir cwl_test_dir --test tests/cwl/workflows/test_stats.yml --tool cwltool --verbose
+
+after_script:
+  - python-codacy-coverage -r $COVERAGE_FILE
+
+deploy:
+  provider: script
+  script: bash docker_push.sh
+  on:
+    branch: develop

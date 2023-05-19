@@ -1,0 +1,4 @@
+- job: tests/cwl/tools/stats/job_descriptions/readfq.yml
+  tool: cwl/stats/readfq.cwl
+  output:
+    base_count: 106000

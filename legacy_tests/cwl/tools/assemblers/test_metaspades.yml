@@ -1,0 +1,83 @@
+# cwltest --basedir cwl_test_dir --test tests/cwl/tools/assembler/test_metaspades.yml --tool cwltool
+
+- job: tests/cwl/tools/assemblers/job_descriptions/metaspades_paired.yml
+  tool: cwl/assembly/metaspades.cwl
+  output:
+    assembly_graph:
+      checksum: sha1$be77e05985e540ccb520d9ce5b92c9bbb1d14763
+      basename: assembly_graph.fastg
+      location: assembly_graph.fastg
+      class: File
+      path: "assembly_graph.fastg"
+      size: 2122
+    contigs:
+      checksum: sha1$0ad59f9a98f803eb4c12de2af019d7b9a02ea59b
+      basename: contigs.fasta
+      location: contigs.fasta
+      class: File
+      format: http://edamontology.org/format_1929
+      path: "contigs.fasta"
+      size: 943
+    contigs_assembly_graph:
+      checksum: sha1$b9035537033ec2f453b24508371695eee6891abf
+      basename: contigs.paths
+      location: contigs.paths
+      class: File
+      path: "contigs.paths"
+      size: 365
+    contigs_before_rr:
+      checksum: sha1$9ffdd038121f137f84b3d1beb605d8bb1d28171d
+      basename: before_rr.fasta
+      location: before_rr.fasta
+      class: File
+      format: http://edamontology.org/format_1929
+      path: "before_rr.fasta"
+      size: 943
+    internal_config:
+      basename: dataset.info
+      location: dataset.info
+      class: File
+      path: "dataset.info"
+    internal_dataset:
+      basename: input_dataset.yaml
+      location: input_dataset.yaml
+      class: File
+      path: "input_dataset.yaml"
+    log:
+      basename: spades.log
+      location: spades.log
+      class: File
+      format: https://www.iana.org/assignments/media-types/text/plain
+      path: "spades.log"
+    params:
+      basename: params.txt
+      location: params.txt
+      class: File
+      format: https://www.iana.org/assignments/media-types/text/plain
+      path: "params.txt"
+    scaffolds:
+      checksum: sha1$0ad59f9a98f803eb4c12de2af019d7b9a02ea59b
+      basename: scaffolds.fasta
+      location: scaffolds.fasta
+      class: File
+      format: http://edamontology.org/format_1929
+      path: "scaffolds.fasta"
+      size: 943
+    scaffolds_assembly_graph:
+      checksum: sha1$b9035537033ec2f453b24508371695eee6891abf
+      basename: scaffolds.paths
+      location: scaffolds.paths
+      class: File
+      path: "scaffolds.paths"
+      size: 365
+    stderr:
+      basename: stderr.txt
+      location: stderr.txt
+      class: File
+      path: "stderr.txt"
+      size: 0
+    stdout:
+      basename: stdout.txt
+      location: stdout.txt
+      class: File
+      path: "stdout.txt"

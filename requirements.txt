@@ -1,0 +1,5 @@
+cwltool==3.1.20210922203925
+blast=2.12.0
+libgcc-ng=12.1.0
+openmp=8.0.1=0
+spades=3.15.3

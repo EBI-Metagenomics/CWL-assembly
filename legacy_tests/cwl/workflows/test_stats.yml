@@ -1,0 +1,50 @@
+# cwltest --basedir cwl_test_dir --test tests/cwl/workflows/stats.cwl --tool cwltool
+
+- job: tests/cwl/workflows/job_descriptions/stats.yml
+  tool: cwl/stats/stats.cwl
+  output:
+    logfile:
+      basename: output.json
+      checksum: sha1$0895c0345b3a49396f96d6e95c16d0c774f4f5e4
+      class: File
+      location: output.json
+      path: output.json
+      size: 436
+    bwa_index_output:
+      checksum: sha1$0ad59f9a98f803eb4c12de2af019d7b9a02ea59b
+      class: File
+      location: contigs.fasta
+      size: 943
+    bwa_mem_output:
+      basename: aln-se.sam
+      class: File
+      location: aln-se.sam
+      path: aln-se.sam
+    metabat_coverage_output:
+      basename: coverage.tab
+      checksum: sha1$b75c22ba1cb243beaceab5f816a84a4e1d0e35f7
+      class: File
+      location: coverage.tab
+      path: coverage.tab
+      size: 365
+    samtools_index_output:
+      basename: sorted.bam
+      class: File
+      location: sorted.bam
+      path: sorted.bam
+      secondaryFiles:
+      - basename: sorted.bam.bai
+        class: File
+        location: sorted.bam.bai
+        path: sorted.bam.bai
+        size: 416
+    samtools_sort_output:
+      basename: sorted.bam
+      class: File
+      location: sorted.bam
+      path: sorted.bam
+    samtools_view_output:
+      basename: unsorted.bam
+      class: File
+      location: unsorted.bam
+      path: unsorted.bam

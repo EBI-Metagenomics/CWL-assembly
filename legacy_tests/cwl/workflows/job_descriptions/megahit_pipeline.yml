@@ -1,0 +1,22 @@
+#!/usr/bin/env cwltool
+cwl:tool: metaspades_pipeline.cwl
+run_id: SRR6257420
+
+assembler: megahit
+
+interleaved_reads:
+  path: ../../../fixtures/SRP0741/SRP074153/raw/SRR6257420.fastq.gz
+  class: File
+
+#cwltool:overrides:
+#  pipeline.cwl:
+#    requirements:
+#      ResourceRequirement:
+#        ramMin: 5
+#        coresMin: 3
+
+output_dest: "out.json"
+
+output_assembly_name: "SRR6257420"
+
+min_contig_length: 0

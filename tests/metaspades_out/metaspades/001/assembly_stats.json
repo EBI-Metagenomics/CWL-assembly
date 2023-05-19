@@ -1,0 +1,26 @@
+{
+    "assembler_name": "metaspades",
+    "assembler_version": "3.15.3",
+    "assembly_length": 1170.0,
+    "coverage": 2.6021783999999997,
+    "coverage_depth": 2.6689009230769227,
+    "input_base_count": 1200,
+    "input_read_count": 180000,
+    "l50": 2,
+    "largest_contig": 667,
+    "limited_1000": [
+        0,
+        0
+    ],
+    "limited_10000": [
+        0,
+        0
+    ],
+    "limited_50000": [
+        0,
+        0
+    ],
+    "n50": 1,
+    "num_contigs": 2,
+    "total_assembled_pairs": 1170
+}

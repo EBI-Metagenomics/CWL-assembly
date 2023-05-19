@@ -1,0 +1,24 @@
+prefix: 'test'
+  type: string
+assembly:
+  class: File
+  path: contigs.fasta
+  format: http://edamontology.org/format_1929
+assembler: 'metaspades'
+min_contig_length: 500
+reads:
+  - class: File
+    path: test_fastp_1.fastq.gz
+  - class: File
+    path: test_fastp_2.fastq.gz
+
+assembly_log:
+  class: File
+  path: spades.log
+
+blastdb_dir:
+  class: Directory
+  path: blastdb
+database_flag:
+    - /blastdb/human
+    - /blastdb/phiX

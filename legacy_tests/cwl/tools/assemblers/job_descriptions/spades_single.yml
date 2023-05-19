@@ -1,0 +1,18 @@
+#!/usr/bin/env cwltool
+cwl:tool: spades.cwl
+run_id: ERR866589
+
+single_reads:
+  path: ../../../../fixtures/ERP0128/ERP012806/raw/ERR1078287.fastq.gz
+  class: File
+
+cwltool:overrides:
+  spades.cwl:
+    requirements:
+      ResourceRequirement:
+        ramMin: 5
+        coresMin: 1
+# Broken in cwltoil with batch system pending toil cwltool update
+
+# cwltest --basedir cwl_test_dir --test tests/cwl/test_spades.yml --tool cwltool --verbose
+

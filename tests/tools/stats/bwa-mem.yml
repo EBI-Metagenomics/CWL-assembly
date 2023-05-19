@@ -1,0 +1,9 @@
+reference:
+  class: File
+  path: ../../in/filtered_contigs.fasta
+
+reads:
+  - class: File
+    path: ../../in/mgtest_fastp_clean_1.fastq.gz
+  - class: File
+    path: ../../in/mgtest_fastp_clean_2.fastq.gz

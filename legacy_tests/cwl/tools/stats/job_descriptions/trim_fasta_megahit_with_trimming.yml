@@ -1,0 +1,12 @@
+#!/usr/bin/env cwltool
+cwl:tool: fasta-trimming.cwl
+
+assembler: megahit
+
+sequences:
+  class: File
+  path: ../../../../fixtures/SRP0741/SRP074153/SRR6257/SRR6257420/megahit/001/final.contigs.fa
+
+min_contig_length: 400
+
+output_filename: SRR6257420

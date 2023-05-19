@@ -1,0 +1,17 @@
+#!/usr/bin/env cwltool
+cwl:tool: metaspades.cwl
+run_id: ERR866589
+
+single_reads:
+  path: ../../../../fixtures/ERP0128/ERP012806/raw/ERR1078287.fastq.gz
+  class: File
+
+cwltool:overrides:
+  megahit.cwl:
+    requirements:
+      ResourceRequirement:
+        ramMin: 5
+        coresMin: 1
+
+
+# cwltool --move-outputs --outdir cwl-megahit-final cwl/megahit.cwl cwl/megahit_single.yml

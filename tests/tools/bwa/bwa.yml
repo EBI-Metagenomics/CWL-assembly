@@ -1,0 +1,12 @@
+name: 'mgtest'
+ref:
+  class: File
+  path: ../../in/bwa_index/GRCh38_chr10.fasta
+reads1:
+  class: File
+  path: ../../in/mgtest_fastp_1.fastq.gz
+  format: http://edamontology.org/format_1930
+reads2:
+  class: File
+  path: ../../in/mgtest_fastp_1.fastq.gz
+  format: http://edamontology.org/format_1930

@@ -1,0 +1,12 @@
+#!/usr/bin/env cwltool
+cwl:tool: fasta-trimming.cwl
+
+assembler: metaspades
+
+sequences:
+  class: File
+  path: ../../../../fixtures/ERP0102/ERP010229/ERR8665/ERR866589/metaspades/001/contigs.fasta
+
+min_contig_length: 200
+
+output_filename: ERR866589

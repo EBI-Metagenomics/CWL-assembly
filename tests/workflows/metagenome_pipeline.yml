@@ -1,0 +1,22 @@
+prefix: 'mgtest'
+reads1:
+  class: File
+  path: ../in/mgtest_1.fastq.gz
+  format: http://edamontology.org/format_1930
+reads2:
+  class: File
+  path: ../in/mgtest_2.fastq.gz
+  format: http://edamontology.org/format_1930
+host_genome:
+  class: File
+  path: ../in/bwa_index/GRCh38_chr10.fasta
+  format: http://edamontology.org/format_1929
+memory: 10
+min_contig_length: 500
+assembler: 'metaspades'
+assembly_version: '001'
+blastdb_dir:
+  class: Directory
+  path: ../in/blastdb/
+database_flag:
+  - phiX

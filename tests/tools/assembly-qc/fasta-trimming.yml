@@ -1,0 +1,11 @@
+name: 'test'
+contigs:
+  class: File
+  path: ../../in/contigs_phixcont.fasta
+  format: http://edamontology.org/format_1929
+min_length: 500
+assembler: 'metaspades'
+blastn:
+  class: File
+  path: ../../out/phiX.blast.out
+

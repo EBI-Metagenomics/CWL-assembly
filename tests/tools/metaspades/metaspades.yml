@@ -1,0 +1,9 @@
+memory: 5
+forward_reads:
+  class: File
+  path: ../../in/mgtest_fastp_clean_1.fastq.gz
+  format: http://edamontology.org/format_1930
+reverse_reads:
+  class: File
+  path: ../../in/mgtest_fastp_clean_2.fastq.gz
+  format: http://edamontology.org/format_1930

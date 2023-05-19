@@ -1,0 +1,14 @@
+#!/usr/bin/env cwltool
+cwl:tool: stats-report.cwl
+
+assembler: metaspades
+
+base_count: 106000
+sequences:
+  class: File
+  path: ../../../../fixtures/ERP0102/ERP010229/ERR8665/ERR866589/metaspades/001/contigs.fasta
+coverage_file:
+  class: File
+  path: ../../../../fixtures/ERP0102/ERP010229/ERR8665/ERR866589/metaspades/001/coverage.tab
+output: out.json
+min_contig_length: 100

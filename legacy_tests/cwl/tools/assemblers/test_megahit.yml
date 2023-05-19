@@ -1,0 +1,49 @@
+# cwltest --basedir cwl_test_dir --test tests/cwl/test_megahit.yml --tool cwltool
+
+- job: tests/cwl/tools/assemblers/job_descriptions/megahit_single.yml
+  tool: cwl/assembly/megahit.cwl
+  output:
+    contigs:
+      format: http://edamontology.org/format_1929
+      checksum: "sha1$23d48efb7c572566f3818d3bb3363f879bec97e3"
+      basename: final.contigs.fa
+      location: "final.contigs.fa"
+      class: File
+      size: 58203
+    log:
+      format: https://www.iana.org/assignments/media-types/text/plain
+      basename: log
+      location: "log"
+      class: File
+
+- job: tests/cwl/tools/assemblers/job_descriptions/megahit_interleaved.yml
+  tool: cwl/assembly/megahit.cwl
+  output:
+    contigs:
+      format: http://edamontology.org/format_1929
+      checksum: "sha1$a116450b5a3d00baa5624d7e4ccd9ca6efa099fb"
+      basename: final.contigs.fa
+      location: "final.contigs.fa"
+      class: File
+      size: 12557
+    log:
+      format: https://www.iana.org/assignments/media-types/text/plain
+      basename: log
+      location: "log"
+      class: File
+
+- job: tests/cwl/tools/assemblers/job_descriptions/megahit_paired.yml
+  tool: cwl/assembly/megahit.cwl
+  output:
+    contigs:
+      format: http://edamontology.org/format_1929
+      checksum: "sha1$4b73c5404eb6be98ebb283ead177a73852964651"
+      basename: final.contigs.fa
+      location: "final.contigs.fa"
+      class: File
+      size: 481
+    log:
+      format: https://www.iana.org/assignments/media-types/text/plain
+      basename: log
+      location: "log"
+      class: File

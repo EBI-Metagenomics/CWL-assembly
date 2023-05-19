@@ -1,0 +1,5 @@
+files:
+  - class: File
+    path: human.blast.out
+  - class: File
+    path: phiX.blast.out

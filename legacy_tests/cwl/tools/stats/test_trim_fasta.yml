@@ -1,0 +1,79 @@
+- job: tests/cwl/tools/stats/job_descriptions/trim_fasta_megahit_with_trimming.yml
+  tool: cwl/stats/fasta-trimming.cwl
+  output:
+    trimmed_sequences:
+      checksum: sha1$4b54f2912fcf8241d2813f62eeb8249706ae33ec
+      basename: SRR6257420.fasta
+      location: SRR6257420.fasta
+      class: File
+      size: 9044
+    trimmed_sequences_gz:
+      basename: SRR6257420.fasta.gz
+      location: SRR6257420.fasta.gz
+      class: File
+      size: 3088
+    trimmed_sequences_gz_md5:
+      basename: SRR6257420.fasta.gz.md5
+      location: SRR6257420.fasta.gz.md5
+      class: File
+      size: 32
+
+- job: tests/cwl/tools/stats/job_descriptions/trim_fasta_megahit_no_trimming.yml
+  tool: cwl/stats/fasta-trimming.cwl
+  output:
+    trimmed_sequences:
+      checksum: sha1$a116450b5a3d00baa5624d7e4ccd9ca6efa099fb
+      basename: SRR6257420.fasta
+      location: SRR6257420.fasta
+      class: File
+      size: 12557
+    trimmed_sequences_gz:
+      basename: SRR6257420.fasta.gz
+      location: SRR6257420.fasta.gz
+      class: File
+      size: 3088
+    trimmed_sequences_gz_md5:
+      basename: SRR6257420.fasta.gz.md5
+      location: SRR6257420.fasta.gz.md5
+      class: File
+      size: 32
+
+- job: tests/cwl/tools/stats/job_descriptions/trim_fasta_metaspades_no_trimming.yml
+  tool: cwl/stats/fasta-trimming.cwl
+  output:
+    trimmed_sequences:
+      checksum: sha1$0ad59f9a98f803eb4c12de2af019d7b9a02ea59b
+      basename: ERR866589.fasta
+      location: ERR866589.fasta
+      class: File
+      size: 943
+    trimmed_sequences_gz:
+      basename: ERR866589.fasta.gz
+      location: ERR866589.fasta.gz
+      class: File
+      size: 381
+    trimmed_sequences_gz_md5:
+      basename: ERR866589.fasta.gz.md5
+      location: ERR866589.fasta.gz.md5
+      class: File
+      size: 32
+
+- job: tests/cwl/tools/stats/job_descriptions/trim_fasta_metaspades_with_trimming.yml
+  tool: cwl/stats/fasta-trimming.cwl
+  output:
+    trimmed_sequences:
+      checksum: sha1$c6656d910bc12e14de9bc2084666464c6df5bce2
+      basename: ERR866589.fasta
+      location: ERR866589.fasta
+      class: File
+      size: 581
+    trimmed_sequences_gz:
+      basename: ERR866589.fasta.gz
+      location: ERR866589.fasta.gz
+      class: File
+      size: 381
+    trimmed_sequences_gz_md5:
+      basename: ERR866589.fasta.gz.md5
+      location: ERR866589.fasta.gz.md5
+      class: File
+      size: 32
