@@ -7,7 +7,9 @@
 This repository contains two workflows for metagenome and metatranscriptome assembly of short read data. MetaSPAdes is used as default for paired end data, and MEGAHIT for single end data. MEGAHIT can be specified as the default assembler in the yaml file if preferred. Steps include:
 
 QC - removal of short reads, low quality regions, adapters and host decontamination
+
 Assembly - with metaSPADES or MEGAHIT
+
 Post-assembly - Host and PhiX decontamination, contig length filter (500bp), stats generation.
 
 Multiple input read files can also be specified for co-assembly.
