@@ -29,19 +29,21 @@ inputs:
 
   forward_reads:
     type:
-      - File?
+      - File[]
       - type: array
         items: File
     inputBinding:
+      itemSeparator: ","
       position: 1
       prefix: "-1"
 
   reverse_reads:
     type:
-      - File?
+      - File[]
       - type: array
         items: File
     inputBinding:
+      itemSeparator: ","
       position: 2
       prefix: "-2"
 
@@ -51,11 +53,6 @@ inputs:
     inputBinding:
       position: 5
       prefix: "--num-cpu-threads"
-
-  assembler:
-    type: string?
-    default: 'megahit'
-    label: defined here for assembly.cwl conditional
 
 outputs:
   contigs:

@@ -53,6 +53,8 @@ inputs:
     inputBinding:
       position: 3
       prefix: -r
+  coassembly:
+    type: string
 
 outputs:
   outreads1:
@@ -61,8 +63,19 @@ outputs:
     outputBinding:
       glob: |
         ${ var ext = "";
-        if (inputs.reads2) { ext = inputs.name + "_fastp_clean_1.fastq.gz"; }
-        else { ext = inputs.name + "_fastp_clean.fastq.gz"; }
+        if (inputs.reads2 !== null) {
+          if (inputs.coassembly === 'no') {
+            ext = inputs.name + "_fastp_clean_1.fastq.gz";
+          } else {
+            ext = inputs.reads1.basename.split("_").slice(0, -1).join("_") + "_clean_1.fastq.gz"; 
+          }
+        } else { 
+          if (inputs.coassembly === 'no') {
+            ext = inputs.name + "_fastp_clean.fastq.gz";
+          } else {
+            ext = inputs.reads1.basename.split(".")[0] + "_clean.fastq.gz"; 
+          }
+        }
         return ext; }
   outreads2:
     type: File?

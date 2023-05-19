@@ -29,7 +29,7 @@ expression: |
   ${
     var list2 = [];
     var process;
-    if (inputs.file_list) { process = inputs.file_list } else { process = inputs.dir_list}
+    if (inputs.file_list !== null) { process = inputs.file_list } else { process = inputs.dir_list}
     for (const item in process) {
         if (process[item] != null) {
             list2.push(process[item]) }; }

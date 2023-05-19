@@ -41,6 +41,7 @@ outputs:
     format: edam:format_3475
     outputBinding:
       glob: qc_stats.tsv
+      outputEval: ${self[0].basename=inputs.rawreads.nameroot + '.qc_stats.tsv'; return self;}
 
 $namespaces:
  edam: http://edamontology.org/

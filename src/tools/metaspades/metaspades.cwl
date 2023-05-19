@@ -13,7 +13,8 @@ requirements:
 #  DockerRequirement:
 #    dockerPull: quay.io/microbiome-informatics/spades:3.15.3
 
-baseCommand: [ metaspades.py ]
+#baseCommand: [ metaspades.py ]
+baseCommand: [ /hps/software/users/rdf/metagenomics/service-team/software/miniconda_py39/envs/assembly-pipeline/bin/metaspades.py ]
 
 arguments:
   - valueFrom: $(runtime.outdir)
@@ -42,14 +43,8 @@ inputs:
     label: reverse file after qc
     inputBinding:
       prefix: "-2"
-  assembler:
-    type: string?
-    default: 'metaspades'
-    label: defined here for assembly.cwl conditional
-
 
 outputs:
-  # Add step to check empty
   contigs:
     type: File
     format: edam:format_1929  # FASTA
