@@ -6,7 +6,7 @@
 
 This repository contains two workflows for metagenome and metatranscriptome assembly of short read data. MetaSPAdes is used as default for paired-end data, and MEGAHIT for single-end data and co-assemblies. MEGAHIT can be specified as the default assembler in the yaml file if preferred. Steps include:
 
-  * _QC_:_ removal of short reads, low quality regions, adapters and host decontamination
+  * _QC_: removal of short reads, low quality regions, adapters and host decontamination
   * _Assembly_: with metaSPADES or MEGAHIT
   * _Post-assembly_: Host and PhiX decontamination, contig length filter (500bp), stats generation
 
@@ -16,16 +16,16 @@ This pipeline requires and environment with cwltool, blastn, and metaspades, as 
 
 ## Databases
 
-Predownload fasta files for host decontamination and generate:
-  * bwa index folder
-  * blast index folder
+You will need to pre-download fasta files for host decontamination and generate the following databases accordingly:
+  * bwa index
+  * blast index
     
 Specify the locations in the yaml file when running the pipeline.
 
 ## Main pipeline executables
 
-  * src/workflows/metagenome_pipeline.cwl
-  * src/workflows/metatranscriptome_pipeline.cwl
+  * `src/workflows/metagenome_pipeline.cwl`
+  * `src/workflows/metatranscriptome_pipeline.cwl`
 
 ## Example command
 
@@ -45,7 +45,7 @@ reads2: # OPTIONAL
   format: http://edamontology.org/format_1930
   path: /path/to/reads2
 
-multiple_reads_1:  # array of type "File"
+multiple_reads_1:
   - class: File
     format: http://edamontology.org/format_1930
     path: /path/to/fastq_1.gz
@@ -53,7 +53,7 @@ multiple_reads_1:  # array of type "File"
     format: http://edamontology.org/format_1930
     path: /path/to/fastq_2.gz
 
-multiple_reads_2:  # array of type "File"  (OPTIONAL)
+multiple_reads_2: # OPTIONAL
   - class: File
     format: http://edamontology.org/format_1930
     path: /path/to/fastq_1.gz
@@ -90,24 +90,25 @@ raw_dir_name: # STRING FOR RAW FILES OUTPUT DIRECTORY e.g. 'raw'
 ```
 Root directory
     ├── megahit
-    │   └── 001 ------------------------------- Assembly root directory
-    │       ├── SRR6257420.fasta.gz ----------- Archived and trimmed assembly
-    │       ├── SRR6257420.fasta.gz.md5 ------- MD5 hash of above archive
-    |       ├── options.json ------------------ Megahit input options
-    │       ├── coverage.tab ------------------ Coverage file
-    │       ├── assembly_stats.json ----------- Human-readable assembly stats file
-    │       └── log --------------------------- CwlToil output log
+    │   └── 001 -------------------------------- Assembly root directory
+    │       ├── assembly_stats.json ------------ Human-readable assembly stats file
+    │       ├── coverage.tab ------------------- Coverage file
+    │       ├── log ---------------------------- CwlToil+megahit output log
+    |       ├── options.json ------------------- Megahit input options
+    │       ├── SRR6257420.fasta.gz ------------ Archived and trimmed assembly
+    │       └── SRR6257420.fasta.gz.md5 -------- MD5 hash of above archive
     ├── metaspades
-    │   └── 001 ------------------------------- Assembly root directory
-    │       ├── SRR6257420.fasta.gz ----------- Archived and trimmed assembly
-    │       ├── SRR6257420.fasta.gz.md5 ------- MD5 hash of above archive
-    |       ├── options.json ------------------ Megahit input options
-    │       ├── coverage.tab ------------------ Coverage file
-    │       ├── assembly_stats.json ----------- Human-readable assembly stats file
-    │       └── log --------------------------- CwlToil output log
+    │   └── 001 -------------------------------- Assembly root directory
+    │       ├── assembly_graph.fastg ----------- Assembly graph
+    │       ├── assembly_stats.json ------------ Human-readable assembly stats file
+    │       ├── coverage.tab ------------------- Coverage file
+    |       ├── params.txt --------------------- Metaspades input options
+    │       ├── spades.log --------------------- Metaspades output log
+    │       ├── SRR6257420.fasta.gz ------------ Archived and trimmed assembly
+    │       └── SRR6257420.fasta.gz.md5 -------- MD5 hash of above archive
     │ 
-    └── raw ----------------------------------- Raw data directory
-        ├── SRR6257420.fastq.qc_stats.tsv ----- Stats for cleaned fastq
-        ├── SRR6257420_fastp_clean_1.fastq.gz - Cleaned paired-end file_1
-        └── SRR6257420_fastp_clean_2.fastq.gz - Cleaned paired-end file_2
+    └── raw ------------------------------------ Raw data directory
+        ├── SRR6257420.fastq.qc_stats.tsv ------ Stats for cleaned fastq
+        ├── SRR6257420_fastp_clean_1.fastq.gz -- Cleaned paired-end file_1
+        └── SRR6257420_fastp_clean_2.fastq.gz -- Cleaned paired-end file_2
 ```
