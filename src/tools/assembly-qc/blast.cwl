@@ -2,11 +2,6 @@ cwlVersion: v1.2
 class: CommandLineTool
 label: "blastn against host and phiX contamination"
 
-#container fix pending
-#hints:
-#  DockerRequirement:
-#    dockerPull: "quay.io/microbiome-informatics/assembly-pipeline.python3_scripts:3.7.9"
-
 requirements:
   EnvVarRequirement:
     envDef:
@@ -18,7 +13,6 @@ requirements:
     ramMin: 5000
 
 baseCommand: ["blastn"]
-
 
 arguments:
   - prefix: -task
