@@ -10,9 +10,15 @@ This repository contains two workflows for metagenome and metatranscriptome asse
   * _Assembly_: with metaSPADES or MEGAHIT
   * _Post-assembly_: Host and PhiX decontamination, contig length filter (500bp), stats generation
 
-## Requirements
+## Requirements - How to install
 
-This pipeline requires and environment with cwltool, blastn, and metaspades, as specified in `requirements.txt`.
+This pipeline requires a conda environment with cwltool, blastn, and metaspades. If created with `requirements.yml`, the environment will be called `cwl_assembly`. 
+
+```
+conda env create -f requirements.yml
+conda activate cwl_assembly
+pip install cwltool
+```
 
 ## Databases
 
