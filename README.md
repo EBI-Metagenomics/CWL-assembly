@@ -38,59 +38,8 @@ Specify the locations in the yaml file when running the pipeline.
 ```cwltool --singularity --outdir ${OUTDIR} ${CWL} ${YML}```
 
 `$CWL` is going to be one of the executables mentioned above
-`$YML` should be a config yaml file including entries among what follows. In the case of single-end assemblies, choose parameters `reads1` (and `reads2` in the case of paired-end). For co-assemblies, please use `multiple_reads_1` for multiple single-end samples, jointly with `multiple_reads_2` for multiple paired-end combinations. 
-
-```
-reads1:
-  class: File
-  format: http://edamontology.org/format_1930
-  path: /path/to/reads1
-
-reads2: # OPTIONAL
-  class: File
-  format: http://edamontology.org/format_1930
-  path: /path/to/reads2
-
-multiple_reads_1:
-  - class: File
-    format: http://edamontology.org/format_1930
-    path: /path/to/fastq_1.gz
-  - class: File
-    format: http://edamontology.org/format_1930
-    path: /path/to/fastq_2.gz
-
-multiple_reads_2: # OPTIONAL
-  - class: File
-    format: http://edamontology.org/format_1930
-    path: /path/to/fastq_1.gz
-  - class: File
-    format: http://edamontology.org/format_1930
-    path: /path/to/fastq_2.gz
-
-assembler: 'megahit' OR 'metaspades'
-
-prefix: # ASSEMBLY PREFIX e.g. 'SRR6257420'
-
-min_contig_length: 50
-
-host_genome:
-  class: File
-  format: http://edamontology.org/format_1929
-  path: /path/to/host_genome
-
-database_flag: 
-  - #STRING INDICATING THE GENOME FOR HOST DECONTAMINATION e.g. 'phiX'
-
-coassembly: 'no' # OR 'yes'
-
-blastdb_dir:
-  class: Directory
-  path: /path/to/blast_databases
-
-assembly_version: # STRING FOR ASSEMBLY NAME / VERSION e.g. '001'
-
-raw_dir_name: # STRING FOR RAW FILES OUTPUT DIRECTORY e.g. 'raw'
-```
+`$YML` should be a config yaml file including entries among what follows. 
+You can find a yml template in the `examples` folder.
 
 ## Example output directory structure
 ```
