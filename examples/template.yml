@@ -1,0 +1,59 @@
+# For single-run assemblies, uncomment the following block
+# Use reads1 only for single-end and both reads1 and reads2 for paired-end 
+'''
+reads1:
+  class: File
+  format: http://edamontology.org/format_1930
+  path: /path/to/reads1
+
+reads2: # OPTIONAL
+  class: File
+  format: http://edamontology.org/format_1930
+  path: /path/to/reads2
+'''
+
+# For co-assemblies, uncomment the following block
+# Use multiple_reads_1 for multiple single-end samples, 
+# jointly with multiple_reads_2 for multiple paired-end combinations
+'''
+multiple_reads_1:
+  - class: File
+    format: http://edamontology.org/format_1930
+    path: /path/to/fastq_1.gz
+  - class: File
+    format: http://edamontology.org/format_1930
+    path: /path/to/fastq_2.gz
+
+multiple_reads_2: # OPTIONAL
+  - class: File
+    format: http://edamontology.org/format_1930
+    path: /path/to/fastq_1.gz
+  - class: File
+    format: http://edamontology.org/format_1930
+    path: /path/to/fastq_2.gz
+'''
+
+assembler: 'megahit' # OR 'metaspades'
+
+prefix: # ASSEMBLY PREFIX e.g. 'SRR6257420'
+
+min_contig_length: 500
+
+host_genome:
+  class: File
+  format: http://edamontology.org/format_1929
+  path: /path/to/host_genome
+
+# Genome for host decontamination. Name must match the bwa index name
+database_flag: 
+  - #STRING e.g. 'phiX'
+
+coassembly: 'no' # OR 'yes'
+
+blastdb_dir:
+  class: Directory
+  path: /path/to/blast_databases
+
+assembly_version: # STRING FOR ASSEMBLY NAME / VERSION e.g. '001'
+
+raw_dir_name: # STRING FOR RAW FILES OUTPUT DIRECTORY e.g. 'raw'

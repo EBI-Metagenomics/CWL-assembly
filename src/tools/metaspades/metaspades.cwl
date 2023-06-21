@@ -8,13 +8,7 @@ requirements:
     ramMin: $(inputs.memory)
   InlineJavascriptRequirement: {}
 
-#container fix pending
-#hints:
-#  DockerRequirement:
-#    dockerPull: quay.io/microbiome-informatics/spades:3.15.3
-
-#baseCommand: [ metaspades.py ]
-baseCommand: [ /hps/software/users/rdf/metagenomics/service-team/software/miniconda_py39/envs/assembly-pipeline/bin/metaspades.py ]
+baseCommand: [ metaspades.py ]
 
 arguments:
   - valueFrom: $(runtime.outdir)
@@ -50,13 +44,6 @@ outputs:
     format: edam:format_1929  # FASTA
     outputBinding:
       glob: contigs.fasta
-
-  # Scaffolds can be missing if assembly produces no contigs
-#  scaffolds:
-#    type: File?
-#    format: edam:format_1929  # FASTA
-#    outputBinding:
-#      glob: scaffolds.fasta
 
   assembly_graph:
     type: File

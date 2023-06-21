@@ -4,63 +4,66 @@
 
 ## Description
 
-This repository contains two workflows for metagenome and metatranscriptome assembly of short read data. MetaSPAdes is used as default for paired end data, and MEGAHIT for single end data. MEGAHIT can be specified as the default assembler in the yaml file if preferred. Steps include:
+This repository contains two workflows for metagenome and metatranscriptome assembly of short read data. MetaSPAdes is used as default for paired-end data, and MEGAHIT for single-end data and co-assemblies. MEGAHIT can be specified as the default assembler in the yaml file if preferred. Steps include:
 
-QC - removal of short reads, low quality regions, adapters and host decontamination
+  * _QC_: removal of short reads, low quality regions, adapters and host decontamination
+  * _Assembly_: with metaSPADES or MEGAHIT
+  * _Post-assembly_: Host and PhiX decontamination, contig length filter (500bp), stats generation
 
-Assembly - with metaSPADES or MEGAHIT
+## Requirements - How to install
 
-Post-assembly - Host and PhiX decontamination, contig length filter (500bp), stats generation.
+This pipeline requires a conda environment with cwltool, blastn, and metaspades. If created with `requirements.yml`, the environment will be called `cwl_assembly`. 
 
-Multiple input read files can also be specified for co-assembly.
-
-## Requirements
-
-This pipeline requires and environment with cwltool, blastn, metaspades and megahit.
+```
+conda env create -f requirements.yml
+conda activate cwl_assembly
+pip install cwltool==3.1.20230601100705
+```
 
 ## Databases
 
-Predownload fasta files for host decontamination and generate:
-    - bwa index folder
-    - blast index folder
+You will need to pre-download fasta files for host decontamination and generate the following databases accordingly:
+  * bwa index
+  * blast index
     
 Specify the locations in the yaml file when running the pipeline.
 
-
 ## Main pipeline executables
 
-src/workflows/metagenome_pipeline.cwl
-src/workflows/metatranscriptome_pipeline.cwl
+  * `src/workflows/metagenome_pipeline.cwl`
+  * `src/workflows/metatranscriptome_pipeline.cwl`
 
-# Example output directory structure
+## Example command
+
+```cwltool --singularity --outdir ${OUTDIR} ${CWL} ${YML}```
+
+`$CWL` is going to be one of the executables mentioned above
+`$YML` should be a config yaml file including entries among what follows. 
+You can find a yml template in the `examples` folder.
+
+## Example output directory structure
 ```
-SRP0741
-    └── SRP074153               Project directory containing all assemblies under that project
-        ├── downloads.yml       Raw data download caching logfile, to avoid duplicate downloads of raw data
-        ├── SRR6257
-        │   └── SRR6257420      Run directory
-        │       └── megahit
-        │           ├── 001     Assembly directory
-        │           │   ├── SRR6257420.fasta               Trimmed assembly
-        │           │   ├── SRR6257420.fasta.gz            Archive trimmed assembly
-        │           │   ├── SRR6257420.fasta.gz.md5        MD5 hash of above archive
-        │           │   ├── coverage.tab                   Coverage file
-        │           │   ├── final.contigs.fa               Raw assembly
-        │           │   ├── job_config.yml                 CWL job configuration
-        │           │   ├── megahit.log                    Assembler output log
-        │           │   ├── output.json                    Human-readable Assembly stats file
-        │           │   ├── sorted.bam                     BAM file of assembly
-        │           │   ├── sorted.bam.bai                 Secondary BAM file
-        │           │   └── toil.log                       cwlToil output log
-        │           └── metaspades Assembly of equivalent data using another assembler (eg metaspades, spades...)
-        │               └── ... 
-        │ 
-        ├── raw                 Raw data directory
-        │   └── SRR6257420.fastq.gz                        Raw data files
-        │
-        └── tmp                 Temporary directory for assemblies
-            └── SRR6257
-                └── SRR6257420
-                    └── megahit
-                        └── 001
+Root directory
+    ├── megahit
+    │   └── 001 -------------------------------- Assembly root directory
+    │       ├── assembly_stats.json ------------ Human-readable assembly stats file
+    │       ├── coverage.tab ------------------- Coverage file
+    │       ├── log ---------------------------- CwlToil+megahit output log
+    |       ├── options.json ------------------- Megahit input options
+    │       ├── SRR6257420.fasta.gz ------------ Archived and trimmed assembly
+    │       └── SRR6257420.fasta.gz.md5 -------- MD5 hash of above archive
+    ├── metaspades
+    │   └── 001 -------------------------------- Assembly root directory
+    │       ├── assembly_graph.fastg ----------- Assembly graph
+    │       ├── assembly_stats.json ------------ Human-readable assembly stats file
+    │       ├── coverage.tab ------------------- Coverage file
+    |       ├── params.txt --------------------- Metaspades input options
+    │       ├── spades.log --------------------- Metaspades output log
+    │       ├── SRR6257420.fasta.gz ------------ Archived and trimmed assembly
+    │       └── SRR6257420.fasta.gz.md5 -------- MD5 hash of above archive
+    │ 
+    └── raw ------------------------------------ Raw data directory
+        ├── SRR6257420.fastq.qc_stats.tsv ------ Stats for cleaned fastq
+        ├── SRR6257420_fastp_clean_1.fastq.gz -- Cleaned paired-end file_1
+        └── SRR6257420_fastp_clean_2.fastq.gz -- Cleaned paired-end file_2
 ```

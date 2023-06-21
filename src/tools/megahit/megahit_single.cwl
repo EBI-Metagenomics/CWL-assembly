@@ -4,7 +4,6 @@ class: CommandLineTool
 
 label: MEGAHIT version 1.2.9 metagenomic assembler
 
-#change to microbiome informatics container
 hints:
   DockerRequirement:
     dockerPull: "quay.io/biocontainers/megahit:1.2.9--h2e03b76_1"
