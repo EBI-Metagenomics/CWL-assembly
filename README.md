@@ -17,7 +17,7 @@ This pipeline requires a conda environment with cwltool, blastn, and metaspades.
 ```
 conda env create -f requirements.yml
 conda activate cwl_assembly
-pip install cwltool
+pip install cwltool==3.1.20230601100705
 ```
 
 ## Databases
